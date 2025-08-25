@@ -1,0 +1,47 @@
+/* Header */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  min-height: 60px;
+  padding: 5px 12%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.searchBar {
+  flex: 1;
+  margin: 0 5%;
+}
+
+svg {
+  width: 30px;
+  height: 30px;
+}
+
+.header.hidden {
+  transform: translateY(-100%);
+}
+
+.header.visible {
+  transform: translateY(0);
+}
+
+.app-main {
+  padding-top: 60px;
+}
+
+/* Footer */

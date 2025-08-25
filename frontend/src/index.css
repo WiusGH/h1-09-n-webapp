@@ -18,7 +18,7 @@ code {
   --color-secondary: #dad2ff; /* Púrpura claro */
   --color-background: #ffffff; /* Fondo */
   --color-text: #1a1a1a; /* Texto primario */
-  --color-text-secondary: #555555; /* Texto secundario*/
+  --color-text-secondary: #ffffff; /* Texto secundario*/
 }
 
 /* Modo oscuro */
@@ -27,5 +27,16 @@ body.dark {
   --color-secondary: #320a6b;
   --color-background: #1a1a1a;
   --color-text: #ffffff;
-  --color-text-secondary: #cccccc;
+  --color-text-secondary: #1a1a1a;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  margin-top: 70px;
 }
