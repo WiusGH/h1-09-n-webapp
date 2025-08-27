@@ -1,4 +1,3 @@
-// App.tsx
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -9,19 +8,24 @@ import Footer from "./components/layout/Footer";
 import Mensajes from "./pages/Mensajes";
 import Empleos from "./pages/Empleos";
 import Notificaciones from "./pages/Notificaciones";
+import "./index.css";
 
+// Carga del tema
 function App() {
   useEffect(() => {
     initTheme();
   }, []);
 
+  // Esto servirá después para saber que tipo de usuario está logueado
   const [userType, setUserType] = useState<string | null>(null);
 
+  // Esto sirve para obtener el tipp de usuario del localStorage cuando el usuario haya iniciado sesión
   useEffect(() => {
     const storedUserType = localStorage.getItem("userType");
     setUserType(storedUserType);
   }, []);
 
+  // Placeholder predefinidos
   let searchPlaceholder = "Buscar...";
   let navigateTo = "search";
 
@@ -47,7 +51,8 @@ function App() {
             <Route path="/mensajes" element={<Mensajes />} />
             <Route path="/empleos" element={<Empleos />} />
             <Route path="/notifiaciones" element={<Notificaciones />} />
-            <Route path="*" element={<h1>404 - Not Found</h1>} />
+            <Route path="*" element={<h1>404 - Not Found</h1>} />{" "}
+            {/* TODO: crear vista 404 */}
           </Routes>
         </main>
         <Footer />

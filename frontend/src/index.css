@@ -1,33 +1,34 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
-/* Modo claro */
-:root {
+  /* Modo claro */
   --color-primary: #320a6b; /* Púrpura oscuro */
   --color-secondary: #dad2ff; /* Púrpura claro */
   --color-background: #ffffff; /* Fondo */
   --color-text: #1a1a1a; /* Texto primario */
-  --color-text-secondary: #ffffff; /* Texto secundario*/
+  --color-text-secondary: #ffffff; /* Texto secundario */
 }
 
 /* Modo oscuro */
-body.dark {
+:root.dark {
   --color-primary: #dad2ff;
   --color-secondary: #320a6b;
   --color-background: #1a1a1a;
   --color-text: #ffffff;
   --color-text-secondary: #1a1a1a;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  margin: 0;
 }
 
 .app-container {

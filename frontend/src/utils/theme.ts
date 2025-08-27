@@ -1,19 +1,21 @@
+// Función para cambiar el tema
 export function toggleDarkMode(): void {
-  const body = document.body;
-  body.classList.toggle("dark");
+  const root = document.documentElement;
+  root.classList.toggle("dark");
 
-  if (body.classList.contains("dark")) {
+  if (root.classList.contains("dark")) {
     localStorage.setItem("theme", "dark");
   } else {
     localStorage.setItem("theme", "light");
   }
 }
 
-export function initTheme(): void {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-  } else {
-    document.body.classList.remove("dark");
-  }
-}
+// Sirve para cargar el tema al montar el componente
+export const initTheme = () => {
+  const storedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  const theme = storedTheme || (prefersDark ? "dark" : "light");
+
+  document.documentElement.classList.toggle("dark", theme === "dark");
+};

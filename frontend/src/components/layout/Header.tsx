@@ -1,8 +1,8 @@
-import React from "react";
 import { useHideOnScroll } from "../../hooks/useHideOnScroll";
 import style from "./Layout.module.css";
 import CustomSearchBar from "../inputs/CustomSearchBar";
 import NavbarIcon from "../buttons/NavbarIcon";
+import ThemeToggle from "../buttons/ThemeToggle";
 
 interface HeaderProps {
   placeholder: string;
@@ -27,6 +27,7 @@ const Header = ({ placeholder, navigateTo }: HeaderProps) => {
         <NavbarIcon type="messages" />
         <NavbarIcon type="notifications" />
       </nav>
+      <ThemeToggle />
     </header>
   );
 };
