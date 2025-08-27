@@ -9,6 +9,7 @@ import Mensajes from "./pages/Mensajes";
 import Empleos from "./pages/Empleos";
 import Notificaciones from "./pages/Notificaciones";
 import "./index.css";
+import Login from "./pages/Login";
 
 // Carga del tema
 function App() {
@@ -51,6 +52,7 @@ function App() {
             <Route path="/mensajes" element={<Mensajes />} />
             <Route path="/empleos" element={<Empleos />} />
             <Route path="/notifiaciones" element={<Notificaciones />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<h1>404 - Not Found</h1>} />{" "}
             {/* TODO: crear vista 404 */}
           </Routes>
