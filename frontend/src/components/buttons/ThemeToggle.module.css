@@ -1,0 +1,45 @@
+.themeToggle {
+  position: relative;
+  width: 60px;
+  height: 32px;
+  background: linear-gradient(120deg, #2e3e6e, #4586e0);
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px 3px;
+  transition: background 0.3s ease-in-out;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.darkBg {
+  background: linear-gradient(120deg, #fbc02d, #ffeb3b);
+}
+
+.themeToggle .toggle {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(3px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.themeToggle .dark {
+  transform: translateX(30px);
+}
+
+.sunIcon {
+  color: #fff59d;
+}
+
+.moonIcon {
+  color: #515db8;
+}
