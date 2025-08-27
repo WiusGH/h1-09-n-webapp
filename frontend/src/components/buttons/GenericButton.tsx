@@ -1,5 +1,3 @@
-import React from "react";
-
 const GenericButton = () => {
   return <div>GenericButton</div>;
 };

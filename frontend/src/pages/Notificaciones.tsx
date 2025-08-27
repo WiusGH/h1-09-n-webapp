@@ -1,5 +1,3 @@
-import React from "react";
-
 const Notificaciones = () => {
   return <div>Notificaciones</div>;
 };
