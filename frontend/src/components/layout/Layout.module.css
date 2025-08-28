@@ -40,8 +40,28 @@ svg {
   transform: translateY(0);
 }
 
-.app-main {
-  padding-top: 60px;
+/* Footer */
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-secondary);
+  padding: 1% 5%;
+  a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: black;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
-/* Footer */
+.links {
+  display: flex;
+  width: 100%;
+}
