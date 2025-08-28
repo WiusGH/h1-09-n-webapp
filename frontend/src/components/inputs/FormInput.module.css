@@ -6,17 +6,19 @@
 }
 
 .input {
+  background-color: var(--color-secondary);
+  color: var(--text-color);
   width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 1rem; /* padding leaves space for the icon */
+  padding: 1rem 2.5rem 1rem 1rem;
   border: 2px solid #ccc;
-  border-radius: 999px; /* pill shape */
+  border-radius: 12px;
   outline: none;
   font-size: 1rem;
   transition: border-color 0.2s ease;
 }
 
 .input:focus {
-  border-color: #7b5cff; /* your purple accent */
+  border-color: #7b5cff;
 }
 
 .eyeButton {
@@ -25,12 +27,12 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #888;
+  color: var(--color-text);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .eyeButton:hover {
-  color: #320a6b; /* darker accent on hover */
+  opacity: 0.5;
 }

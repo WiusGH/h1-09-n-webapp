@@ -6,8 +6,8 @@ interface FormInputProps {
   placeholder: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  showPassword?: boolean; // controlled from parent
-  onTogglePassword?: () => void; // toggles both inputs
+  showPassword?: boolean;
+  onTogglePassword?: () => void;
 }
 
 const FormInput = ({
