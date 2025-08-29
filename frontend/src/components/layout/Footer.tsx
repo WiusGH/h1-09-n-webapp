@@ -48,32 +48,29 @@ const Footer = () => {
         <hr />
         <section>
           <h3>Nuestras redes</h3>
-          <a
-            href="https://www.facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaFacebook />
-            Facebook
-          </a>
-          <a
-            href="https://www.instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaSquareInstagram />
-            Instagram
-          </a>
-          <a
-            href="https://www.twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>
+          <div className={style.socials}>
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaSquareInstagram />
+            </a>
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebook />
+            </a>
+            <a
+              href="https://www.twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaSquareXTwitter />
-            </span>
-            <span>Twitter</span>
-          </a>
+            </a>
+          </div>
         </section>
       </div>
       <p>©2025 - Todos los derechos reservados</p>
