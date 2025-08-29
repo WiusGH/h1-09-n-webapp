@@ -125,17 +125,38 @@ svg {
     border: 1px solid rgb(183, 181, 181);
   }
 
-.links {
-  display: flex;
-  width: 100%;
+  .links {
+    display: flex;
+    width: 100%;
+  }
+
+  .socials {
+    display: flex;
+    gap: 35px;
+    margin-top: 15px;
+    svg {
+      width: 60px;
+      height: 60px;
+    }
+  }
 }
 
-.socials {
-  display: flex;
-  gap: 35px;
-  margin-top: 15px;
-  svg {
-    width: 60px;
-    height: 60px;
+@media (max-width: 768px) {
+  .footer {
+    padding-left: 15%;
+  }
+  .links {
+    flex-direction: column;
+    align-items: flex-start;
+
+    section {
+      align-items: flex-start;
+      gap: 0;
+      width: 100%;
+    }
+
+    hr {
+      display: none;
+    }
   }
 }
