@@ -1,8 +1,6 @@
-import { useHideOnScroll } from "../../hooks/useHideOnScroll";
-import style from "./Layout.module.css";
-import CustomSearchBar from "../inputs/CustomSearchBar";
-import NavbarIcon from "../buttons/NavbarIcon";
-import ThemeToggle from "../buttons/ThemeToggle";
+import { useWindowSize } from "../../hooks/useWindowsSize";
+import DesktopHeader from "./DesktopHeader";
+import MobileHeader from "./MobileHeader";
 
 interface HeaderProps {
   placeholder: string;
@@ -10,25 +8,15 @@ interface HeaderProps {
 }
 
 const Header = ({ placeholder, navigateTo }: HeaderProps) => {
-  const show = useHideOnScroll();
-
+  const windowSize = useWindowSize();
   return (
-    <header
-      className={`${style.header} ${show ? style.visible : style.hidden}`}
-    >
-      <section>
-        <NavbarIcon type="home" />
-      </section>
-      <section className={style.searchBar}>
-        <CustomSearchBar placeholder={placeholder} navigateTo={navigateTo} />
-      </section>
-      <nav>
-        <NavbarIcon type="jobs" />
-        <NavbarIcon type="messages" />
-        <NavbarIcon type="notifications" />
-      </nav>
-      <ThemeToggle />
-    </header>
+    <>
+      {windowSize.width > 768 ? (
+        <DesktopHeader placeholder={placeholder} navigateTo={navigateTo} />
+      ) : (
+        <MobileHeader placeholder={placeholder} navigateTo={navigateTo} />
+      )}
+    </>
   );
 };
 

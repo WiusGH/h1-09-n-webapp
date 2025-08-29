@@ -12,3 +12,8 @@
     color: var(--color-primary);
   }
 }
+
+.sidebarMode {
+  flex-direction: row;
+  gap: 0.5rem;
+}
