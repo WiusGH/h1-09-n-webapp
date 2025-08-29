@@ -1,0 +1,51 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100vh;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-secondary);
+  transform: translateY(-4px);
+}
+
+.company:hover{
+  color: var(--color-primary);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.company {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-top: 0.5rem;
+}
