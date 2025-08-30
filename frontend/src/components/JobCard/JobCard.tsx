@@ -6,9 +6,10 @@ interface JobCardProps {
   title: string;
   company: string;
   description: string;
+  
 }
 
-const JobCard: React.FC<JobCardProps> = ({ title, company, description }) => {
+const JobCard: React.FC<JobCardProps> = ({ title, company, description}) => {
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -19,7 +20,7 @@ const JobCard: React.FC<JobCardProps> = ({ title, company, description }) => {
       
        <div className={styles.actions}>
         <button className={styles.applyBtn}>Aplicar</button>
-        <button className={styles.saveBtn}>Guardar</button>
+        
       </div>
      
     </div>

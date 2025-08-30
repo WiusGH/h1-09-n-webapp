@@ -1,5 +1,6 @@
 import type React from "react";
 import JobCard from "../components/JobCard/JobCard";
+import styles from "../components/layout/Layout.module.css"
 import { useEffect, useState } from "react";
 
 interface Job {
@@ -25,13 +26,38 @@ const Empleos: React.FC = () => {
         title: "Backend Developer",
         company: "Cloud Services",
         description: "Se requiere experiencia en Node.js, Express y SQL."
+      },
+      {
+        id: 3,
+        title: "Fullstack Developer",
+        company: "Cloud Services",
+        description: "Se requiere experiencia en Node.js, Express y SQL."
+      },
+      {
+        id: 4,
+        title: "Cloud engineer",
+        company: "Cloud Services",
+        description: "Se requiere experiencia en Node.js, Express y SQL."
+      },
+      {
+        id: 5,
+        title: "Backend Developer",
+        company: "Cloud Services",
+        description: "Se requiere experiencia en Node.js, Express y SQL."
+      },
+      {
+        id: 6,
+        title: "Data analytics",
+        company: "Cloud Services",
+        description: "Se requiere experiencia en Node.js, Express y SQL."
       }
+    
     ];
     setJobs(mockJobs)
   }, [])
 
   return (
-    <div className="">
+    <div className={styles.jobsGrid}>
       {jobs.map((job) =>(
         <JobCard key={job.id} title={job.title} company={job.company} description={job.description}/>
       ))}
