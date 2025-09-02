@@ -1,14 +1,32 @@
-# Imagen base con Java 17
-FROM eclipse-temurin:17-jdk-alpine
+# Etapa 1: Build del JAR con Maven
+FROM maven:3.9.5-eclipse-temurin-17 AS build
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar el JAR generado por Maven
-COPY target/backend-0.0.1-SNAPSHOT.jar app.jar
+# Copiar los archivos de Maven (pom.xml primero para cachear dependencias)
+COPY pom.xml .
 
-# Puerto que expone Spring Boot
+# Descargar dependencias (para cachear)
+RUN mvn dependency:go-offline -B
+
+# Copiar el resto del código fuente
+COPY src ./src
+
+# Compilar el proyecto y generar el JAR
+RUN mvn clean package -DskipTests
+
+# Etapa 2: Crear la imagen final
+FROM eclipse-temurin:17-jdk-alpine
+
+WORKDIR /app
+
+# Copiar el JAR desde la etapa de build
+COPY --from=build /app/target/*.jar app.jar
+
+# Exponer el puerto (usado por Spring Boot)
+ENV PORT=8080
 EXPOSE 8080
 
-# Comando para ejecutar la app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando para correr la app
+ENTRYPOINT ["java","-jar","app.jar"]
