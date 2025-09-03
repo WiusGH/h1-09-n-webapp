@@ -62,7 +62,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://h1-09-n-webapp.vercel.app/")); // Cambiar por tu URL
+        configuration.setAllowedOrigins(List.of("https://h1-09-n-webapp.vercel.app")); // Cambiar por tu URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // Permite enviar cookies si fuera necesario
