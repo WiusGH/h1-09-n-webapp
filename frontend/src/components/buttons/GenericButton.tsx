@@ -16,7 +16,7 @@ const GenericButton: React.FC<GenericButtonProps> = ({
   return (
     <button
       className={style.button}
-      style={{ width: width }}
+      style={{ width: width + "%" }}
       disabled={disabled}
       type={submit ? "submit" : "button"}
     >

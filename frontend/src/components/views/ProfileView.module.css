@@ -60,3 +60,35 @@
     }
   }
 }
+
+.skills {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+
+.description {
+  width: 100%;
+}
+
+/* Disable texteare background, border and ability to resize */
+
+.description {
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: 12px;
+  color: var(--color-text);
+  padding: 8px;
+  resize: none;
+}
+
+.portfolioHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.projectsContainer {
+  display: flex;
+  gap: 1%;
+  flex-wrap: wrap;
+}
