@@ -5,6 +5,7 @@ interface GenericButtonProps {
   submit?: boolean;
   text: string;
   width?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const GenericButton: React.FC<GenericButtonProps> = ({
@@ -12,6 +13,7 @@ const GenericButton: React.FC<GenericButtonProps> = ({
   submit,
   text,
   width,
+  onClick,
 }) => {
   return (
     <button
@@ -19,6 +21,7 @@ const GenericButton: React.FC<GenericButtonProps> = ({
       style={{ width: width + "%" }}
       disabled={disabled}
       type={submit ? "submit" : "button"}
+      onClick={onClick}
     >
       {text}
     </button>
