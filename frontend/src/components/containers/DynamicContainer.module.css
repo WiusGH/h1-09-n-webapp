@@ -1,0 +1,12 @@
+.container {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 4% 5%;
+}
+
+.side {
+  position: sticky;
+  height: max-content;
+}
