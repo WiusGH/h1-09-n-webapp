@@ -48,10 +48,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Deshabilitamos CSRF porque usamos JWT
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración CORS
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/prueba").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/users/me/**").authenticated()
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/job/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -62,7 +63,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://h1-09-n-webapp.vercel.app")); // Cambiar por tu URL
+        configuration.setAllowedOrigins(List.of("http://localhost;*", "https://h1-09-n-webapp.vercel.app")); // Cambiar
+                                                                                                             // por tu
+                                                                                                             // URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // Permite enviar cookies si fuera necesario
