@@ -8,13 +8,23 @@ import jakarta.persistence.*;
 @Table(name = "users")
 public class User {
 
-    // atributos de usuario
+    // Enum para roles
+    public enum Role {
+        USER,
+        CANDIDATE,
+        RECRUITER,
+        ADMIN
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(nullable = false, unique = false)
-    private String username;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String lastName;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -23,41 +33,58 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role = "USER"; // pueden ser USER O ADMIN
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
     @Column(nullable = false)
     private boolean active = true;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // Constructor vacío para JPA
+    @Column
+    private String online;
+
+    // Constructor vacío
     public User() {
     }
 
-    // constructor para instancias futuras
-    public User(String username, String email, String password, String role) {
-        this.username = username;
+    // Relación opcional con Admin
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Admin admin;
+
+    // Constructor útil
+    public User(String name, String lastName, String email, String password, Role role) {
+        this.name = name;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    // Métodos getters y setters
-    public Long getId() {
+    // Getters y setters
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -76,12 +103,20 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public User.Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(User.Role role) {
         this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -92,12 +127,20 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getOnline() {
+        return online;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setOnline(String online) {
+        this.online = online;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 
     @PrePersist

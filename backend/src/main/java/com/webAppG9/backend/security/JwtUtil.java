@@ -5,6 +5,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.webAppG9.backend.Model.User.Role;
+
 import java.security.Key;
 import java.util.Date;
 
@@ -25,7 +27,7 @@ public class JwtUtil {
 
     // metodo para generar el token
     // dandole todos los propiedaes para su definicion
-    public String generateToken(String email, String role) {
+    public String generateToken(String email, Role role) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
