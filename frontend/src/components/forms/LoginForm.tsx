@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormInput from "../inputs/FormInput";
 import style from "./Form.module.css";
 import GenericButton from "../buttons/GenericButton";
 import { Link, useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../../utils/userStorage";
 
 import { saveUserData } from "../../utils/userStorage";
 import axiosInstance from "../../api/axiosInstance";
@@ -15,6 +16,12 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
