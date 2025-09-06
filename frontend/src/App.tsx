@@ -12,6 +12,8 @@ import "./index.css";
 import Login from "./pages/Login";
 import Register from "./components/forms/Register";
 import Profile from "./pages/Profile";
+import DynamicContainer from "./components/containers/DynamicContainer";
+import UserInfo from "./components/sidebars/UserInfo";
 
 // Carga del tema
 function App() {
@@ -52,7 +54,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/mensajes" element={<Mensajes />} />
-            <Route path="/empleos" element={<Empleos />} />
+            <Route path="/empleos" element={<DynamicContainer main={<Empleos/>} side={<UserInfo/>} />} />
             <Route path="/notifiaciones" element={<Notificaciones />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
