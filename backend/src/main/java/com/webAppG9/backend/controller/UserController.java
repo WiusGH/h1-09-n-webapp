@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,18 +49,13 @@ public class UserController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<ResponseDTO<Map<String, Object>>> toggleUserStatus(@PathVariable Integer id) {
-        User user = userService.toggleUserStatus(id);
-        Map<String, Object> data = new HashMap<>();
-        data.put("message", user.isActive() ? "Usuario activado" : "Usuario bloqueado");
-        data.put("active", user.isActive());
+        Map<String, Object> data = userService.toggleUserStatus(id);
         return ResponseEntity.ok(new ResponseDTO<>(data, null));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<Map<String, String>>> deleteUser(@PathVariable Integer id) {
-        userService.deleteUser(id);
-        Map<String, String> data = new HashMap<>();
-        data.put("message", "Usuario eliminado con éxito");
+        Map<String, String> data = userService.deleteUser(id);
         return ResponseEntity.ok(new ResponseDTO<>(data, null));
     }
 

@@ -4,6 +4,7 @@ import com.webAppG9.backend.security.JwtAuthenticationFilter;
 import com.webAppG9.backend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,14 +46,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Deshabilitamos CSRF porque usamos JWT
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración CORS
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
+
+                        // Usuarios
                         .requestMatchers("/api/users/me/**").authenticated()
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/jobPost/**").permitAll()
+
+                        // Job Posts
+                        .requestMatchers(HttpMethod.GET, "/api/jobPost/**").permitAll()
+                        .requestMatchers("/api/jobPost/**").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Job Applications
+                        .requestMatchers(HttpMethod.POST, "/api/job-apply/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/job-apply/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/job-apply/me").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/job-apply/job/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/job-apply/**").hasAnyRole("RECRUITER", "ADMIN")
+
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

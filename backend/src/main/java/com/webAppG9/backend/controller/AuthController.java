@@ -22,10 +22,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO<Map<String, Object>>> register(@RequestBody User user) {
-        // @RequestBody recibe del request los datos instanciados del User en la
-        // memoria--- ResponseEntity<ResponseDTO<Map<String, Object>>> infiere el tipo
-        // de respuesta cuando se ejecute la clase o se aun objeto.
-
         // Crear UserDTO para la respuesta
         Map<String, Object> data = authService.register(user);
 
@@ -36,10 +32,6 @@ public class AuthController {
     // metodo login
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<Map<String, Object>>> login(@RequestBody Map<String, String> request) {
-        // @RequestBody recibe del request los datos instanciados del User en la
-        // memoria--- ResponseEntity<ResponseDTO<Map<String, Object>>> infiere el tipo
-        // de respuesta cuando se ejecute la clase o se aun objeto.
-
         // guardo las variavles que necesito del Json que proviene del request
         String email = request.get("email");
         String password = request.get("password");

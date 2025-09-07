@@ -8,14 +8,6 @@ import jakarta.persistence.*;
 @Table(name = "users")
 public class User {
 
-    // Enum para roles
-    public enum Role {
-        USER,
-        CANDIDATE,
-        RECRUITER,
-        ADMIN
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -34,7 +26,7 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    private Role role = Role.CANDIDATE;
 
     @Column(nullable = false)
     private boolean active = true;
@@ -45,13 +37,20 @@ public class User {
     @Column
     private String online;
 
+    // Relación opcional con Admin
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Admin admin;
+
     // Constructor vacío
     public User() {
     }
 
-    // Relación opcional con Admin
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Admin admin;
+    // Enum para roles
+    public enum Role {
+        CANDIDATE,
+        RECRUITER,
+        ADMIN
+    }
 
     // Constructor útil
     public User(String name, String lastName, String email, String password, Role role) {
@@ -111,11 +110,11 @@ public class User {
         this.role = role;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setIsActive(boolean active) {
         this.active = active;
     }
 

@@ -78,4 +78,18 @@ public class JobPostService {
         jobPostRepository.delete(jobPost);
     }
 
+    // Desactivar post de trabajo
+    public Map<String, Object> toggleJobPostStatus(Integer id) {
+        JobPost jobPost = jobPostRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job no encontrado"));
+
+        jobPost.setIsActive(!jobPost.getIsActive());
+        jobPostRepository.save(jobPost);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", jobPost.getIsActive() ? "JobPost pausado" : "JobPost activado");
+        response.put("active", jobPost.getIsActive());
+        return response;
+    }
+
 }

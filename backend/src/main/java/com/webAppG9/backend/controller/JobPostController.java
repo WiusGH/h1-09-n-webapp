@@ -51,4 +51,11 @@ public class JobPostController {
         return ResponseEntity.ok(new ResponseDTO<>("Posteo eliminado correctamente", null));
     }
 
+    // desactivar post de trabajo
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ResponseDTO<Map<String, Object>>> toggleJobPostStatus(@PathVariable Integer id) {
+        Map<String, Object> data = jobPostService.toggleJobPostStatus(id);
+        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+    }
+
 }

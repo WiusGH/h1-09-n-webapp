@@ -31,7 +31,7 @@ public class AuthService {
                 user.getName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.isActive(),
+                user.getIsActive(),
                 user.getCreatedAt()));
         return data;
     }
@@ -42,7 +42,6 @@ public class AuthService {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email ya registrado");
         }
-
         // Encriptar contraseña
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         // guardar user

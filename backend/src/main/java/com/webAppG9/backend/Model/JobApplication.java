@@ -16,7 +16,7 @@ public class JobApplication {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Relación con JobPost
+    // Relación con JobPostt
     @ManyToOne
     @JoinColumn(name = "job_post_id", nullable = false)
     private JobPost jobPost;

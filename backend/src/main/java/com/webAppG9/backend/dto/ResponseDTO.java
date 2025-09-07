@@ -10,6 +10,14 @@ public class ResponseDTO<T> { // T respuesta generica
         this.error = error;
     }
 
+    public static <T> ResponseDTO<T> ok(T data) {
+        return new ResponseDTO<>(data, null);
+    }
+
+    public static <T> ResponseDTO<T> fail(String error) {
+        return new ResponseDTO<>(null, error);
+    }
+
     // Getters y setters
     public T getData() {
         return data;

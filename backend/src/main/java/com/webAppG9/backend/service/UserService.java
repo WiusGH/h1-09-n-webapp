@@ -25,7 +25,7 @@ public class UserService {
                 user.getName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.isActive(),
+                user.getIsActive(),
                 user.getCreatedAt()));
         return data;
     }
@@ -39,7 +39,7 @@ public class UserService {
                         u.getName(),
                         u.getLastName(),
                         u.getEmail(),
-                        u.isActive(),
+                        u.getIsActive(),
                         u.getCreatedAt()))
                 // Devolver una lista con todos los users
                 .toList();
@@ -62,16 +62,24 @@ public class UserService {
     }
 
     // Cambiar estadpo de usuario
-    public User toggleUserStatus(Integer id) {
+    // Service
+    public Map<String, Object> toggleUserStatus(Integer id) {
         User user = getUserById(id);
-        user.setActive(!user.isActive());
-        return userRepository.save(user);
+        user.setIsActive(!user.getIsActive());
+        userRepository.save(user);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", user.getIsActive() ? "Usuario activado" : "Usuario bloqueado");
+        response.put("active", user.getIsActive());
+        return response;
     }
 
     // Eliminar usuario
-    public void deleteUser(Integer id) {
+    public Map<String, String> deleteUser(Integer id) {
         getUserById(id); // lanza excepción si no existe
         userRepository.deleteById(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Usuario eliminado con éxito");
+        return response;
     }
 
     // metodo para buscar usuario por email
