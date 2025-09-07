@@ -59,10 +59,12 @@ const MobileHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
           <nav onClick={() => setMenuOpen(false)}>
             <NavbarIcon type="home" sidebar />
             <NavbarIcon type="jobs" sidebar />
-            <NavbarIcon type="messages" sidebar />
-            <NavbarIcon type="notifications" sidebar />
             {isLoggedIn() ? (
-              <NavbarIcon type="logout" sidebar />
+              <>
+                <NavbarIcon type="messages" sidebar />
+                <NavbarIcon type="notifications" sidebar />
+                <NavbarIcon type="logout" sidebar />
+              </>
             ) : (
               <NavbarIcon type="login" sidebar />
             )}

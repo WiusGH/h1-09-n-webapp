@@ -12,6 +12,7 @@ import "./index.css";
 import Login from "./pages/Login";
 import Register from "./components/forms/Register";
 import Profile from "./pages/Profile";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 // Carga del tema
 function App() {
@@ -50,15 +51,34 @@ function App() {
         <Header placeholder={searchPlaceholder} navigateTo={navigateTo} />
         <main className="app-main">
           <Routes>
+            {/* Rutas públicas */}
             <Route path="/" element={<Home />} />
-            <Route path="/mensajes" element={<Mensajes />} />
-            <Route path="/empleos" element={<Empleos />} />
-            <Route path="/notifiaciones" element={<Notificaciones />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
-            <Route path="/perfil" element={<Profile />} />
-            <Route path="*" element={<h1>404 - Not Found</h1>} />{" "}
+            <Route path="/empleos" element={<Empleos />} />
+            <Route path="*" element={<h1>404 - Not Found</h1>} />
             {/* TODO: crear vista 404 */}
+
+            {/* Rutas para usuarios logueados */}
+            <Route
+              element={
+                <ProtectedRoute roles={["candidate", "recruiter", "admin"]} />
+              }
+            >
+              <Route path="/perfil" element={<Profile />} />
+              <Route path="/mensajes" element={<Mensajes />} />
+              <Route path="/notifiaciones" element={<Notificaciones />} />
+            </Route>
+
+            {/* Rutas para reclutadores y admins */}
+            <Route element={<ProtectedRoute roles={["recruiter", "admin"]} />}>
+              {/* <Route path="/candidatos" element={<Candidatos />} /> */}
+            </Route>
+
+            {/* Rutas solo para admins y admins */}
+            <Route element={<ProtectedRoute roles={["admin"]} />}>
+              {/* <Route path="/panel-control" element={<ControlPanel />} /> */}
+            </Route>
           </Routes>
         </main>
         <Footer />

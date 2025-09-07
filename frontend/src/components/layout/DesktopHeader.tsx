@@ -25,10 +25,12 @@ const DesktopHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
       </section>
       <nav>
         <NavbarIcon type="jobs" />
-        <NavbarIcon type="messages" />
-        <NavbarIcon type="notifications" />
         {isLoggedIn() ? (
-          <NavbarIcon type="logout" />
+          <>
+            <NavbarIcon type="messages" />
+            <NavbarIcon type="notifications" />
+            <NavbarIcon type="logout" />
+          </>
         ) : (
           <NavbarIcon type="login" />
         )}
