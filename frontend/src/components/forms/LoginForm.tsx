@@ -14,8 +14,20 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
+
+  // OJO: solo temporal mientras estamos en fase de desarrollo
+  const testUsers = {
+    candidato: { email: "candidato@test.com", password: "123456" },
+    reclutador: { email: "reclutador@test.com", password: "123456" },
+    admin: { email: "admin@alura.com", password: "admin6705" },
+  };
+
+  const fillTestUser = (role: keyof typeof testUsers) => {
+    const user = testUsers[role];
+    setEmail(user.email);
+    setPassword(user.password);
+  };
 
   useEffect(() => {
     if (isLoggedIn()) {
@@ -54,6 +66,12 @@ const LoginForm = () => {
           <div className={style.spinner}></div>
         </div>
       )}
+      {/* OJO: solo temporal mientras estamos en fase de desarrollo */}
+      <div className={style.quickMenu}>
+        <button onClick={() => fillTestUser("candidato")}>Candidato</button>
+        <button onClick={() => fillTestUser("reclutador")}>Reclutador</button>
+        <button onClick={() => fillTestUser("admin")}>Admin</button>
+      </div>
       <h3>Inicio de sesión</h3>
       <form
         className={style.form}

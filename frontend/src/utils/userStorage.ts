@@ -37,9 +37,8 @@ export function getUserData(): UserData | null {
   if (parsed?.token) {
     try {
       const decoded = jwtDecode<JwtPayload>(parsed.token);
-      const now = Date.now() / 1000; // current time in seconds
+      const now = Date.now() / 1000;
       if (decoded.exp < now) {
-        // Token expired → clear and return null
         clearUserData();
         return null;
       }

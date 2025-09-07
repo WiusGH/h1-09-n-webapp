@@ -5,6 +5,7 @@ import CustomSearchBar from "../inputs/CustomSearchBar";
 import NavbarIcon from "../buttons/NavbarIcon";
 import ThemeToggle from "../buttons/ThemeToggle";
 import { FaBars } from "react-icons/fa";
+import { isLoggedIn } from "../../utils/userStorage";
 
 interface HeaderProps {
   placeholder: string;
@@ -37,36 +38,44 @@ const MobileHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
   }, [menuOpen]);
 
   return (
-    <header
-      className={`${style.header} ${show ? style.visible : style.hidden}`}
-    >
-      {" "}
-      <button
-        className={style.hamburger}
-        onClick={() => setMenuOpen((prev) => !prev)}
+    <>
+      {menuOpen && (
+        <div className={style.overlay} onClick={() => setMenuOpen(false)} />
+      )}
+      <header
+        className={`${style.header} ${show ? style.visible : style.hidden}`}
       >
-        <FaBars />
-      </button>
-      <div
-        ref={menuRef}
-        className={`${style.mobileMenu} ${menuOpen ? style.open : ""}`}
-      >
-        <nav>
-          <NavbarIcon type="home" sidebar />
-          <NavbarIcon type="jobs" sidebar />
-          <NavbarIcon type="messages" sidebar />
-          <NavbarIcon type="notifications" sidebar />
-          <NavbarIcon type="login" sidebar />
-          <NavbarIcon type="logout" sidebar />
-        </nav>
-      </div>
-      <section className={style.searchBar}>
-        <CustomSearchBar placeholder={placeholder} navigateTo={navigateTo} />
-      </section>
-      <div>
-        <ThemeToggle />
-      </div>
-    </header>
+        {" "}
+        <button
+          className={style.hamburger}
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          <FaBars />
+        </button>
+        <div
+          ref={menuRef}
+          className={`${style.mobileMenu} ${menuOpen ? style.open : ""}`}
+        >
+          <nav onClick={() => setMenuOpen(false)}>
+            <NavbarIcon type="home" sidebar />
+            <NavbarIcon type="jobs" sidebar />
+            <NavbarIcon type="messages" sidebar />
+            <NavbarIcon type="notifications" sidebar />
+            {isLoggedIn() ? (
+              <NavbarIcon type="logout" sidebar />
+            ) : (
+              <NavbarIcon type="login" sidebar />
+            )}
+          </nav>
+        </div>
+        <section className={style.searchBar}>
+          <CustomSearchBar placeholder={placeholder} navigateTo={navigateTo} />
+        </section>
+        <div>
+          <ThemeToggle />
+        </div>
+      </header>
+    </>
   );
 };
 
