@@ -83,7 +83,7 @@ public class JobApplicationService {
         return new ResponseDTO<>(responseDTO, null);
     }
 
-    // eliminar una aplicación
+    // Cancelar una aplicación
     public void cancelApplication(Integer applicationId) {
         JobApplication jobApplication = jobApplicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Aplicación no encontrada"));
@@ -110,7 +110,7 @@ public class JobApplicationService {
         return new ResponseDTO<>(applications, null);
     }
 
-    // Ver postulaciones de un trabajo (recruiter/admin)
+    // Ver postulacion de un trabajo (recruiter/admin)
     public ResponseDTO<List<JobApplicationResponseDTO>> getApplicationsByJob(Integer jobPostId) {
         //
         List<JobApplicationResponseDTO> applications = jobApplicationRepository

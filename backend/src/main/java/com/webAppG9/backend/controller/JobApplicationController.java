@@ -31,7 +31,7 @@ public class JobApplicationController {
         return ResponseEntity.ok(response);
     }
 
-    // Cancelar una aplicación
+    // Cancelar una jobAaplicación
     @DeleteMapping("/{applicationId}")
     public ResponseEntity<ResponseDTO<String>> cancelApplication(@PathVariable Integer applicationId) {
         jobApplicationService.cancelApplication(applicationId);
@@ -45,7 +45,7 @@ public class JobApplicationController {
         return ResponseEntity.ok(response);
     }
 
-    // Ver postulaciones de un trabajo (recruiter/admin)
+    // Ver postulacion de un trabajo (recruiter/admin)
     @GetMapping("/job/{jobPostId}")
     public ResponseEntity<ResponseDTO<List<JobApplicationResponseDTO>>> getApplicationsByJob(
             @PathVariable Integer jobPostId) {
@@ -53,7 +53,7 @@ public class JobApplicationController {
         return ResponseEntity.ok(response);
     }
 
-    // Cambiar estado de la aplicación (recruiter/admin)
+    // Cambiar estado de la jobAplicación (recruiter/admin)
     @PatchMapping("/{applicationId}/status")
     public ResponseEntity<ResponseDTO<String>> updateApplicationStatus(
             @PathVariable Integer applicationId,
