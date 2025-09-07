@@ -10,3 +10,13 @@ export interface UserData {
   phoneNumber: string;
   token?: string;
 }
+
+export interface jobOfferData {
+  id: string;
+  title: string;
+  company: string;
+  description: string;
+  country: string;
+  address: string;
+  phoneNumber: string;
+}

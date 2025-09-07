@@ -95,16 +95,14 @@ svg {
   z-index: 1000;
 }
 
-.jobsGrid{
+.jobsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem; 
-  padding: 2rem;
-  justify-items: stretch; 
+  gap: 2rem;
+  justify-items: stretch;
   align-items: stretch;
   grid-auto-flow: dense;
 }
-
 
 /* Footer */
 
