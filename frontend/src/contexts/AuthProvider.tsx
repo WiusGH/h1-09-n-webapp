@@ -2,22 +2,10 @@ import type { ReactNode } from "react";
 import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import { isLoggedIn, clearUserData, getUserData } from "../utils/userStorage";
-
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: "candidate" | "recruiter" | "admin";
-  title: string;
-  country: string;
-  address: string;
-  phoneNumber: string;
-  token?: string;
-}
+import type { UserData } from "../types/Types";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
     if (isLoggedIn()) {
@@ -25,7 +13,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = (userData: User) => {
+  const login = (userData: UserData) => {
     setUser(userData);
   };
 

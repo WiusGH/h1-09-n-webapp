@@ -1,18 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-
-// Este es un modelo de datos para el usuario
-export interface UserData {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: "candidate" | "recruiter" | "admin";
-  title: string;
-  country: string;
-  address: string;
-  phoneNumber: string;
-  token?: string;
-}
+import type { UserData } from "../types/Types";
 
 // Para obtener la fecha de vencimiento del token
 interface JwtPayload {

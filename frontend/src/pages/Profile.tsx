@@ -1,9 +1,10 @@
+import DynamicContainer from "../components/containers/DynamicContainer";
 import ProfileView from "../components/views/ProfileView";
 
 const Profile = () => {
   return (
     <section>
-      <ProfileView />
+      <DynamicContainer main={<ProfileView />} />
     </section>
   );
 };

@@ -62,7 +62,7 @@ function App() {
             {/* Rutas para usuarios logueados */}
             <Route
               element={
-                <ProtectedRoute roles={["candidate", "recruiter", "admin"]} />
+                <ProtectedRoute roles={["CANDIDATE", "RECRUITER", "ADMIN"]} />
               }
             >
               <Route path="/perfil" element={<Profile />} />
@@ -71,12 +71,12 @@ function App() {
             </Route>
 
             {/* Rutas para reclutadores y admins */}
-            <Route element={<ProtectedRoute roles={["recruiter", "admin"]} />}>
+            <Route element={<ProtectedRoute roles={["RECRUITER", "ADMIN"]} />}>
               {/* <Route path="/candidatos" element={<Candidatos />} /> */}
             </Route>
 
             {/* Rutas solo para admins y admins */}
-            <Route element={<ProtectedRoute roles={["admin"]} />}>
+            <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
               {/* <Route path="/panel-control" element={<ControlPanel />} /> */}
             </Route>
           </Routes>

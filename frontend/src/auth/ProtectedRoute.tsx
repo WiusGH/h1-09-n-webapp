@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { getUserData } from "../utils/userStorage";
 
 interface ProtectedRouteProps {
-  roles?: Array<"candidate" | "recruiter" | "admin">;
+  roles?: Array<"CANDIDATE" | "RECRUITER" | "ADMIN">;
 }
 
 // Para proteger rutas dependiendo del tipo de usuario
