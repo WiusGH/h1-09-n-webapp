@@ -1,5 +1,6 @@
 import UserInfoButton from "../buttons/UserInfoButton";
 import style from "./UserInfo.module.css";
+
 const UserInfo = () => {
   return (
     <aside className={style.container}>

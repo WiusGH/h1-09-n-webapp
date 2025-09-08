@@ -14,6 +14,7 @@ import Register from "./components/forms/Register";
 import Profile from "./pages/Profile";
 import DynamicContainer from "./components/containers/DynamicContainer";
 import UserInfo from "./components/sidebars/UserInfo";
+import NotFound from "./pages/NotFound/NotFound";
 
 // Carga del tema
 function App() {
@@ -59,7 +60,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
             <Route path="/perfil" element={<Profile />} />
-            <Route path="*" element={<h1>404 - Not Found</h1>} />{" "}
+            <Route path="*" element={<NotFound/>} />{" "}
             {/* TODO: crear vista 404 */}
           </Routes>
         </main>

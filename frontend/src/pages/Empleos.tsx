@@ -26,8 +26,9 @@ const Empleos: React.FC = () => {
 };
 
 
-  useEffect(()=> {
-    const mockJobs: Job[] = [
+  
+   useEffect(() => {
+     const mockJobs: Job[] = [
         {
         id: 1,
         title: "Frontend Developer",
@@ -73,6 +74,7 @@ const Empleos: React.FC = () => {
     
     ];
     setJobs(mockJobs)
+   
   }, [])
 
   return (
@@ -100,9 +102,10 @@ const Empleos: React.FC = () => {
 
     </div>
   )
+}
 
 
-};
+
   
   
 
