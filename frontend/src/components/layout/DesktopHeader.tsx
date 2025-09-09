@@ -3,6 +3,7 @@ import { useHideOnScroll } from "../../hooks/useHideOnScroll";
 import NavbarIcon from "../buttons/NavbarIcon";
 import ThemeToggle from "../buttons/ThemeToggle";
 import CustomSearchBar from "../inputs/CustomSearchBar";
+import { isLoggedIn } from "../../utils/userStorage";
 
 interface HeaderProps {
   placeholder: string;
@@ -24,8 +25,15 @@ const DesktopHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
       </section>
       <nav>
         <NavbarIcon type="jobs" />
-        <NavbarIcon type="messages" />
-        <NavbarIcon type="notifications" />
+        {isLoggedIn() ? (
+          <>
+            <NavbarIcon type="messages" />
+            <NavbarIcon type="notifications" />
+            <NavbarIcon type="logout" />
+          </>
+        ) : (
+          <NavbarIcon type="login" />
+        )}
       </nav>
       <div className={style.sideDivs}>
         <ThemeToggle />

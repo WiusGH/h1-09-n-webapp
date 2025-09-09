@@ -5,6 +5,7 @@ import { FaHouse, FaBriefcase, FaBell } from "react-icons/fa6";
 import { IoChatbubble } from "react-icons/io5";
 import { IoLogIn } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
+import { clearUserData } from "../../utils/userStorage";
 
 const HouseIcon = FaHouse;
 const BriefcaseIcon = FaBriefcase;
@@ -26,7 +27,7 @@ const options = {
     path: "/notificaciones",
   },
   login: { text: "Iniciar sesión", icon: IoLogIn, path: "/login" },
-  logout: { text: "Cerrar sesión", icon: IoLogOut, path: "/logout" },
+  logout: { text: "Cerrar sesión", icon: IoLogOut, path: "/" },
 };
 
 const NavbarIcon: React.FC<NavbarIconProps> = ({ type, sidebar }) => {
@@ -36,9 +37,15 @@ const NavbarIcon: React.FC<NavbarIconProps> = ({ type, sidebar }) => {
 
   const IconComponent = option.icon;
 
+  const handleLogout = () => {
+    clearUserData();
+    window.location.reload();
+  };
+
   return (
     <Link
       to={option.path}
+      onClick={() => type === "logout" && handleLogout()}
       className={`${style.menuItem} ${sidebar ? style.sidebarMode : ""}`}
     >
       <IconComponent />
