@@ -2,6 +2,7 @@ package com.webAppG9.backend.Model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "job_post")
@@ -25,6 +26,10 @@ public class JobPost {
     private LocalDateTime expiresAt;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
+
+    @ManyToMany
+    @JoinTable(name = "jobpost_skills", joinColumns = @JoinColumn(name = "jobpost_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private Set<Skill> skills;
 
     // Constructor vacio para JPA
     public JobPost() {
@@ -144,6 +149,14 @@ public class JobPost {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
     }
 
 }

@@ -4,6 +4,9 @@ import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.UserDTO;
 import com.webAppG9.backend.repository.UserRepository;
 import com.webAppG9.backend.security.JwtUtil;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +17,14 @@ import java.util.Map;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final CandidatedService candidatedService;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthService(UserRepository userRepository, CandidatedService candidatedService,
+            PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.candidatedService = candidatedService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
@@ -37,6 +43,7 @@ public class AuthService {
     }
 
     // Registrar usuario
+    @Transactional
     public Map<String, Object> register(User user) {
         // Validaciones
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
@@ -44,8 +51,13 @@ public class AuthService {
         }
         // Encriptar contraseña
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        // guardar user
-        userRepository.save(user);
+
+        // Guardar usuario
+        User savedUser = userRepository.save(user);
+
+        // Crear candidato asociado al user sy activarlo
+        candidatedService.createCandidateForUser(savedUser);
+
         // cosnstruir usuario DTO
         return buildUserResponse(user);
     }

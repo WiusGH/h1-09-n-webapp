@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.webAppG9.backend.Model.JobPost;
 import com.webAppG9.backend.dto.JobPostDTO;
+import com.webAppG9.backend.dto.JobPostRequestDTO;
 import com.webAppG9.backend.dto.ResponseDTO;
 import com.webAppG9.backend.service.JobPostService;
 
@@ -30,17 +30,17 @@ public class JobPostController {
 
     // Crear post de trabajo
     @PostMapping
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> createJob(@RequestBody JobPost jobPost) {
-        Map<String, Object> data = jobPostService.createJob(jobPost);
+    public ResponseEntity<ResponseDTO<Map<String, Object>>> createJob(
+            @RequestBody JobPostRequestDTO requestDTO) {
+        Map<String, Object> data = jobPostService.createJob(requestDTO);
         return ResponseEntity.ok(new ResponseDTO<>(data, null));
     }
 
-    // Actualizar un post de trabajo
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO<Map<String, Object>>> updateJob(
             @PathVariable Integer id,
-            @RequestBody JobPost jobPost) {
-        Map<String, Object> data = jobPostService.updateJob(id, jobPost);
+            @RequestBody JobPostRequestDTO requestDTO) {
+        Map<String, Object> data = jobPostService.updateJob(id, requestDTO);
         return ResponseEntity.ok(new ResponseDTO<>(data, null));
     }
 

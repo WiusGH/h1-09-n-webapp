@@ -60,7 +60,7 @@ public class JobApplicationController {
             @RequestBody Map<String, String> request) {
         String status = request.get("status");
         jobApplicationService.updateApplicationStatus(applicationId, status);
-        return ResponseEntity.ok(new ResponseDTO<>("Estado de la aplicación actualizado", null));
+        return ResponseEntity.ok(new ResponseDTO<>("Estado de la aplicación actualizado a: " + status, null));
     }
 
 }

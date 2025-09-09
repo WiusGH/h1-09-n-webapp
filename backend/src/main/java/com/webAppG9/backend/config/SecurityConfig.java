@@ -49,8 +49,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        // Rutas públicas
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
+                        // 🔹 Permitir Swagger/OpenAPI sin autenticación
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml")
+                        .permitAll()
 
                         // Usuarios
                         .requestMatchers("/api/users/me/**").authenticated()
@@ -67,6 +75,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/job-apply/job/**").hasAnyRole("RECRUITER", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/job-apply/**").hasAnyRole("RECRUITER", "ADMIN")
 
+                        // Candidates
+                        .requestMatchers(HttpMethod.GET, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/candidates/active").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Cualquier otra ruta requiere autenticación
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

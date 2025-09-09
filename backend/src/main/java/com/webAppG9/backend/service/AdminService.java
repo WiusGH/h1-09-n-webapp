@@ -35,8 +35,6 @@ public class AdminService {
         // Crear Admin
         Admin admin = new Admin();
         admin.setUser(user); // asocia la entidad User
-        admin.setCanManageUsers(adminDTO.getCanManageUsers());
-        admin.setCanManagePosts(adminDTO.getCanManagePosts());
 
         // actualizar rol en User
         user.setRole(User.Role.ADMIN);
