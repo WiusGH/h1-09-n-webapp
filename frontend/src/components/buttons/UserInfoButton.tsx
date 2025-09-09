@@ -6,6 +6,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { clearUserData } from "../../utils/userStorage";
 
 interface UserInfoButtonProps {
   type: "profile" | "cv" | "bookmarks" | "applications" | "config" | "logout";
@@ -21,7 +22,7 @@ const options = {
     path: "/aplicaciones",
   },
   config: { text: "Configuración", icon: FaGear, path: "/configuracion" },
-  logout: { text: "Cerrar sesión", icon: IoLogOut, path: "/logout" },
+  logout: { text: "Cerrar sesión", icon: IoLogOut, path: "/" },
 };
 
 const UserInfoButton: React.FC<UserInfoButtonProps> = ({ type }) => {
@@ -31,8 +32,17 @@ const UserInfoButton: React.FC<UserInfoButtonProps> = ({ type }) => {
 
   const IconComponent = option.icon;
 
+  const handleLogout = () => {
+    clearUserData();
+    window.location.reload();
+  };
+
   return (
-    <Link to={option.path} className={style.container}>
+    <Link
+      to={option.path}
+      className={style.container}
+      onClick={() => type === "logout" && handleLogout()}
+    >
       <IconComponent />
       <p>{option.text}</p>
     </Link>

@@ -12,9 +12,13 @@ import "./index.css";
 import Login from "./pages/Login";
 import Register from "./components/forms/Register";
 import Profile from "./pages/Profile";
+<<<<<<< HEAD
 import DynamicContainer from "./components/containers/DynamicContainer";
 import UserInfo from "./components/sidebars/UserInfo";
 import NotFound from "./pages/NotFound/NotFound";
+=======
+import ProtectedRoute from "./auth/ProtectedRoute";
+>>>>>>> efde57135acd6807ed8ff66c4e1b7e32cd740d1b
 
 // Carga del tema
 function App() {
@@ -53,7 +57,9 @@ function App() {
         <Header placeholder={searchPlaceholder} navigateTo={navigateTo} />
         <main className="app-main">
           <Routes>
+            {/* Rutas públicas */}
             <Route path="/" element={<Home />} />
+<<<<<<< HEAD
             <Route path="/mensajes" element={<Mensajes />} />
             <Route path="/empleos" element={<DynamicContainer main={<Empleos/>} side={<UserInfo/>} />} />
             <Route path="/notifiaciones" element={<Notificaciones />} />
@@ -61,7 +67,34 @@ function App() {
             <Route path="/registro" element={<Register />} />
             <Route path="/perfil" element={<Profile />} />
             <Route path="*" element={<NotFound/>} />{" "}
+=======
+            <Route path="/login" element={<Login />} />
+            <Route path="/registro" element={<Register />} />
+            <Route path="/empleos" element={<Empleos />} />
+            <Route path="*" element={<h1>404 - Not Found</h1>} />
+>>>>>>> efde57135acd6807ed8ff66c4e1b7e32cd740d1b
             {/* TODO: crear vista 404 */}
+
+            {/* Rutas para usuarios logueados */}
+            <Route
+              element={
+                <ProtectedRoute roles={["CANDIDATE", "RECRUITER", "ADMIN"]} />
+              }
+            >
+              <Route path="/perfil" element={<Profile />} />
+              <Route path="/mensajes" element={<Mensajes />} />
+              <Route path="/notifiaciones" element={<Notificaciones />} />
+            </Route>
+
+            {/* Rutas para reclutadores y admins */}
+            <Route element={<ProtectedRoute roles={["RECRUITER", "ADMIN"]} />}>
+              {/* <Route path="/candidatos" element={<Candidatos />} /> */}
+            </Route>
+
+            {/* Rutas solo para admins y admins */}
+            <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
+              {/* <Route path="/panel-control" element={<ControlPanel />} /> */}
+            </Route>
           </Routes>
         </main>
         <Footer />
