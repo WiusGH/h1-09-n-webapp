@@ -1,49 +1,17 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import ProjectCard from "../../cards/ProjectCard";
 import GenericButton from "../buttons/GenericButton";
 import SkillTag from "../buttons/SkillTag";
 import style from "./ProfileView.module.css";
 import { LuPencilLine } from "react-icons/lu";
-import { getUserData } from "../../utils/userStorage";
 import type { UserData } from "../../types/Types";
 
-const ProfileView = () => {
-  const [user, setUser] = useState<UserData | null>(null);
+interface ProfileViewProps {
+  user: UserData | null;
+  onEdit: (section: string) => void;
+}
 
-  useEffect(() => {
-    const storedUser = getUserData();
-    if (storedUser) {
-      setUser(storedUser);
-    }
-  }, []);
-
-  const sampleList = [
-    {
-      title: "Proyecto 1",
-      image: "https://avatar.iran.liara.run/public/29",
-    },
-    {
-      title: "Proyecto 2",
-      image: "https://avatar.iran.liara.run/public/29",
-    },
-    {
-      title: "Proyecto 3",
-      image: "https://avatar.iran.liara.run/public/29",
-    },
-    {
-      title: "Proyecto 4",
-      image: "https://avatar.iran.liara.run/public/29",
-    },
-    {
-      title: "Proyecto 1",
-      image: "https://avatar.iran.liara.run/public/29",
-    },
-    {
-      title: "Proyecto 5",
-      image: "https://avatar.iran.liara.run/public/29",
-    },
-  ];
-
+const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
   if (!user) {
     return (
       <div className={style.container}>
@@ -52,11 +20,16 @@ const ProfileView = () => {
     );
   }
 
+  // Función para capitalizar el rol
+  const formatRole = (role: string) => {
+    return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+  };
+
   return (
     <div className={style.container}>
       <div className={style.profile}>
         <img
-          src={`https://avatar.iran.liara.run/public/${user.id}`} // temporal avatar fallback
+          src={user.image || `https://avatar.iran.liara.run/public/${user.id}`}
           alt="Foto de perfil"
         />
         <div className={style.info}>
@@ -64,13 +37,15 @@ const ProfileView = () => {
             <h3>
               {user.firstName} {user.lastName}
             </h3>
-            <a>
+            <a onClick={() => onEdit("personal")}>
               <LuPencilLine />
             </a>
           </span>
+          {/* Mostramos el rol del usuario aquí */}
+          <p className={style.role}>{formatRole(user.role)}</p>
           <span>
             <p>{user.title || "Sin ocupación"}</p>
-            <a>
+            <a onClick={() => onEdit("personal")}>
               <LuPencilLine />
             </a>
           </span>
@@ -78,40 +53,37 @@ const ProfileView = () => {
         <div style={{ flex: 1 }}></div>
         <ul className={style.options}>
           <li>
-            <a>Editar cv</a>
+            <a onClick={() => onEdit("contact")}>Editar contacto</a>
           </li>
           <li>
-            <a>Editar contacto</a>
+            <a onClick={() => onEdit("personal")}>Editar foto</a>
           </li>
           <li>
-            <a>Editar foto</a>
+            <a onClick={() => onEdit("cv")}>Editar cv</a>
           </li>
         </ul>
       </div>
 
       <div className={style.skills}>
         <h3>Skills:</h3>
-        {/* TODO: reemplazar con skills reales desde backend */}
-        <SkillTag skill="html" />
-        <SkillTag skill="css" />
-        <SkillTag skill="javascript" />
-        <SkillTag skill="react" />
+        {(user.skills || []).map((skill, idx) => (
+          <SkillTag key={idx} skill={skill} />
+        ))}
+        <a onClick={() => onEdit("skills")}>
+          <LuPencilLine />
+        </a>
       </div>
 
-      <textarea className={style.description}>
-        {user.address || "Descripción..."}
-      </textarea>
-
-      <div className={style.portfolioContainer}>
-        <div className={style.portfolioHeader}>
-          <h3>Portafolio:</h3>
-          <GenericButton text="Agregar" />
-        </div>
+      <textarea className={style.description} value={user.address || "Descripción..."} readOnly></textarea>
+      
+      <div className={style.portfolioHeader}>
+        <h3>Portafolio:</h3>
+        <GenericButton text="Agregar" onClick={() => onEdit("portfolio")} />
       </div>
 
       <div className={style.projectsContainer}>
-        {sampleList.map((item, idx) => (
-          <ProjectCard key={idx} image={item.image} title={item.title} />
+        {(user.portfolio || []).map((item, idx) => (
+          <ProjectCard key={idx} image={item.image || "https://avatar.iran.liara.run/public/29"} title={item.title} />
         ))}
       </div>
     </div>
