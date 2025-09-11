@@ -6,35 +6,29 @@ import DynamicContainer from "../components/containers/DynamicContainer";
 import UserInfo from "../components/sidebars/UserInfo";
 import styles from "../components/layout/Layout.module.css";
 import NotFound from "./NotFound/NotFound";
-
-interface Job {
-  id: number;
-  title: string;
-  company: string;
-  description: string;
-  applied: boolean; // viene desde la API ya en false
-}
+import type { jobOfferData } from "../types/Types";
 
 const Empleos = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [jobs, setJobs] = useState<jobOfferData[]>([]);
+  const [selectedJob, setSelectedJob] = useState<jobOfferData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
- 
   async function handleFetchJobs() {
     setLoading(true);
     try {
       const { data } = await axiosInstance.get("/jobPost");
       console.log("Respuesta API:", data);
 
-      const jobsFromApi: Job[] = data.data.map((job: any, index: number) => ({
-      id: job.id || index, // si no viene id, usamos el índice como fallback
-      title: job.title,
-      company: job.companyName || "Empresa no especificada",
-      description: job.description || "Sin descripción",
-      applied: job.applied ?? false, 
-    }));
+      const jobsFromApi: jobOfferData[] = data.data.map(
+        (job: jobOfferData, index: number) => ({
+          id: job.id || index, // si no viene id, usamos el índice como fallback
+          title: job.title,
+          company: job.companyName || "Empresa no especificada",
+          description: job.description || "Sin descripción",
+          applied: job.applied ?? false,
+        })
+      );
 
       setJobs(jobsFromApi);
       setError(false);
@@ -66,7 +60,7 @@ const Empleos = () => {
             <div key={job.id} onClick={() => setSelectedJob(job)}>
               <JobCard
                 title={job.title}
-                company={job.company}
+                company={job.companyName}
                 description={job.description}
                 applied={job.applied}
                 onApply={() =>
@@ -88,7 +82,7 @@ const Empleos = () => {
             {selectedJob && (
               <div>
                 <h2>{selectedJob.title}</h2>
-                <h4>{selectedJob.company}</h4>
+                <h4>{selectedJob.companyName}</h4>
                 <p>{selectedJob.description}</p>
                 {selectedJob.applied && (
                   <p style={{ color: "green" }}>
@@ -100,15 +94,12 @@ const Empleos = () => {
           </ModalCard>
         </div>
       }
-      side={UserInfo()}
+      side={<UserInfo />}
     />
   );
 };
 
 export default Empleos;
-
-
-
 
 // const mockJobs: Job[] = [
 //       {

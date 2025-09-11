@@ -14,9 +14,10 @@ export interface UserData {
 export interface jobOfferData {
   id: string;
   title: string;
-  company: string;
+  companyName: string;
   description: string;
   country: string;
   address: string;
   phoneNumber: string;
+  applied: boolean;
 }
