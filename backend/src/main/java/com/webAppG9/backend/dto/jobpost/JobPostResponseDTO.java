@@ -1,18 +1,13 @@
-package com.webAppG9.backend.Model;
+package com.webAppG9.backend.dto.jobpost;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.webAppG9.backend.dto.jobpost.JobPostRequestDTO;
+import com.webAppG9.backend.Model.JobPost;
+import com.webAppG9.backend.Model.Skill;
+import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "job_post")
-public class JobPost {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class JobPostResponseDTO {
 
     private String title;
     private String description;
@@ -25,54 +20,34 @@ public class JobPost {
     private Integer candidatesApplied;
     private Boolean acceptingAplication;
     private LocalDateTime expiresAt;
-    private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Set<String> skills; // n
 
-    @ManyToMany
-    @JoinTable(name = "jobpost_skills", joinColumns = @JoinColumn(name = "jobpost_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private Set<Skill> skills;
-
-    // Cobstructor para mapear un JovPost y validar parametros
-    public void applyFromDTO(JobPostRequestDTO dto, Set<Skill> skills) {
-        if (dto.getTitle() != null)
-            this.title = dto.getTitle();
-        if (dto.getDescription() != null)
-            this.description = dto.getDescription();
-        if (dto.getRecruiterName() != null)
-            this.recruiterName = dto.getRecruiterName();
-        if (dto.getCompanyName() != null)
-            this.companyName = dto.getCompanyName();
-        if (dto.getCompanyCountry() != null)
-            this.companyCountry = dto.getCompanyCountry();
-        if (dto.getCompanyEmail() != null)
-            this.companyEmail = dto.getCompanyEmail();
-        if (dto.getIsActive() != null)
-            this.isActive = dto.getIsActive();
-        if (dto.getCandidates() != null)
-            this.candidates = dto.getCandidates();
-        if (dto.getCandidatesApplied() != null)
-            this.candidatesApplied = dto.getCandidatesApplied();
-        if (dto.getAcceptingAplication() != null)
-            this.acceptingAplication = dto.getAcceptingAplication();
-        if (dto.getExpiresAt() != null)
-            this.expiresAt = dto.getExpiresAt();
-        if (skills != null && !skills.isEmpty())
-            this.skills = skills;
+    public JobPostResponseDTO() {
     }
 
-    // Constructor vacío para JPA
-    public JobPost() {
+    // Constructor desde entidad
+    public JobPostResponseDTO(JobPost jobPost) {
+        this.title = jobPost.getTitle();
+        this.description = jobPost.getDescription();
+        this.recruiterName = jobPost.getRecruiterName();
+        this.companyName = jobPost.getCompanyName();
+        this.companyCountry = jobPost.getCompanyCountry();
+        this.companyEmail = jobPost.getCompanyEmail();
+        this.isActive = jobPost.getIsActive();
+        this.candidates = jobPost.getCandidates();
+        this.candidatesApplied = jobPost.getCandidatesApplied();
+        this.acceptingAplication = jobPost.getAcceptingAplication();
+        this.expiresAt = jobPost.getExpiresAt();
+        this.createdAt = jobPost.getCreatedAt();
+        this.updatedAt = jobPost.getUpdatedAt();
+        this.skills = jobPost.getSkills() != null
+                ? jobPost.getSkills().stream().map(Skill::getName).collect(Collectors.toSet())
+                : null;
     }
 
-    // Getters y Setters corregidos
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
+    // Getters y Setters
     public String getTitle() {
         return title;
     }
@@ -161,29 +136,27 @@ public class JobPost {
         this.expiresAt = expiresAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public Set<Skill> getSkills() {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Set<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(Set<Skill> skills) {
+    public void setSkills(Set<String> skills) {
         this.skills = skills;
     }
 }

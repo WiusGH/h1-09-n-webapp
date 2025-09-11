@@ -2,8 +2,9 @@ package com.webAppG9.backend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.webAppG9.backend.dto.RecruiterResponseDTO;
+
 import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
 import com.webAppG9.backend.service.RecruiterService;
 
 @RestController

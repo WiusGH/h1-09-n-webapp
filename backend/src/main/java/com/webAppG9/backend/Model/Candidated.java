@@ -3,6 +3,8 @@ package com.webAppG9.backend.Model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.webAppG9.backend.dto.candidates.CandidateResponseDTO;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -32,6 +34,25 @@ public class Candidated {
 
     // Constructor vacío para JPA
     public Candidated() {
+    }
+
+    public void applyFromDTO(CandidateResponseDTO dto) {
+        if (dto.getTitle() != null) {
+            this.title = dto.getTitle();
+        }
+        if (dto.getAddress() != null) {
+            this.address = dto.getAddress();
+        }
+        if (dto.getCountry() != null) {
+            this.country = dto.getCountry();
+        }
+        if (dto.getPhoneNumber() != null) {
+            this.phoneNumber = dto.getPhoneNumber();
+        }
+        if (dto.getActive() != null) {
+            this.active = dto.getActive();
+        }
+
     }
 
     // Getters y setters

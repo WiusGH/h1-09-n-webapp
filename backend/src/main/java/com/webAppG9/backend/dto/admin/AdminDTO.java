@@ -1,4 +1,4 @@
-package com.webAppG9.backend.dto;
+package com.webAppG9.backend.dto.admin;
 
 import com.webAppG9.backend.Model.Admin;
 

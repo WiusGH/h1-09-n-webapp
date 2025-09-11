@@ -1,14 +1,13 @@
 package com.webAppG9.backend.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.webAppG9.backend.dto.JobPostDTO;
-import com.webAppG9.backend.dto.JobPostRequestDTO;
 import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.jobpost.JobPostRequestDTO;
+import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
 import com.webAppG9.backend.service.JobPostService;
 
 @RestController
@@ -23,39 +22,42 @@ public class JobPostController {
 
     // Obtener todos los posteos
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<JobPostDTO>>> getAllJobs() {
-        List<JobPostDTO> jobs = jobPostService.getAllJobs();
-        return ResponseEntity.ok(new ResponseDTO<>(jobs, null));
+    public ResponseEntity<ResponseDTO<List<JobPostResponseDTO>>> getAllJobs() {
+        List<JobPostResponseDTO> jobs = jobPostService.getAllJobs();
+        return ResponseEntity.ok(ResponseDTO.ok(jobs));
     }
 
     // Crear post de trabajo
     @PostMapping
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> createJob(
+    public ResponseEntity<ResponseDTO<JobPostResponseDTO>> createJob(
             @RequestBody JobPostRequestDTO requestDTO) {
-        Map<String, Object> data = jobPostService.createJob(requestDTO);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+
+        JobPostResponseDTO createdJob = jobPostService.createJob(requestDTO);
+        return ResponseEntity.ok(ResponseDTO.ok(createdJob));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> updateJob(
+    // Actualizar Posteo de trabajo
+    @PatchMapping("/{id}")
+    public ResponseEntity<ResponseDTO<String>> updateJob(
             @PathVariable Integer id,
             @RequestBody JobPostRequestDTO requestDTO) {
-        Map<String, Object> data = jobPostService.updateJob(id, requestDTO);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+
+        String message = jobPostService.updateJob(id, requestDTO);
+        return ResponseEntity.ok(ResponseDTO.ok(message));
     }
 
     // Eliminar un post de trabajo
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<String>> deleteJob(@PathVariable Integer id) {
-        jobPostService.deleteJob(id);
-        return ResponseEntity.ok(new ResponseDTO<>("Posteo eliminado correctamente", null));
+        String response = jobPostService.deleteJob(id);
+        return ResponseEntity.ok(ResponseDTO.ok(response));
     }
 
-    // desactivar post de trabajo
+    // Actualozar status de posteo
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> toggleJobPostStatus(@PathVariable Integer id) {
-        Map<String, Object> data = jobPostService.toggleJobPostStatus(id);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+    public ResponseEntity<ResponseDTO<String>> toggleJobPostStatus(@PathVariable Integer id) {
+        String message = jobPostService.toggleJobPostStatus(id);
+        return ResponseEntity.ok(ResponseDTO.ok(message));
     }
 
 }

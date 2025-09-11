@@ -1,4 +1,4 @@
-package com.webAppG9.backend.dto;
+package com.webAppG9.backend.dto.recruiter;
 
 public class RecruiterResponseDTO {
 

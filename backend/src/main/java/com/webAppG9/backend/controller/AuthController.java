@@ -2,11 +2,12 @@ package com.webAppG9.backend.controller;
 
 import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.auth.LoginRequestDTO;
+import com.webAppG9.backend.dto.auth.LoginResponseDTO;
+import com.webAppG9.backend.dto.auth.RegisterResponseDTO;
 import com.webAppG9.backend.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,26 +22,18 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> register(@RequestBody User user) {
+    public ResponseEntity<RegisterResponseDTO> register(@RequestBody User user) {
         // Crear UserDTO para la respuesta
-        Map<String, Object> data = authService.register(user);
+        RegisterResponseDTO data = authService.register(user);
 
         // Devolver éxito con ResponseDTO
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+        return ResponseEntity.ok(data);
     }
 
-    // metodo login
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> login(@RequestBody Map<String, String> request) {
-        // guardo las variavles que necesito del Json que proviene del request
-        String email = request.get("email");
-        String password = request.get("password");
-
-        // Preparar datos de usuario + token
-        Map<String, Object> data = authService.login(email, password);
-
-        // Devolver LA RESPUESTA COMO dto
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+    public ResponseEntity<ResponseDTO<LoginResponseDTO>> login(@RequestBody LoginRequestDTO request) {
+        LoginResponseDTO response = authService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(new ResponseDTO<>(response, null));
     }
 
 }

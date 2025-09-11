@@ -1,13 +1,12 @@
 package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.dto.UserDTO;
+import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.user.UserDTO;
 import com.webAppG9.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {
@@ -18,83 +17,55 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Map<String, Object> buildUserResponse(User user) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("user", new UserDTO(
-                user.getRole(),
-                user.getName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getIsActive(),
-                user.getCreatedAt()));
-        return data;
-    }
-
     // metodo para buscar todoos los usuarios
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 // Mapear cada user y convertir a DTO
-                .map(u -> new UserDTO(
-                        u.getRole(),
-                        u.getName(),
-                        u.getLastName(),
-                        u.getEmail(),
-                        u.getIsActive(),
-                        u.getCreatedAt()))
+                .map(u -> new UserDTO(u))
                 // Devolver una lista con todos los users
                 .toList();
     }
 
-    // Buscar usuarios por id
-    public User getUserById(Integer id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    }
-
     // actualizar usurio
-    public User updateUser(Integer id, UserDTO updatedUser) {
-        User user = getUserById(id);
-        user.setName(updatedUser.getName());
-        user.setLastName(updatedUser.getLastName());
-        user.setRole(updatedUser.getRole());
-        // Agregar otros campos si es necesario
-        return userRepository.save(user);
+    public UserDTO updateUser(Integer id, UserDTO dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+        // Metodo para mapear usuario en UserDTO
+        dto.applyToEntity(user);
+        // Fuardar el usuario y enviarlo al controller
+        User updated = userRepository.save(user);
+        return new UserDTO(updated);
+
     }
 
-    // Cambiar estadpo de usuario
-    // Service
-    public Map<String, Object> toggleUserStatus(Integer id) {
-        User user = getUserById(id);
+    // Cambiar estado de usuario
+    public ResponseDTO<String> toggleUserStatus(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+        // Buscar el estado y guardarlo
         user.setIsActive(!user.getIsActive());
         userRepository.save(user);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", user.getIsActive() ? "Usuario activado" : "Usuario bloqueado");
-        response.put("active", user.getIsActive());
-        return response;
+
+        String message = user.getIsActive() ? "Candidato activo" : "Candidato pausado";
+        return ResponseDTO.ok(message);
+
     }
 
     // Eliminar usuario
-    public Map<String, String> deleteUser(Integer id) {
-        getUserById(id); // lanza excepción si no existe
-        userRepository.deleteById(id);
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Usuario eliminado con éxito");
-        return response;
+    public ResponseDTO<String> deleteUser(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+        userRepository.delete(user);
+        // Devolver mensaje como ResponseDTO<String>
+        return ResponseDTO.ok("Usuario eliminado con éxito");
     }
 
-    // metodo para buscar usuario por email
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+    // Buscar usuarios por id
+    public ResponseDTO<UserDTO> getUserById(Integer id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return ResponseDTO.ok(new UserDTO(user));
     }
 
-    // metodo para actualziar un usuario
-    public User updateMyProfile(String email, UserDTO updatedUser) {
-        User user = getUserByEmail(email);
-        user.setName(updatedUser.getName());
-        user.setLastName(updatedUser.getLastName());
-        user.setRole(updatedUser.getRole());
-        // agregarmas campos de ser necesario
-        return userRepository.save(user);
-    }
 }

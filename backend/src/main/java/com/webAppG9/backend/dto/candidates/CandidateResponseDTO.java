@@ -1,21 +1,40 @@
-package com.webAppG9.backend.dto;
+package com.webAppG9.backend.dto.candidates;
 
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.webAppG9.backend.Model.Candidated;
+import com.webAppG9.backend.Model.Skill;
 
 public class CandidateResponseDTO {
 
     private Integer candidateId;
-    private String username;
-    private String email;
     private String title;
     private String address;
     private String country;
     private String phoneNumber;
     private Boolean active;
-    private String role;
-    private String createdAt;
 
     private Set<String> skills; // Nombres de las skills del candidato
+
+    // Cosntructor vacio para JPA
+    public CandidateResponseDTO() {
+
+    }
+
+    // Constructor desde entidad
+    public CandidateResponseDTO(Candidated candidated) {
+        this.candidateId = candidated.getId();
+        this.title = candidated.getTitle();
+        this.address = candidated.getAddress();
+        this.country = candidated.getCountry();
+        this.phoneNumber = candidated.getPhoneNumber();
+        this.active = candidated.getActive();
+        this.skills = candidated.getSkills() != null
+                ? candidated.getSkills().stream().map(Skill::getName).collect(Collectors.toSet())
+                : null;
+
+    }
 
     // Getters y setters
     public Integer getCandidateId() {
@@ -24,22 +43,6 @@ public class CandidateResponseDTO {
 
     public void setCandidateId(Integer candidateId) {
         this.candidateId = candidateId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getTitle() {
@@ -80,22 +83,6 @@ public class CandidateResponseDTO {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Set<String> getSkills() {

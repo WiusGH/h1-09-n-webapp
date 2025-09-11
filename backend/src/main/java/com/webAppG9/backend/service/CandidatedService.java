@@ -3,8 +3,9 @@ package com.webAppG9.backend.service;
 import com.webAppG9.backend.Model.Candidated;
 import com.webAppG9.backend.Model.Skill;
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.dto.CandidateResponseDTO;
-import com.webAppG9.backend.dto.JobPostResponseDTO;
+import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.candidates.CandidateResponseDTO;
+import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
 import com.webAppG9.backend.repository.CandidatedRepository;
 import com.webAppG9.backend.repository.JobPostRepository;
 import com.webAppG9.backend.repository.SkillRepository;
@@ -43,33 +44,46 @@ public class CandidatedService {
     }
 
     // Obtener candidato por userId
-    public CandidateResponseDTO getCandidateById(Integer id) {
+    public ResponseDTO<CandidateResponseDTO> getCandidateById(Integer id) {
         Candidated candidate = candidatedRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
-        return mapToDTO(candidate);
+        return ResponseDTO.ok(new CandidateResponseDTO(candidate));
     }
 
     // Actualizar candidato
-    public CandidateResponseDTO updateCandidate(Integer id, CandidateResponseDTO updateRequest) {
+    public String updateCandidate(Integer id, CandidateResponseDTO request) {
         Candidated candidate = candidatedRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+        // Aplicar todos los campos del DTO a la entidad
+        candidate.applyFromDTO(request);
+        candidatedRepository.save(candidate);
 
-        if (updateRequest.getTitle() != null)
-            candidate.setTitle(updateRequest.getTitle());
-        if (updateRequest.getAddress() != null)
-            candidate.setAddress(updateRequest.getAddress());
-        if (updateRequest.getCountry() != null)
-            candidate.setCountry(updateRequest.getCountry());
-        if (updateRequest.getPhoneNumber() != null)
-            candidate.setPhoneNumber(updateRequest.getPhoneNumber());
+        return "Candidato actualizado correctamente";
+    }
 
-        Candidated updatedCandidate = candidatedRepository.save(candidate);
-        return mapToDTO(updatedCandidate);
+    // Obtener todos los candidatos activos (Recruiter/ admin)
+    public List<CandidateResponseDTO> getAllActiveCandidates() {
+        return candidatedRepository.findAllByActiveTrue()
+                .stream()
+                .map(CandidateResponseDTO::new)
+                .toList();
+    }
+
+    // Obtener ofertas que coincidan con skills del candidato
+    @Transactional(readOnly = true)
+    public List<JobPostResponseDTO> getMatchingJobPosts(Candidated candidate) {
+        // Filtrar skills y nostrar la lista de JobPosts asociados
+        Set<Skill> candidateSkills = candidate.getSkills();
+        return jobPostRepository.findAll().stream()
+                .filter(job -> !candidateSkills.isEmpty() &&
+                        job.getSkills().stream().anyMatch(candidateSkills::contains))
+                .map(JobPostResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Actualizar skills de un candidato
     @Transactional
-    public CandidateResponseDTO updateSkillsByIds(Integer candidateId, Set<Integer> skillIds) {
+    public String updateSkillsByIds(Integer candidateId, Set<Integer> skillIds) {
         Candidated candidate = candidatedRepository.findById(candidateId)
                 .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
 
@@ -81,56 +95,19 @@ public class CandidatedService {
         candidate.setSkills(skills);
         candidatedRepository.save(candidate);
 
-        return mapToDTO(candidate);
+        return "Skills actualizadas correctamente";
     }
 
-    // Obtener todos los candidatos activos (Recruiter/ admin)
-    public List<CandidateResponseDTO> getAllActiveCandidates() {
-        return candidatedRepository.findAllByActiveTrue()
-                .stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+    // ctualizar estado de candidato
+    public String updateCandidateStatus(Integer id) {
+        Candidated candidated = candidatedRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+
+        candidated.setActive(!candidated.getActive());
+        candidatedRepository.save(candidated);
+
+        String message = candidated.getActive() ? "Candidato activo" : "Candidato pausado";
+        return message;
     }
 
-    // Obtener ofertas que coincidan con skills del candidato
-    @Transactional(readOnly = true)
-    public List<JobPostResponseDTO> getMatchingJobPosts(Candidated candidate) {
-        Set<Skill> candidateSkills = candidate.getSkills();
-        return jobPostRepository.findAll().stream()
-                .filter(job -> !candidateSkills.isEmpty() &&
-                        job.getSkills().stream().anyMatch(candidateSkills::contains))
-                .map(job -> {
-                    JobPostResponseDTO dto = new JobPostResponseDTO();
-                    dto.setTitle(job.getTitle());
-                    dto.setDescription(job.getDescription());
-                    dto.setCompanyName(job.getCompanyName());
-                    dto.setIsActive(job.getIsActive());
-                    dto.setExpiresAt(job.getExpiresAt());
-                    dto.setSkills(job.getSkills().stream().map(Skill::getName).collect(Collectors.toSet()));
-                    return dto;
-                })
-                .collect(Collectors.toList());
-    }
-
-    // Mapper de entidad a DTO para la respuesta
-    private CandidateResponseDTO mapToDTO(Candidated candidate) {
-        CandidateResponseDTO dto = new CandidateResponseDTO();
-        dto.setCandidateId(candidate.getId());
-        dto.setUsername(candidate.getUser().getName());
-        dto.setEmail(candidate.getUser().getEmail());
-        dto.setTitle(candidate.getTitle());
-        dto.setAddress(candidate.getAddress());
-        dto.setCountry(candidate.getCountry());
-        dto.setPhoneNumber(candidate.getPhoneNumber());
-        dto.setActive(candidate.getActive());
-        dto.setRole(candidate.getUser().getRole().name());
-        dto.setCreatedAt(candidate.getUser().getCreatedAt().toString());
-
-        Set<String> skills = candidate.getSkills().stream()
-                .map(Skill::getName)
-                .collect(Collectors.toSet());
-        dto.setSkills(skills);
-
-        return dto;
-    }
 }

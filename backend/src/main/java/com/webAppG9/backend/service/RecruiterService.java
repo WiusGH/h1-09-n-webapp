@@ -5,9 +5,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.webAppG9.backend.dto.RecruiterResponseDTO;
+
 import com.webAppG9.backend.Model.Recruiter;
 import com.webAppG9.backend.Model.User;
+import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
 import com.webAppG9.backend.repository.RecruiterRepository;
 import com.webAppG9.backend.repository.UserRepository;
 

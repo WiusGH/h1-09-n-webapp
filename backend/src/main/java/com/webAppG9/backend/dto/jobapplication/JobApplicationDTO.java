@@ -1,4 +1,4 @@
-package com.webAppG9.backend.dto;
+package com.webAppG9.backend.dto.jobapplication;
 
 public class JobApplicationDTO {
     private Integer userId;

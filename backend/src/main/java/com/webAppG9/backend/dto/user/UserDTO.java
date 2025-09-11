@@ -1,4 +1,4 @@
-package com.webAppG9.backend.dto;
+package com.webAppG9.backend.dto.user;
 
 import com.webAppG9.backend.Model.User;
 import java.time.LocalDateTime;
@@ -23,6 +23,25 @@ public class UserDTO {
         this.createdAt = createdAt;
     }
 
+    public UserDTO(User user) {
+        this.name = user.getName();
+        this.lastName = user.getLastName();
+        this.active = user.getIsActive();
+        this.createdAt = user.getCreatedAt();
+        this.email = user.getEmail();
+        this.role = user.getRole();
+    }
+
+    public void applyToEntity(User user) {
+        user.setName(this.name);
+        user.setLastName(this.lastName);
+        user.setEmail(this.email);
+        user.setRole(this.role);
+        user.setIsActive(this.active);
+    }
+
+    public UserDTO() {
+    }
     // Getters y Setters
 
     public String getName() {

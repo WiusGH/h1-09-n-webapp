@@ -9,7 +9,6 @@ public class BackendApplication {
 
 	public static void main(String[] args) {
 		// Solo intentar cargar .env si estamos en desarrollo local
-		// Por ejemplo, puedes definir ENV=dev en tu máquina local
 		String env = System.getenv("ENV");
 		if (env == null || env.equals("dev")) {
 			try {

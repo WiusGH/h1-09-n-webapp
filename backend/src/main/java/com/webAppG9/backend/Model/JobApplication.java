@@ -24,6 +24,10 @@ public class JobApplication {
     @Column(name = "applied_at", nullable = false, updatable = false)
     private LocalDateTime appliedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "candidated_id", nullable = false)
+    private Candidated candidated;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
@@ -38,10 +42,11 @@ public class JobApplication {
     }
 
     // Constructor útil
-    public JobApplication(User user, JobPost jobPost, Status status) {
+    public JobApplication(User user, JobPost jobPost, Status status, Candidated candidated, LocalDateTime appliedAt) {
         this.user = user;
         this.jobPost = jobPost;
         this.status = status;
+        this.candidated = candidated;
         this.appliedAt = LocalDateTime.now();
     }
 
@@ -64,6 +69,15 @@ public class JobApplication {
 
     public void setJobPost(JobPost jobPost) {
         this.jobPost = jobPost;
+    }
+
+    public Candidated getCandidated() {
+        return candidated;
+    }
+
+    // Setter
+    public void setCandidated(Candidated candidated) {
+        this.candidated = candidated;
     }
 
     public LocalDateTime getAppliedAt() {

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.webAppG9.backend.Model.Admin;
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.dto.AdminDTO;
+import com.webAppG9.backend.dto.admin.AdminDTO;
 import com.webAppG9.backend.repository.AdminRepository;
 import com.webAppG9.backend.repository.UserRepository;
 

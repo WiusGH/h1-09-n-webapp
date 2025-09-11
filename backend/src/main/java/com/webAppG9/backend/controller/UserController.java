@@ -1,15 +1,12 @@
 package com.webAppG9.backend.controller;
 
-import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.ResponseDTO;
-import com.webAppG9.backend.dto.UserDTO;
+import com.webAppG9.backend.dto.user.UserDTO;
 import com.webAppG9.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -21,63 +18,44 @@ public class UserController {
         this.userService = userService;
     }
 
-    // ========================
-    // CRUD PARA ADMIN
-    // ========================
-
+    // Buscar todos los usuarios
     @GetMapping
     public ResponseEntity<ResponseDTO<List<UserDTO>>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(new ResponseDTO<>(users, null));
     }
 
+    // Buscar un usuario por id
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> getUser(@PathVariable Integer id) {
-        User user = userService.getUserById(id);
-        Map<String, Object> data = userService.buildUserResponse(user);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+    public ResponseEntity<ResponseDTO<UserDTO>> getUser(@PathVariable Integer id) {
+
+        return ResponseEntity.ok((userService.getUserById(id)));
     }
 
+    // Actualizar un usuario
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> updateUser(
+    public ResponseEntity<ResponseDTO<UserDTO>> updateUser(
             @PathVariable Integer id,
             @RequestBody UserDTO updatedUser) {
-        User user = userService.updateUser(id, updatedUser);
-        Map<String, Object> data = userService.buildUserResponse(user);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+        UserDTO data = userService.updateUser(id, updatedUser);
+
+        ResponseDTO<UserDTO> response = ResponseDTO.ok(data);
+
+        return ResponseEntity.ok(response);
     }
 
+    // cambiar el status del usuario
     @PutMapping("/{id}/status")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> toggleUserStatus(@PathVariable Integer id) {
-        Map<String, Object> data = userService.toggleUserStatus(id);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+    public ResponseEntity<ResponseDTO<String>> toggleUserStatus(@PathVariable Integer id) {
+        ResponseDTO<String> response = userService.toggleUserStatus(id);
+        return ResponseEntity.ok(response);
     }
 
+    // eliminar un usuario
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Map<String, String>>> deleteUser(@PathVariable Integer id) {
-        Map<String, String> data = userService.deleteUser(id);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
+    public ResponseEntity<ResponseDTO<String>> deleteUser(@PathVariable Integer id) {
+        ResponseDTO<String> response = userService.deleteUser(id);
+        return ResponseEntity.ok(response);
     }
 
-    // ========================
-    // ENDPOINTS PARA USER
-    // ========================
-
-    @GetMapping("/me")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> getMyProfile(Authentication authentication) {
-        String email = authentication.getName();
-        User user = userService.getUserByEmail(email);
-        Map<String, Object> data = userService.buildUserResponse(user);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
-    }
-
-    @PutMapping("/me")
-    public ResponseEntity<ResponseDTO<Map<String, Object>>> updateMyProfile(
-            @RequestBody UserDTO updatedUser,
-            Authentication authentication) {
-        String email = authentication.getName();
-        User user = userService.updateMyProfile(email, updatedUser);
-        Map<String, Object> data = userService.buildUserResponse(user);
-        return ResponseEntity.ok(new ResponseDTO<>(data, null));
-    }
 }

@@ -7,8 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.jobapplication.JobApplicationRequestDTO;
+import com.webAppG9.backend.dto.jobapplication.JobApplicationResponseDTO;
 import com.webAppG9.backend.service.JobApplicationService;
-import com.webAppG9.backend.dto.JobApplicationResponseDTO;
 
 @RestController
 @RequestMapping("/api/job-apply")
@@ -20,11 +21,13 @@ public class JobApplicationController {
         this.jobApplicationService = jobApplicationService;
     }
 
+    // Aplicar a una oferta laboral
     @PostMapping
     public ResponseEntity<ResponseDTO<JobApplicationResponseDTO>> applyToJob(
-            @RequestBody Map<String, Integer> request) {
+            @RequestBody JobApplicationRequestDTO request) {
         // tomar el id del request
-        Integer jobPostId = request.get("jobPostId");
+        Integer jobPostId = request.getJobPostId();
+
         // armar la respuesta en service
         ResponseDTO<JobApplicationResponseDTO> response = jobApplicationService.applyToJob(jobPostId);
         // devuelve la respuesta de la logica ede service
@@ -33,9 +36,9 @@ public class JobApplicationController {
 
     // Cancelar una jobAaplicación
     @DeleteMapping("/{applicationId}")
-    public ResponseEntity<ResponseDTO<String>> cancelApplication(@PathVariable Integer applicationId) {
-        jobApplicationService.cancelApplication(applicationId);
-        return ResponseEntity.ok(new ResponseDTO<>("Aplicación cancelada correctamente", null));
+    public ResponseEntity<String> cancelApplication(@PathVariable Integer applicationId) {
+        String response = jobApplicationService.cancelApplication(applicationId);
+        return ResponseEntity.ok(response);
     }
 
     // Ver mis aplicaciones (usuario logueado)

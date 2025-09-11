@@ -1,8 +1,10 @@
-package com.webAppG9.backend.dto;
+package com.webAppG9.backend.dto.jobapplication;
 
 import java.time.LocalDateTime;
 
-public class JobApplicationResponseDTO {
+public class JobApplicationRequestDTO {
+
+    private Integer jobPostId;
     private Integer applicationId;
     private String username;
     private String userEmail;
@@ -12,8 +14,17 @@ public class JobApplicationResponseDTO {
     private LocalDateTime appliedAt;
 
     // Getters y setters
+
     public Integer getApplicationId() {
         return applicationId;
+    }
+
+    public Integer getJobPostId() {
+        return jobPostId;
+    }
+
+    public void setId(Integer jobPostId) {
+        this.jobPostId = jobPostId;
     }
 
     public void setApplicationId(Integer applicationId) {

@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webAppG9.backend.Model.Candidated;
-import com.webAppG9.backend.dto.CandidateResponseDTO;
-import com.webAppG9.backend.dto.JobPostResponseDTO;
-import com.webAppG9.backend.dto.RecruiterResponseDTO;
 import com.webAppG9.backend.dto.ResponseDTO;
-import com.webAppG9.backend.dto.SkillUpdateRequestDTO;
+import com.webAppG9.backend.dto.candidates.CandidateResponseDTO;
+import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
+import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
+import com.webAppG9.backend.dto.skill.SkillCreateUpdateDTO;
 import com.webAppG9.backend.repository.CandidatedRepository;
 import com.webAppG9.backend.service.CandidatedService;
-import com.webAppG9.backend.service.JobPostService;
 import com.webAppG9.backend.service.RecruiterService;
 
 @RestController
@@ -30,40 +29,58 @@ public class CandidatedController {
     private final CandidatedService candidatedService;
     private final RecruiterService recruiterService;
     private final CandidatedRepository candidatedRepository;
-    private final JobPostService jobPostService;
 
     public CandidatedController(CandidatedService candidatedService, RecruiterService recruiterService,
-            CandidatedRepository candidatedRepository, JobPostService jobPostService) {
+            CandidatedRepository candidatedRepository) {
         this.candidatedService = candidatedService;
         this.recruiterService = recruiterService;
         this.candidatedRepository = candidatedRepository;
-        this.jobPostService = jobPostService;
     }
 
     // Obtener datos del candidato por userId
-    @GetMapping("/me/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<CandidateResponseDTO>> getCandidateById(@PathVariable Integer id) {
-        CandidateResponseDTO candidateDTO = candidatedService.getCandidateById(id);
-        return ResponseEntity.ok(new ResponseDTO<>(candidateDTO, null));
+        return ResponseEntity.ok(candidatedService.getCandidateById(id));
     }
 
-    // Actualizar datos del candidato
-    @PatchMapping("/me/{id}")
-    public ResponseEntity<ResponseDTO<CandidateResponseDTO>> updateCandidate(
+    // Actualizar/ completar datos de registro datos del candidato
+    @PatchMapping("/{id}")
+    public ResponseEntity<ResponseDTO<String>> updateCandidate(
             @PathVariable Integer id,
-            @RequestBody CandidateResponseDTO updateRequest) {
-        CandidateResponseDTO updatedCandidate = candidatedService.updateCandidate(id, updateRequest);
-        return ResponseEntity.ok(new ResponseDTO<>(updatedCandidate, null));
+            @RequestBody CandidateResponseDTO requestDTO) {
+        String message = candidatedService.updateCandidate(id, requestDTO);
+        return ResponseEntity.ok(ResponseDTO.ok(message));
     }
 
     // obtener todos los candidatos activos (Recruiter/Admin)
     @GetMapping("/active")
     public ResponseEntity<ResponseDTO<List<CandidateResponseDTO>>> getAllActiveCandidates() {
         List<CandidateResponseDTO> candidates = candidatedService.getAllActiveCandidates();
-        return ResponseEntity.ok(new ResponseDTO<>(candidates, null));
+        return ResponseEntity.ok(ResponseDTO.ok(candidates));
     }
 
-    // Candidate solicita ser Recruiter
+    // Buscar ofertas laborales similares a los skills
+    @GetMapping("/{id}/matches")
+    public ResponseEntity<ResponseDTO<List<JobPostResponseDTO>>> getMatchingJobPosts(
+            @PathVariable Integer id) {
+        Candidated candidate = candidatedRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+
+        List<JobPostResponseDTO> matches = candidatedService.getMatchingJobPosts(candidate);
+        return ResponseEntity.ok(ResponseDTO.ok(matches));
+    }
+
+    // Endpoint para actualizar skills
+    @PutMapping("/{candidateId}/skills")
+    public ResponseEntity<ResponseDTO<String>> updateSkills(
+            @PathVariable Integer candidateId,
+            @RequestBody SkillCreateUpdateDTO request) {
+
+        String updatedCandidate = candidatedService.updateSkillsByIds(candidateId, request.getSkills());
+        return ResponseEntity.ok(ResponseDTO.ok(updatedCandidate));
+    }
+
+    // Candidate solicita ser Recruiter metodo que relaciona aAdmin
     @PostMapping("/{id}/request-recruiter")
     public ResponseEntity<ResponseDTO<String>> requestRecruiterUpgrade(
             @PathVariable Integer id,
@@ -74,27 +91,13 @@ public class CandidatedController {
                 new ResponseDTO<>("Solicitud enviada. Espera aprobación del administrador.", null));
     }
 
-    @GetMapping("/{id}/matches")
-    public ResponseEntity<ResponseDTO<List<JobPostResponseDTO>>> getMatchingJobPosts(
-            @PathVariable Integer id) {
-        Candidated candidate = candidatedRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+    // Bamnia el estado de disponible o pausado
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ResponseDTO<String>> updateStatus(@PathVariable Integer id) {
 
-        List<JobPostResponseDTO> matches = candidatedService.getMatchingJobPosts(candidate);
-        return ResponseEntity.ok(new ResponseDTO<>(matches, null));
-    }
+        String statusCandidate = candidatedService.updateCandidateStatus(id);
+        return ResponseEntity.ok(ResponseDTO.ok(statusCandidate));
 
-    // Endpoint para actualizar skills
-    @PutMapping("/{candidateId}/skills")
-    public ResponseEntity<ResponseDTO<CandidateResponseDTO>> updateSkills(Integer jobPostId,
-            @PathVariable Integer candidateId,
-            @RequestBody SkillUpdateRequestDTO request) {
-
-        // Verificar que el JobPost existe
-        jobPostService.getJobPostById(jobPostId);
-
-        CandidateResponseDTO updatedCandidate = candidatedService.updateSkillsByIds(candidateId, request.getSkills());
-        return ResponseEntity.ok(new ResponseDTO<>(updatedCandidate, null));
     }
 
 }

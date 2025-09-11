@@ -1,9 +1,9 @@
 package com.webAppG9.backend.controller;
 
 import com.webAppG9.backend.Model.Admin;
-import com.webAppG9.backend.dto.AdminDTO;
-import com.webAppG9.backend.dto.RecruiterResponseDTO;
 import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.admin.AdminDTO;
+import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
 import com.webAppG9.backend.service.AdminService;
 import com.webAppG9.backend.service.RecruiterService;
 
