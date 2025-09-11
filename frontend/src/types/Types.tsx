@@ -16,9 +16,9 @@ export interface UserData {
   phoneNumber: string;
   token?: string;
   image?: string; // Estos datos son temporales, mera decoraccion en espera de api
-  skills?: string[]; 
-  portfolio?: Project[]; 
-  cvUrl?: string; 
+  skills?: string[];
+  portfolio?: Project[];
+  cvUrl?: string;
 }
 
 // Existing jobOfferData interface
@@ -32,5 +32,3 @@ export interface jobOfferData {
   phoneNumber: string;
   applied: boolean;
 }
-}
-
