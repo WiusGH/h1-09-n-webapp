@@ -1,79 +1,56 @@
-import type React from "react";
-import JobCard from "../components/JobCard/JobCard";
-import styles from "../components/layout/Layout.module.css";
 import { useEffect, useState } from "react";
+import axiosInstance from "../api/axiosInstance";
+import JobCard from "../components/JobCard/JobCard";
 import ModalCard from "../components/JobCard/ModalCard";
 import DynamicContainer from "../components/containers/DynamicContainer";
 import UserInfo from "../components/sidebars/UserInfo";
+import styles from "../components/layout/Layout.module.css";
+import NotFound from "./NotFound/NotFound";
+import type { jobOfferData } from "../types/Types";
 
-interface Job {
-  id: number;
-  title: string;
-  company: string;
-  description: string;
-  applied: boolean;
-}
+const Empleos = () => {
+  const [jobs, setJobs] = useState<jobOfferData[]>([]);
+  const [selectedJob, setSelectedJob] = useState<jobOfferData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-const Empleos: React.FC = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  async function handleFetchJobs() {
+    setLoading(true);
+    try {
+      const { data } = await axiosInstance.get("/jobPost");
+      console.log("Respuesta API:", data);
 
-  const handleApply = (id: number) => {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === id ? { ...job, applied: !job.applied } : job
-      )
-    );
-  };
+      const jobsFromApi: jobOfferData[] = data.data.map(
+        (job: jobOfferData, index: number) => ({
+          id: job.id || index, // si no viene id, usamos el índice como fallback
+          title: job.title,
+          company: job.companyName || "Empresa no especificada",
+          description: job.description || "Sin descripción",
+          applied: job.applied ?? false,
+        })
+      );
+
+      setJobs(jobsFromApi);
+      setError(false);
+    } catch (err) {
+      console.error("Error al traer empleos:", err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    const mockJobs: Job[] = [
-      {
-        id: 1,
-        title: "Frontend Developer",
-        company: "Tech Solutions",
-        description:
-          "Buscamos un Frontend con experiencia en React y TypeScript.",
-        applied: false,
-      },
-      {
-        id: 2,
-        title: "Backend Developer",
-        company: "Cloud Services",
-        description: "Se requiere experiencia en Node.js, Express y SQL.",
-        applied: false,
-      },
-      {
-        id: 3,
-        title: "Fullstack Developer",
-        company: "Cloud Services",
-        description: "Se requiere experiencia en Node.js, Express y SQL.",
-        applied: false,
-      },
-      {
-        id: 4,
-        title: "Cloud engineer",
-        company: "Cloud Services",
-        description: "Se requiere experiencia en Node.js, Express y SQL.",
-        applied: false,
-      },
-      {
-        id: 5,
-        title: "Backend Developer",
-        company: "Cloud Services",
-        description: "Se requiere experiencia en Node.js, Express y SQL.",
-        applied: false,
-      },
-      {
-        id: 6,
-        title: "Data analytics",
-        company: "Cloud Services",
-        description: "Se requiere experiencia en Node.js, Express y SQL.",
-        applied: false,
-      },
-    ];
-    setJobs(mockJobs);
+    handleFetchJobs();
   }, []);
+
+  if (loading) {
+    return <p>Cargando empleos...</p>;
+  }
+
+  if (error) {
+    return <NotFound />;
+  }
 
   return (
     <DynamicContainer
@@ -82,12 +59,17 @@ const Empleos: React.FC = () => {
           {jobs.map((job) => (
             <div key={job.id} onClick={() => setSelectedJob(job)}>
               <JobCard
-                key={job.id}
                 title={job.title}
-                company={job.company}
+                company={job.companyName}
                 description={job.description}
                 applied={job.applied}
-                onApply={() => handleApply(job.id)}
+                onApply={() =>
+                  setJobs((prev) =>
+                    prev.map((j) =>
+                      j.id === job.id ? { ...j, applied: !j.applied } : j
+                    )
+                  )
+                }
                 onClick={() => setSelectedJob(job)}
               />
             </div>
@@ -100,7 +82,7 @@ const Empleos: React.FC = () => {
             {selectedJob && (
               <div>
                 <h2>{selectedJob.title}</h2>
-                <h4>{selectedJob.company}</h4>
+                <h4>{selectedJob.companyName}</h4>
                 <p>{selectedJob.description}</p>
                 {selectedJob.applied && (
                   <p style={{ color: "green" }}>
@@ -112,9 +94,56 @@ const Empleos: React.FC = () => {
           </ModalCard>
         </div>
       }
-      side={UserInfo()}
+      side={<UserInfo />}
     />
   );
 };
 
 export default Empleos;
+
+// const mockJobs: Job[] = [
+//       {
+//         id: 1,
+//         title: "Frontend Developer",
+//         company: "Tech Solutions",
+//         description:
+//           "Buscamos un Frontend con experiencia en React y TypeScript.",
+//         applied: false,
+//       },
+//       {
+//         id: 2,
+//         title: "Backend Developer",
+//         company: "Cloud Services",
+//         description: "Se requiere experiencia en Node.js, Express y SQL.",
+//         applied: false,
+//       },
+//       {
+//         id: 3,
+//         title: "Fullstack Developer",
+//         company: "Cloud Services",
+//         description: "Se requiere experiencia en Node.js, Express y SQL.",
+//         applied: false,
+//       },
+//       {
+//         id: 4,
+//         title: "Cloud engineer",
+//         company: "Cloud Services",
+//         description: "Se requiere experiencia en Node.js, Express y SQL.",
+//         applied: false,
+//       },
+//       {
+//         id: 5,
+//         title: "Backend Developer",
+//         company: "Cloud Services",
+//         description: "Se requiere experiencia en Node.js, Express y SQL.",
+//         applied: false,
+//       },
+//       {
+//         id: 6,
+//         title: "Data analytics",
+//         company: "Cloud Services",
+//         description: "Se requiere experiencia en Node.js, Express y SQL.",
+//         applied: false,
+//       },
+//     ];
+//     setJobs(mockJobs);

@@ -12,6 +12,7 @@ import "./index.css";
 import Login from "./pages/Login";
 import Register from "./components/forms/Register";
 import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 // Carga del tema
@@ -53,12 +54,14 @@ function App() {
           <Routes>
             {/* Rutas públicas */}
             <Route path="/" element={<Home />} />
+            <Route path="/mensajes" element={<Mensajes />} />
+            <Route path="/empleos" element={<Empleos />} />
+            <Route path="/notifiaciones" element={<Notificaciones />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
-            <Route path="/empleos" element={<Empleos />} />
-            <Route path="*" element={<h1>404 - Not Found</h1>} />
+            <Route path="/perfil" element={<Profile />} />
+            <Route path="*" element={<NotFound />} />{" "}
             {/* TODO: crear vista 404 */}
-
             {/* Rutas para usuarios logueados */}
             <Route
               element={
@@ -69,12 +72,10 @@ function App() {
               <Route path="/mensajes" element={<Mensajes />} />
               <Route path="/notifiaciones" element={<Notificaciones />} />
             </Route>
-
             {/* Rutas para reclutadores y admins */}
             <Route element={<ProtectedRoute roles={["RECRUITER", "ADMIN"]} />}>
               {/* <Route path="/candidatos" element={<Candidatos />} /> */}
             </Route>
-
             {/* Rutas solo para admins y admins */}
             <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
               {/* <Route path="/panel-control" element={<ControlPanel />} /> */}
