@@ -57,7 +57,7 @@ function App() {
             {/* Rutas públicas */}
             <Route path="/" element={<Home />} />
             <Route path="/mensajes" element={<Mensajes />} />
-            <Route path="/empleos" element={<DynamicContainer main={<Empleos/>} side={<UserInfo/>} />} />
+            <Route path="/empleos" element={ <Empleos/> } />
             <Route path="/notifiaciones" element={<Notificaciones />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />

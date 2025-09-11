@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import type { UserData } from "../../types/Types";
 import UserInfoButton from "../buttons/UserInfoButton";
 import style from "./UserInfo.module.css";
-<<<<<<< HEAD
-=======
-import { getUserData } from "../../utils/userStorage";
->>>>>>> efde57135acd6807ed8ff66c4e1b7e32cd740d1b
+import { getUserData } from "../../utils/userStorage"; 
 
 const UserInfo = () => {
   const [user, setUser] = useState<UserData | null>(null);
