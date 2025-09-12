@@ -1,6 +1,7 @@
 package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
+import com.webAppG9.backend.exception.CandidateNotFoundException;
 import com.webAppG9.backend.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
@@ -21,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Buscar usuario por email
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con email: " + email));
+                .orElseThrow(CandidateNotFoundException::new);
 
         // Convertir el rol del enum a String para Spring Security
         String roleName = "ROLE_" + user.getRole().name(); // ROLE_USER, ROLE_ADMIN, etc.

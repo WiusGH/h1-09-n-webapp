@@ -32,6 +32,8 @@ public class JobApplication {
     @Column(nullable = false)
     private Status status;
 
+    private String statusMessage;
+
     // --- Enum para status ---
     public enum Status {
         PENDING, REVIEWED, ACCEPTED, REJECTED
@@ -94,5 +96,13 @@ public class JobApplication {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 }

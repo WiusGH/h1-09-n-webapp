@@ -12,10 +12,19 @@ import com.webAppG9.backend.Model.JobPost;
 import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.ResponseDTO;
 import com.webAppG9.backend.dto.jobapplication.JobApplicationResponseDTO;
+import com.webAppG9.backend.exception.CandidateAlreadyAppliedException;
+import com.webAppG9.backend.exception.CandidateNotFoundException;
+import com.webAppG9.backend.exception.JobApplicationNotFoundException;
+import com.webAppG9.backend.exception.JobPostInactiveException;
+import com.webAppG9.backend.exception.JobPostNotFoundException;
+import com.webAppG9.backend.exception.MaxCandidatesReachedException;
+import com.webAppG9.backend.exception.ProfileAlreadyCompletedException;
 import com.webAppG9.backend.repository.CandidatedRepository;
 import com.webAppG9.backend.repository.JobApplicationRepository;
 import com.webAppG9.backend.repository.JobPostRepository;
 import com.webAppG9.backend.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class JobApplicationService {
@@ -40,39 +49,54 @@ public class JobApplicationService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(CandidateNotFoundException::new);
     }
 
-    // Método para aplicar a una oferta laboral
+    @Transactional
     public ResponseDTO<JobApplicationResponseDTO> applyToJob(Integer jobPostId) {
-        // Buscar usuario
         User user = getCurrentUser();
 
-        // Buscar candidato asociado
-        Candidated candidate = candidatedRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+        if (!user.getProfileCompleted()) {
+            throw new ProfileAlreadyCompletedException("Debe completar su CV  para aplicar a esta oferta");
+        }
 
-        // Buscar oferta laboral
+        // Buscar candidato
+        Candidated candidate = candidatedRepository.findByUser(user)
+                .orElseThrow(CandidateNotFoundException::new);
+
+        // Buscar JobPost
         JobPost jobPost = jobPostRepository.findById(jobPostId)
-                .orElseThrow(() -> new RuntimeException("JobPost no encontrado"));
+                .orElseThrow(JobPostNotFoundException::new);
 
         if (!Boolean.TRUE.equals(jobPost.getIsActive())) {
-            throw new RuntimeException("La oferta laboral no está activa");
+            throw new JobPostInactiveException();
         }
-        // Crear y guardar JobPost
-        JobApplication jobApplication = new JobApplication(user, jobPost, JobApplication.Status.PENDING, candidate,
-                null);
 
-        JobApplication saved = jobApplicationRepository.save(jobApplication);
-        JobApplicationResponseDTO responseDTO = new JobApplicationResponseDTO(saved);
+        if (!jobPost.canAcceptApplication()) {
+            throw new MaxCandidatesReachedException();
+        }
 
-        return new ResponseDTO<>(responseDTO, null);
+        // Validar si el candidato ya aplicó
+        if (jobApplicationRepository.existsByUserAndJobPost(user, jobPost)) {
+            throw new CandidateAlreadyAppliedException();
+        }
+
+        // Incrementar y persistir candidatesApplied
+        jobPost.setCandidatesApplied(jobPost.getCandidatesApplied() + 1);
+        jobPostRepository.save(jobPost);
+
+        // Guardar la aplicación
+        JobApplication saved = jobApplicationRepository.save(
+                new JobApplication(user, jobPost, JobApplication.Status.PENDING, candidate, null));
+
+        return new ResponseDTO<>(new JobApplicationResponseDTO(saved), null);
     }
 
     // Cancelar una aplicación
     public String cancelApplication(Integer applicationId) {
         JobApplication jobApplication = jobApplicationRepository.findById(applicationId)
-                .orElseThrow(() -> new RuntimeException("Aplicación no encontrada"));
+                .orElseThrow(JobApplicationNotFoundException::new);
+
         // eliminar aplicacion al trabajo
         jobApplicationRepository.delete(jobApplication);
         return "Aplicación cancelada correctamente";
@@ -90,32 +114,6 @@ public class JobApplicationService {
                 .toList();
 
         return new ResponseDTO<>(applications, null);
-    }
-
-    // Ver postulacion de un trabajo (recruiter/admin)
-    public ResponseDTO<List<JobApplicationResponseDTO>> getApplicationsByJob(Integer jobPostId) {
-        //
-        List<JobApplicationResponseDTO> applications = jobApplicationRepository
-                .findByJobPostId(jobPostId)
-                .stream()
-                .map(JobApplicationResponseDTO::new)
-                .toList();
-
-        return new ResponseDTO<>(applications, null);
-    }
-
-    // Cambiar estado de la aplicación (recruiter/admin)
-    public void updateApplicationStatus(Integer applicationId, String status) {
-        JobApplication jobApplication = jobApplicationRepository.findById(applicationId)
-                .orElseThrow(() -> new RuntimeException("Aplicación no encontrada"));
-
-        try {
-            JobApplication.Status newStatus = JobApplication.Status.valueOf(status.toUpperCase());
-            jobApplication.setStatus(newStatus);
-            jobApplicationRepository.save(jobApplication);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Estado inválido");
-        }
     }
 
 }

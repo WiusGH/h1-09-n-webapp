@@ -10,16 +10,18 @@ public class UserDTO {
     private String email;
     private User.Role role;
     private boolean active;
+    private boolean profileCompleted;
     private LocalDateTime createdAt;
 
     // Constructor
-    public UserDTO(User.Role role, String name, String lastName, String email, boolean active,
+    public UserDTO(User.Role role, String name, String lastName, String email, boolean active, Boolean profileCompleted,
             LocalDateTime createdAt) {
         this.role = role;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.active = active;
+        this.profileCompleted = profileCompleted;
         this.createdAt = createdAt;
     }
 
@@ -82,6 +84,14 @@ public class UserDTO {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Boolean getProfileCompleted() {
+        return profileCompleted;
+    }
+
+    public void setProfileCompleted(Boolean profileCompleted) {
+        this.profileCompleted = profileCompleted;
     }
 
     public LocalDateTime getCreatedAt() {

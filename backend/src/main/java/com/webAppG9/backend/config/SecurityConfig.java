@@ -59,6 +59,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml")
                         .permitAll()
+
                         // Usuarios
                         .requestMatchers("/api/users/me/**").authenticated()
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
@@ -76,8 +77,30 @@ public class SecurityConfig {
 
                         // Candidates
                         .requestMatchers(HttpMethod.GET, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/candidates/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/candidates//my-applications/status/**")
+                        .hasAnyRole("CANDIDATE", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/candidates/active").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Recruiters
+                        .requestMatchers(HttpMethod.POST, "/api/recruiters/request/**").authenticated() // cualquier
+                                                                                                        // usuario puede
+                                                                                                        // solicitar
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/me/**").hasRole("RECRUITER")
+                        .requestMatchers(HttpMethod.PUT, "/api/recruiters/me/**").hasRole("RECRUITER")
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/all").permitAll() // público
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/job/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/recruiters/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/active").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Admin - recruiters
+                        .requestMatchers("/api/admins/recruiters/approve/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admins/recruiters/reject/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admins/recruiters/pending").hasRole("ADMIN")
+
+                        // Admin - otros endpoints
+                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
 
                         // Cualquier otra ruta requiere autenticación
                         .anyRequest().authenticated())

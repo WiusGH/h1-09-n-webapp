@@ -8,4 +8,5 @@ public interface SkillRepository extends JpaRepository<Skill, Integer> {
 
     // Buscar skill por nombre
     Optional<Skill> findByName(String name);
+
 }

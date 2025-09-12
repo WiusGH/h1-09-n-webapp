@@ -21,9 +21,8 @@ public class JobPost {
     private String companyCountry;
     private String companyEmail;
     private Boolean isActive;
-    private Integer candidates;
-    private Integer candidatesApplied;
-    private Boolean acceptingAplication;
+    private Integer candidates = 0;
+    private Integer candidatesApplied = 0;
     private LocalDateTime expiresAt;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
@@ -31,6 +30,11 @@ public class JobPost {
     @ManyToMany
     @JoinTable(name = "jobpost_skills", joinColumns = @JoinColumn(name = "jobpost_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private Set<Skill> skills;
+
+    public boolean canAcceptApplication() {
+        return Boolean.TRUE.equals(isActive)
+                && (candidatesApplied < candidates);
+    }
 
     // Cobstructor para mapear un JovPost y validar parametros
     public void applyFromDTO(JobPostRequestDTO dto, Set<Skill> skills) {
@@ -52,8 +56,6 @@ public class JobPost {
             this.candidates = dto.getCandidates();
         if (dto.getCandidatesApplied() != null)
             this.candidatesApplied = dto.getCandidatesApplied();
-        if (dto.getAcceptingAplication() != null)
-            this.acceptingAplication = dto.getAcceptingAplication();
         if (dto.getExpiresAt() != null)
             this.expiresAt = dto.getExpiresAt();
         if (skills != null && !skills.isEmpty())
@@ -143,14 +145,6 @@ public class JobPost {
 
     public void setCandidatesApplied(Integer candidatesApplied) {
         this.candidatesApplied = candidatesApplied;
-    }
-
-    public Boolean getAcceptingAplication() {
-        return acceptingAplication;
-    }
-
-    public void setAcceptingAplication(Boolean acceptingAplication) {
-        this.acceptingAplication = acceptingAplication;
     }
 
     public LocalDateTime getExpiresAt() {

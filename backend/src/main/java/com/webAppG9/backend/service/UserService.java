@@ -3,6 +3,7 @@ package com.webAppG9.backend.service;
 import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.ResponseDTO;
 import com.webAppG9.backend.dto.user.UserDTO;
+import com.webAppG9.backend.exception.UserNotFoundException;
 import com.webAppG9.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class UserService {
     // actualizar usurio
     public UserDTO updateUser(Integer id, UserDTO dto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+                .orElseThrow(UserNotFoundException::new);
         // Metodo para mapear usuario en UserDTO
         dto.applyToEntity(user);
         // Fuardar el usuario y enviarlo al controller
@@ -41,7 +42,7 @@ public class UserService {
     // Cambiar estado de usuario
     public ResponseDTO<String> toggleUserStatus(Integer id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+                .orElseThrow(UserNotFoundException::new);
         // Buscar el estado y guardarlo
         user.setIsActive(!user.getIsActive());
         userRepository.save(user);
@@ -54,7 +55,7 @@ public class UserService {
     // Eliminar usuario
     public ResponseDTO<String> deleteUser(Integer id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+                .orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
         // Devolver mensaje como ResponseDTO<String>
         return ResponseDTO.ok("Usuario eliminado con éxito");
@@ -63,7 +64,7 @@ public class UserService {
     // Buscar usuarios por id
     public ResponseDTO<UserDTO> getUserById(Integer id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(UserNotFoundException::new);
 
         return ResponseDTO.ok(new UserDTO(user));
     }

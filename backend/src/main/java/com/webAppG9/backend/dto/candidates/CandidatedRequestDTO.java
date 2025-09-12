@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.webAppG9.backend.Model.Candidated;
 import com.webAppG9.backend.Model.Skill;
 
-public class CandidateResponseDTO {
+public class CandidatedRequestDTO {
 
     private Integer candidateId;
     private String title; // Título profesional
@@ -23,14 +23,14 @@ public class CandidateResponseDTO {
     private String summary; // Breve descripción del perfil
     private Boolean active;
 
-    private Set<String> skills; // Nombres de las skills del candidato
+    private Set<Integer> skills; // Nombres de las skills del candidato
 
     // Constructor vacío
-    public CandidateResponseDTO() {
+    public CandidatedRequestDTO() {
     }
 
     // Constructor desde entidad
-    public CandidateResponseDTO(Candidated candidated) {
+    public CandidatedRequestDTO(Candidated candidated) {
         this.candidateId = candidated.getId();
         this.title = candidated.getTitle();
         this.address = candidated.getAddress();
@@ -45,7 +45,7 @@ public class CandidateResponseDTO {
         this.summary = candidated.getSummary();
         this.active = candidated.getActive();
         this.skills = candidated.getSkills() != null
-                ? candidated.getSkills().stream().map(Skill::getName).collect(Collectors.toSet())
+                ? candidated.getSkills().stream().map(Skill::getId).collect(Collectors.toSet())
                 : null;
     }
 
@@ -154,11 +154,11 @@ public class CandidateResponseDTO {
         this.active = active;
     }
 
-    public Set<String> getSkills() {
+    public Set<Integer> getSkills() {
         return skills;
     }
 
-    public void setSkills(Set<String> skills) {
+    public void setSkills(Set<Integer> skills) {
         this.skills = skills;
     }
 }

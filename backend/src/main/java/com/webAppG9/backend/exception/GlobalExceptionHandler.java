@@ -8,9 +8,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Maneja errores de negocio (RuntimeException)
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ResponseDTO<Object>> handleRuntimeException(RuntimeException ex) {
+    // Maneja todas las excepciones de negocio de JobApplication
+    @ExceptionHandler({
+            JobPostInactiveException.class,
+            MaxCandidatesReachedException.class,
+            JobPostNotFoundException.class,
+            JobApplicationNotFoundException.class,
+            CandidateNotFoundException.class,
+            CandidateAlreadyAppliedException.class,
+            ProfileAlreadyCompletedException.class,
+            RecruiterNotFoundException.class,
+            UserNotFoundException.class
+    })
+    public ResponseEntity<ResponseDTO<Object>> handleJobApplicationExceptions(RuntimeException ex) {
         return ResponseEntity.status(400).body(new ResponseDTO<>(null, ex.getMessage()));
     }
 

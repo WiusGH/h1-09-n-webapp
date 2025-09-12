@@ -34,8 +34,8 @@ public class User {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column
-    private String online;
+    @Column(nullable = false)
+    private Boolean profileCompleted = false;
 
     // Relación opcional con Admin
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -126,12 +126,12 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public String getOnline() {
-        return online;
+    public Boolean getProfileCompleted() {
+        return profileCompleted;
     }
 
-    public void setOnline(String online) {
-        this.online = online;
+    public void setProfileCompleted(Boolean profileCompleted) {
+        this.profileCompleted = profileCompleted;
     }
 
     public Admin getAdmin() {

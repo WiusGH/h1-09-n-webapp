@@ -6,9 +6,18 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.webAppG9.backend.Model.JobApplication;
 import com.webAppG9.backend.Model.Recruiter;
 import com.webAppG9.backend.Model.User;
+import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.dto.candidates.CandidateResponseDTO;
+import com.webAppG9.backend.dto.jobapplication.JobApplicationResponseDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
+import com.webAppG9.backend.exception.JobApplicationNotFoundException;
+import com.webAppG9.backend.exception.RecruiterNotFoundException;
+import com.webAppG9.backend.exception.UserNotFoundException;
+import com.webAppG9.backend.repository.CandidatedRepository;
+import com.webAppG9.backend.repository.JobApplicationRepository;
 import com.webAppG9.backend.repository.RecruiterRepository;
 import com.webAppG9.backend.repository.UserRepository;
 
@@ -17,17 +26,24 @@ public class RecruiterService {
 
     private final RecruiterRepository recruiterRepository;
     private final UserRepository userRepository;
+    private final JobApplicationRepository jobApplicationRepository;
+    private final CandidatedRepository candidatedRepository;
 
-    public RecruiterService(RecruiterRepository recruiterRepository, UserRepository userRepository) {
+    public RecruiterService(RecruiterRepository recruiterRepository,
+            UserRepository userRepository,
+            JobApplicationRepository jobApplicationRepository,
+            CandidatedRepository candidatedRepository) {
         this.recruiterRepository = recruiterRepository;
         this.userRepository = userRepository;
+        this.jobApplicationRepository = jobApplicationRepository;
+        this.candidatedRepository = candidatedRepository;
     }
 
     // Solicitud de upgrade a Recruiter
     @Transactional
     public void requestRecruiterUpgrade(Integer userId, RecruiterResponseDTO request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(UserNotFoundException::new);
 
         if (recruiterRepository.findByUserId(userId).isPresent()) {
             throw new RuntimeException("Ya existe una solicitud de recruiter para este usuario");
@@ -43,48 +59,72 @@ public class RecruiterService {
         recruiterRepository.save(recruiter);
     }
 
-    // Listar solicitudes pendientes
+    // Obtener perfil de recruiter por userId
     @Transactional(readOnly = true)
-    public List<RecruiterResponseDTO> getPendingRecruiters() {
+    public RecruiterResponseDTO getRecruiterByUserId(Integer userId) {
+        Recruiter recruiter = recruiterRepository.findByUserId(userId)
+                .orElseThrow(RecruiterNotFoundException::new);
+
+        return recruiter.toResponseDTO();
+    }
+
+    // Actualizar perfil de recruiter
+    @Transactional
+    public RecruiterResponseDTO updateRecruiterProfile(Integer userId, RecruiterResponseDTO request) {
+        Recruiter recruiter = recruiterRepository.findByUserId(userId)
+                .orElseThrow(RecruiterNotFoundException::new);
+
+        recruiter.setCompanyName(request.getCompanyName());
+        recruiter.setWebsite(request.getWebsite());
+        recruiter.setDescription(request.getDescription());
+
+        Recruiter updated = recruiterRepository.save(recruiter);
+
+        return updated.toResponseDTO();
+    }
+
+    // Listar todos los recruiters aprobados
+    @Transactional(readOnly = true)
+    public List<RecruiterResponseDTO> getAllApprovedRecruiters() {
         return recruiterRepository.findAll()
                 .stream()
-                .filter(r -> r.getApproved() != null && !r.getApproved())
-                .map(this::mapToResponseDTO)
+                .filter(r -> Boolean.TRUE.equals(r.getApproved()))
+                .map(Recruiter::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    // Aprobar recruiter
-    @Transactional
-    public void approveRecruiter(Integer userId) {
-        Recruiter recruiter = recruiterRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("No existe solicitud de recruiter"));
+    // Ver postulacion de un trabajo
+    public ResponseDTO<List<JobApplicationResponseDTO>> getApplicationsByJob(Integer jobPostId) {
+        //
+        List<JobApplicationResponseDTO> applications = jobApplicationRepository
+                .findByJobPostId(jobPostId)
+                .stream()
+                .map(JobApplicationResponseDTO::new)
+                .toList();
 
-        recruiter.setApproved(true);
-        recruiter.getUser().setRole(User.Role.RECRUITER);
-
-        recruiterRepository.save(recruiter);
-        userRepository.save(recruiter.getUser());
+        return new ResponseDTO<>(applications, null);
     }
 
-    // Rechazar recruiter
-    @Transactional
-    public void rejectRecruiter(Integer userId) {
-        Recruiter recruiter = recruiterRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("No existe solicitud de recruiter"));
+    // Cambiar estado de la aplicación ( PENDING, REVIEWED, ACCEPTED, REJECTED)
+    public void updateApplicationStatus(Integer applicationId, String status, String message) {
+        JobApplication jobApplication = jobApplicationRepository.findById(applicationId)
+                .orElseThrow(JobApplicationNotFoundException::new);
 
-        recruiterRepository.delete(recruiter);
+        try {
+            JobApplication.Status newStatus = JobApplication.Status.valueOf(status.toUpperCase());
+            jobApplication.setStatus(newStatus);
+            jobApplication.setStatusMessage(message); // guarda el mensaje
+            jobApplicationRepository.save(jobApplication); // persistir cambios
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Estado inválido");
+        }
     }
 
-    // Mapear para response DTO
-    private RecruiterResponseDTO mapToResponseDTO(Recruiter recruiter) {
-        RecruiterResponseDTO dto = new RecruiterResponseDTO();
-        dto.setUserId(recruiter.getUser().getId());
-        dto.setUsername(recruiter.getUser().getName());
-        dto.setUserEmail(recruiter.getUser().getEmail());
-        dto.setCompanyName(recruiter.getCompanyName());
-        dto.setWebsite(recruiter.getWebsite());
-        dto.setDescription(recruiter.getDescription());
-        dto.setApproved(recruiter.getApproved());
-        return dto;
+    // Obtener todos los candidatos activos (Recruiter/ admin)
+    public List<CandidateResponseDTO> getAllActiveCandidates() {
+        return candidatedRepository.findAllByActiveTrue()
+                .stream()
+                .map(CandidateResponseDTO::new)
+                .toList();
     }
 }

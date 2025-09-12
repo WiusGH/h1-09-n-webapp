@@ -18,7 +18,6 @@ public class JobPostResponseDTO {
     private Boolean isActive;
     private Integer candidates;
     private Integer candidatesApplied;
-    private Boolean acceptingAplication;
     private LocalDateTime expiresAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -38,7 +37,6 @@ public class JobPostResponseDTO {
         this.isActive = jobPost.getIsActive();
         this.candidates = jobPost.getCandidates();
         this.candidatesApplied = jobPost.getCandidatesApplied();
-        this.acceptingAplication = jobPost.getAcceptingAplication();
         this.expiresAt = jobPost.getExpiresAt();
         this.createdAt = jobPost.getCreatedAt();
         this.updatedAt = jobPost.getUpdatedAt();
@@ -118,14 +116,6 @@ public class JobPostResponseDTO {
 
     public void setCandidatesApplied(Integer candidatesApplied) {
         this.candidatesApplied = candidatesApplied;
-    }
-
-    public Boolean getAcceptingAplication() {
-        return acceptingAplication;
-    }
-
-    public void setAcceptingAplication(Boolean acceptingAplication) {
-        this.acceptingAplication = acceptingAplication;
     }
 
     public LocalDateTime getExpiresAt() {

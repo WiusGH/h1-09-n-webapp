@@ -1,5 +1,7 @@
 package com.webAppG9.backend.Model;
 
+import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +23,19 @@ public class Recruiter {
     private Boolean approved = false;
 
     public Recruiter() {
+    }
+
+    // Mapear para response DTO
+    public RecruiterResponseDTO toResponseDTO() {
+        RecruiterResponseDTO dto = new RecruiterResponseDTO();
+        dto.setUserId(this.user.getId());
+        dto.setUsername(this.user.getName());
+        dto.setUserEmail(this.user.getEmail());
+        dto.setCompanyName(this.companyName);
+        dto.setWebsite(this.website);
+        dto.setDescription(this.description);
+        dto.setApproved(this.approved);
+        return dto;
     }
 
     // Getters y Setters

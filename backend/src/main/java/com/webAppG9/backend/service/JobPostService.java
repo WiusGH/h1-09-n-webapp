@@ -11,6 +11,8 @@ import com.webAppG9.backend.Model.JobPost;
 import com.webAppG9.backend.Model.Skill;
 import com.webAppG9.backend.dto.jobpost.JobPostRequestDTO;
 import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
+import com.webAppG9.backend.exception.CandidateNotFoundException;
+import com.webAppG9.backend.exception.JobPostNotFoundException;
 import com.webAppG9.backend.repository.JobPostRepository;
 import com.webAppG9.backend.repository.SkillRepository;
 
@@ -28,7 +30,7 @@ public class JobPostService {
     // Buscar trabajos por Id (Metodo para CandidatedController)
     public JobPost getJobPostById(Integer jobPostId) {
         JobPost jobPost = jobPostRepository.findById(jobPostId)
-                .orElseThrow(() -> new RuntimeException("Posteo de trabajo no encontrado"));
+                .orElseThrow(JobPostNotFoundException::new);
 
         if (!jobPost.getIsActive()) {
             throw new RuntimeException("Posteo de trabajo no activo");
@@ -59,7 +61,7 @@ public class JobPostService {
     // Actualizar un post de trabajo
     public String updateJob(Integer id, JobPostRequestDTO request) {
         JobPost jobPost = jobPostRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Posteo de trabajo no encontrado"));
+                .orElseThrow(CandidateNotFoundException::new);
 
         // Convertir IDs de skills a objetos Skill
         Set<Skill> skillSet = new HashSet<>();
@@ -79,7 +81,7 @@ public class JobPostService {
 
     public String deleteJob(Integer id) {
         JobPost jobPost = jobPostRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Posteo de trabajo no encontrado"));
+                .orElseThrow(CandidateNotFoundException::new);
 
         jobPostRepository.delete(jobPost);
 
@@ -89,7 +91,7 @@ public class JobPostService {
     // Desactivar post de trabajo
     public String toggleJobPostStatus(Integer id) {
         JobPost jobPost = jobPostRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job no encontrado"));
+                .orElseThrow(CandidateNotFoundException::new);
 
         // Cambiar estado
         jobPost.setIsActive(!jobPost.getIsActive());

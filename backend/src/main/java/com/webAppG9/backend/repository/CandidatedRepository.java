@@ -18,4 +18,5 @@ public interface CandidatedRepository extends JpaRepository<Candidated, Integer>
     Optional<Candidated> findByUserEmail(String email);
 
     Optional<Candidated> findByUser(User user);
+
 }

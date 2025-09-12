@@ -2,6 +2,7 @@ package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.user.UserDTO;
+import com.webAppG9.backend.exception.CandidateNotFoundException;
 import com.webAppG9.backend.dto.auth.LoginResponseDTO;
 import com.webAppG9.backend.dto.auth.RegisterResponseDTO;
 import com.webAppG9.backend.repository.UserRepository;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final CandidatedService candidatedService;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -25,7 +25,6 @@ public class AuthService {
             PasswordEncoder passwordEncoder,
             JwtUtil jwtUtil) {
         this.userRepository = userRepository;
-        this.candidatedService = candidatedService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
@@ -41,11 +40,11 @@ public class AuthService {
         // Encriptar contraseña
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        // Guardar el estado como incompleto
+        user.setProfileCompleted(false);
+
         // Guardar usuario
         User savedUser = userRepository.save(user);
-
-        // Crear candidato asociado al user
-        candidatedService.createCandidateForUser(savedUser);
 
         // Devolver DTO de registro
         return new RegisterResponseDTO(
@@ -58,7 +57,7 @@ public class AuthService {
     public LoginResponseDTO login(String email, String password) {
         // Buscar usuario
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+                .orElseThrow(CandidateNotFoundException::new);
 
         // Validar contraseña
         if (!passwordEncoder.matches(password, user.getPassword())) {
