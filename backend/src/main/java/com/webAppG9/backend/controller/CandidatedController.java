@@ -92,7 +92,7 @@ public class CandidatedController {
 
     }
 
-    // Buscar el msj y el status
+    // Buscar el msj y el status por parte de Recruiter
     @GetMapping("/my-applications/status")
     public ResponseEntity<ResponseDTO<List<ApplicationStatusDTO>>> getApplicationStatuses() {
         List<ApplicationStatusDTO> statuses = candidatedService.getStatusMessagesForCandidate();

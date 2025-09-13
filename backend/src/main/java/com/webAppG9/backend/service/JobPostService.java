@@ -88,4 +88,12 @@ public class JobPostService {
         return jobPost.getIsActive() ? "JobPost activado" : "JobPost desactivado";
     }
 
+    // Buscar trabajos por habilidades en el buscador
+    public List<JobPostResponseDTO> searchBySkillKeyword(String query) {
+        return jobPostRepository.findBySkillKeyword(query)
+                .stream()
+                .map(JobPostResponseDTO::new) // convierto entidad -> DTO
+                .toList();
+    }
+
 }
