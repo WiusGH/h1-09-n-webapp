@@ -1,9 +1,9 @@
 package com.webAppG9.backend.controller;
 
-import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.ResponseDTO;
 import com.webAppG9.backend.dto.auth.LoginRequestDTO;
 import com.webAppG9.backend.dto.auth.LoginResponseDTO;
+import com.webAppG9.backend.dto.auth.RegisterRequestDTO;
 import com.webAppG9.backend.dto.auth.RegisterResponseDTO;
 import com.webAppG9.backend.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody User user) {
+    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO user) {
         // Crear UserDTO para la respuesta
         RegisterResponseDTO data = authService.register(user);
 

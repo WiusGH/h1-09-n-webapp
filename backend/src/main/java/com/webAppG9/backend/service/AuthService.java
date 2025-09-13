@@ -1,14 +1,18 @@
 package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
+import com.webAppG9.backend.Model.User.Role;
 import com.webAppG9.backend.dto.user.UserDTO;
 import com.webAppG9.backend.exception.EmailOrPasswordException;
 import com.webAppG9.backend.dto.auth.LoginResponseDTO;
+import com.webAppG9.backend.dto.auth.RegisterRequestDTO;
 import com.webAppG9.backend.dto.auth.RegisterResponseDTO;
 import com.webAppG9.backend.repository.UserRepository;
 import com.webAppG9.backend.security.JwtUtil;
 
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDateTime;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,26 +35,31 @@ public class AuthService {
 
     // Registrar usuario
     @Transactional
-    public RegisterResponseDTO register(User user) {
+    public RegisterResponseDTO register(RegisterRequestDTO request) {
         // Validar email único
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("El email ya está registrado");
         }
 
-        // Encriptar contraseña
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // Guardar el estado como incompleto
+        // Mapear DTO a entidad
+        User user = new User();
+        user.setName(request.getName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setProfileCompleted(false);
+        user.setRole(Role.CANDIDATE); // rol por defecto
+        user.setCreatedAt(LocalDateTime.now());
 
-        // Guardar usuario
+        // Guardar en DB
         User savedUser = userRepository.save(user);
 
-        // Devolver DTO de registro
+        // Retornar el usuario completo como DTO
         return new RegisterResponseDTO(
                 savedUser.getId(),
                 savedUser.getEmail(),
                 "Usuario registrado correctamente");
+
     }
 
     // Login
