@@ -12,6 +12,7 @@ import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.admin.AdminDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
 import com.webAppG9.backend.exception.CandidateNotFoundException;
+import com.webAppG9.backend.exception.RecruiterSolicitedNotFoundException;
 import com.webAppG9.backend.repository.AdminRepository;
 import com.webAppG9.backend.repository.RecruiterRepository;
 import com.webAppG9.backend.repository.UserRepository;
@@ -70,7 +71,7 @@ public class AdminService {
     @Transactional
     public void approveRecruiter(Integer userId) {
         Recruiter recruiter = recruiterRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("No existe solicitud de recruiter"));
+                .orElseThrow(RecruiterSolicitedNotFoundException::new);
 
         recruiter.setApproved(true);
         recruiter.getUser().setRole(User.Role.RECRUITER);
@@ -83,9 +84,19 @@ public class AdminService {
     @Transactional
     public void rejectRecruiter(Integer userId) {
         Recruiter recruiter = recruiterRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("No existe solicitud de recruiter"));
+                .orElseThrow(RecruiterSolicitedNotFoundException::new);
 
         recruiterRepository.delete(recruiter);
+    }
+
+    // Listar todos los recruiters aprobados
+    @Transactional(readOnly = true)
+    public List<RecruiterResponseDTO> getAllApprovedRecruiters() {
+        return recruiterRepository.findAll()
+                .stream()
+                .filter(r -> Boolean.TRUE.equals(r.getApproved()))
+                .map(Recruiter::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
 }

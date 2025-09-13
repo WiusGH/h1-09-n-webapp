@@ -27,15 +27,6 @@ public class JobPostController {
         return ResponseEntity.ok(ResponseDTO.ok(jobs));
     }
 
-    // Crear post de trabajo
-    @PostMapping
-    public ResponseEntity<ResponseDTO<JobPostResponseDTO>> createJob(
-            @RequestBody JobPostRequestDTO requestDTO) {
-
-        JobPostResponseDTO createdJob = jobPostService.createJob(requestDTO);
-        return ResponseEntity.ok(ResponseDTO.ok(createdJob));
-    }
-
     // Actualizar Posteo de trabajo
     @PatchMapping("/{id}")
     public ResponseEntity<ResponseDTO<String>> updateJob(

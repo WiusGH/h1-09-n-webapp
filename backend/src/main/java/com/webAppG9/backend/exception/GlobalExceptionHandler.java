@@ -18,7 +18,10 @@ public class GlobalExceptionHandler {
             CandidateAlreadyAppliedException.class,
             ProfileAlreadyCompletedException.class,
             RecruiterNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            RecruiterSolicitedNotFoundException.class,
+            RecruiterSulicitudExistingException.class,
+            EmailOrPasswordException.class
     })
     public ResponseEntity<ResponseDTO<Object>> handleJobApplicationExceptions(RuntimeException ex) {
         return ResponseEntity.status(400).body(new ResponseDTO<>(null, ex.getMessage()));

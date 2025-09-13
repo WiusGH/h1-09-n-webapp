@@ -45,19 +45,6 @@ public class JobPostService {
                 .toList();
     }
 
-    // Crear un post de trabajo
-    public JobPostResponseDTO createJob(JobPostRequestDTO request) {
-        Set<Skill> skillSet = skillRepository.findAllById(request.getSkills())
-                .stream()
-                .collect(Collectors.toSet());
-
-        JobPost jobPost = new JobPost();
-        jobPost.applyFromDTO(request, skillSet);
-
-        JobPost savedJob = jobPostRepository.save(jobPost);
-        return new JobPostResponseDTO(savedJob);
-    }
-
     // Actualizar un post de trabajo
     public String updateJob(Integer id, JobPostRequestDTO request) {
         JobPost jobPost = jobPostRepository.findById(id)

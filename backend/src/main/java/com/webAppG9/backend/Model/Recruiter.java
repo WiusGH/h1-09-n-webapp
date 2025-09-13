@@ -1,5 +1,6 @@
 package com.webAppG9.backend.Model;
 
+import com.webAppG9.backend.dto.recruiter.RecruiterRequestDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
 
 import jakarta.persistence.*;
@@ -35,6 +36,15 @@ public class Recruiter {
         dto.setWebsite(this.website);
         dto.setDescription(this.description);
         dto.setApproved(this.approved);
+        return dto;
+    }
+
+    // Mapear para response DTO
+    public RecruiterRequestDTO toRequestDTO() {
+        RecruiterRequestDTO dto = new RecruiterRequestDTO();
+        dto.setCompanyName(this.companyName);
+        dto.setWebsite(this.website);
+        dto.setDescription(this.description);
         return dto;
     }
 

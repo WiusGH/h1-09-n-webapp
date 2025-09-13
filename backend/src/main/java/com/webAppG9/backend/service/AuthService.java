@@ -2,7 +2,7 @@ package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.user.UserDTO;
-import com.webAppG9.backend.exception.CandidateNotFoundException;
+import com.webAppG9.backend.exception.EmailOrPasswordException;
 import com.webAppG9.backend.dto.auth.LoginResponseDTO;
 import com.webAppG9.backend.dto.auth.RegisterResponseDTO;
 import com.webAppG9.backend.repository.UserRepository;
@@ -57,11 +57,11 @@ public class AuthService {
     public LoginResponseDTO login(String email, String password) {
         // Buscar usuario
         User user = userRepository.findByEmail(email)
-                .orElseThrow(CandidateNotFoundException::new);
+                .orElseThrow(EmailOrPasswordException::new);
 
         // Validar contraseña
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("Contraseña incorrecta");
+        if (email == null || email.isBlank() || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new EmailOrPasswordException();
         }
 
         // Generar token

@@ -16,7 +16,7 @@ import com.webAppG9.backend.dto.candidates.CandidateResponseDTO;
 import com.webAppG9.backend.dto.candidates.CandidatedRequestDTO;
 import com.webAppG9.backend.dto.jobapplication.ApplicationStatusDTO;
 import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
-import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
+import com.webAppG9.backend.dto.recruiter.RecruiterRequestDTO;
 import com.webAppG9.backend.dto.skill.SkillCreateUpdateDTO;
 import com.webAppG9.backend.service.CandidatedService;
 import com.webAppG9.backend.service.RecruiterService;
@@ -76,7 +76,7 @@ public class CandidatedController {
     @PostMapping("/{id}/request-recruiter")
     public ResponseEntity<ResponseDTO<String>> requestRecruiterUpgrade(
             @PathVariable Integer id,
-            @RequestBody RecruiterResponseDTO request) {
+            @RequestBody RecruiterRequestDTO request) {
 
         recruiterService.requestRecruiterUpgrade(id, request);
         return ResponseEntity.ok(

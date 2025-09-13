@@ -46,4 +46,12 @@ public class AdminController {
         List<RecruiterResponseDTO> pending = adminService.getPendingRecruiters();
         return ResponseEntity.ok(new ResponseDTO<>(pending, null));
     }
+
+    // Listar todos los recruiters aprobados (para networking)
+    @GetMapping("/all")
+    public ResponseEntity<ResponseDTO<List<RecruiterResponseDTO>>> getAllRecruiters() {
+        List<RecruiterResponseDTO> recruiters = adminService.getAllApprovedRecruiters();
+        return ResponseEntity.ok(new ResponseDTO<>(recruiters, null));
+    }
+
 }
