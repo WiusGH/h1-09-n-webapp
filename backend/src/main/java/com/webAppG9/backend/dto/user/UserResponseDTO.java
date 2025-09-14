@@ -1,9 +1,10 @@
+
 package com.webAppG9.backend.dto.user;
 
 import com.webAppG9.backend.Model.User;
 import java.time.LocalDateTime;
 
-public class UserDTO {
+public class UserResponseDTO {
 
     private String name;
     private String lastName;
@@ -14,24 +15,27 @@ public class UserDTO {
     private LocalDateTime createdAt;
 
     // Constructor
-    public UserDTO(User.Role role, String name, String lastName, String email, boolean active, Boolean profileCompleted,
-            LocalDateTime createdAt) {
-        this.role = role;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.active = active;
-        this.profileCompleted = profileCompleted;
-        this.createdAt = createdAt;
-    }
+    // public UserResponseDTO(User.Role role, String name, String lastName, String
+    // email, boolean active,
+    // Boolean profileCompleted,
+    // LocalDateTime createdAt) {
+    // this.role = role;
+    // this.name = name;
+    // this.lastName = lastName;
+    // this.email = email;
+    // this.active = active;
+    // this.profileCompleted = profileCompleted;
+    // this.createdAt = createdAt;
+    // }
 
-    public UserDTO(User user) {
+    public UserResponseDTO(User user) {
         this.name = user.getName();
         this.lastName = user.getLastName();
         this.active = user.getIsActive();
         this.createdAt = user.getCreatedAt();
         this.email = user.getEmail();
         this.role = user.getRole();
+        this.profileCompleted = user.getProfileCompleted();
     }
 
     public void applyToEntity(User user) {
@@ -39,10 +43,10 @@ public class UserDTO {
         user.setLastName(this.lastName);
         user.setEmail(this.email);
         user.setRole(this.role);
-        user.setIsActive(this.active);
+        // user.setIsActive(this.active);
     }
 
-    public UserDTO() {
+    public UserResponseDTO() {
     }
     // Getters y Setters
 

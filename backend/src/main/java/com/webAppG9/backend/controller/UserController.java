@@ -1,7 +1,8 @@
 package com.webAppG9.backend.controller;
 
 import com.webAppG9.backend.dto.ResponseDTO;
-import com.webAppG9.backend.dto.user.UserDTO;
+import com.webAppG9.backend.dto.user.UserRequestDTO;
+import com.webAppG9.backend.dto.user.UserResponseDTO;
 import com.webAppG9.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,42 +21,39 @@ public class UserController {
 
     // Buscar todos los usuarios
     @GetMapping
-    public ResponseEntity<ResponseDTO<List<UserDTO>>> getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(new ResponseDTO<>(users, null));
+    public ResponseEntity<ResponseDTO<List<UserResponseDTO>>> getAllUsers() {
+        List<UserResponseDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(ResponseDTO.ok(users));
     }
 
     // Buscar un usuario por id
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<UserDTO>> getUser(@PathVariable Integer id) {
-
-        return ResponseEntity.ok((userService.getUserById(id)));
+    public ResponseEntity<ResponseDTO<UserResponseDTO>> getUser(@PathVariable Integer id) {
+        UserResponseDTO user = userService.getUserById(id);
+        return ResponseEntity.ok(ResponseDTO.ok(user));
     }
 
     // Actualizar un usuario
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDTO<UserDTO>> updateUser(
+    public ResponseEntity<ResponseDTO<UserResponseDTO>> updateUser(
             @PathVariable Integer id,
-            @RequestBody UserDTO updatedUser) {
-        UserDTO data = userService.updateUser(id, updatedUser);
-
-        ResponseDTO<UserDTO> response = ResponseDTO.ok(data);
-
-        return ResponseEntity.ok(response);
+            @RequestBody UserRequestDTO updatedUser) {
+        UserResponseDTO user = userService.updateUser(id, updatedUser);
+        return ResponseEntity.ok(ResponseDTO.ok(user));
     }
 
     // cambiar el status del usuario
     @PutMapping("/{id}/status")
     public ResponseEntity<ResponseDTO<String>> toggleUserStatus(@PathVariable Integer id) {
-        ResponseDTO<String> response = userService.toggleUserStatus(id);
-        return ResponseEntity.ok(response);
+        String response = userService.toggleUserStatus(id);
+        return ResponseEntity.ok(ResponseDTO.ok(response));
     }
 
     // eliminar un usuario
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO<String>> deleteUser(@PathVariable Integer id) {
-        ResponseDTO<String> response = userService.deleteUser(id);
-        return ResponseEntity.ok(response);
+        String response = userService.deleteUser(id);
+        return ResponseEntity.ok(ResponseDTO.ok(response));
     }
 
 }

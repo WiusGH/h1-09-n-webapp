@@ -28,23 +28,23 @@ public class JobApplicationController {
         Integer jobPostId = request.getJobPostId();
 
         // armar la respuesta en service
-        ResponseDTO<JobApplicationResponseDTO> response = jobApplicationService.applyToJob(jobPostId);
+        JobApplicationResponseDTO response = jobApplicationService.applyToJob(jobPostId);
         // devuelve la respuesta de la logica ede service
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ResponseDTO.ok(response));
     }
 
     // Cancelar una jobAaplicación
     @DeleteMapping("/{applicationId}")
-    public ResponseEntity<String> cancelApplication(@PathVariable Integer applicationId) {
+    public ResponseEntity<ResponseDTO<String>> cancelApplication(@PathVariable Integer applicationId) {
         String response = jobApplicationService.cancelApplication(applicationId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ResponseDTO.ok(response));
     }
 
     // Ver mis aplicaciones (usuario logueado)
     @GetMapping("/me")
     public ResponseEntity<ResponseDTO<List<JobApplicationResponseDTO>>> getMyApplications() {
-        ResponseDTO<List<JobApplicationResponseDTO>> response = jobApplicationService.getApplicationsByCurrentUser();
-        return ResponseEntity.ok(response);
+        List<JobApplicationResponseDTO> response = jobApplicationService.getApplicationsByCurrentUser();
+        return ResponseEntity.ok(ResponseDTO.ok(response));
     }
 
 }

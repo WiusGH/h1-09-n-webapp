@@ -22,18 +22,18 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO user) {
+    public ResponseEntity<ResponseDTO<RegisterResponseDTO>> register(@RequestBody RegisterRequestDTO user) {
         // Crear UserDTO para la respuesta
         RegisterResponseDTO data = authService.register(user);
 
         // Devolver éxito con ResponseDTO
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok(ResponseDTO.ok(data));
     }
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<LoginResponseDTO>> login(@RequestBody LoginRequestDTO request) {
         LoginResponseDTO response = authService.login(request.getEmail(), request.getPassword());
-        return ResponseEntity.ok(new ResponseDTO<>(response, null));
+        return ResponseEntity.ok(ResponseDTO.ok(response));
     }
 
 }

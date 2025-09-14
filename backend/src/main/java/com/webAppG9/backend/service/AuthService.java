@@ -2,7 +2,7 @@ package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
 // import com.webAppG9.backend.Model.User.Role;
-import com.webAppG9.backend.dto.user.UserDTO;
+import com.webAppG9.backend.dto.user.UserResponseDTO;
 import com.webAppG9.backend.exception.EmailOrPasswordException;
 import com.webAppG9.backend.dto.auth.LoginResponseDTO;
 import com.webAppG9.backend.dto.auth.RegisterRequestDTO;
@@ -85,7 +85,7 @@ public class AuthService {
         // Devolver DTO
         return new LoginResponseDTO(
                 token,
-                new UserDTO(user));
+                new UserResponseDTO(user));
     }
 
 }

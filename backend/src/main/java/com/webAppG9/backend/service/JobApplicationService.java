@@ -10,7 +10,6 @@ import com.webAppG9.backend.Model.Candidated;
 import com.webAppG9.backend.Model.JobApplication;
 import com.webAppG9.backend.Model.JobPost;
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.dto.ResponseDTO;
 import com.webAppG9.backend.dto.jobapplication.JobApplicationResponseDTO;
 import com.webAppG9.backend.exception.CandidateAlreadyAppliedException;
 import com.webAppG9.backend.exception.CandidateNotFoundException;
@@ -54,7 +53,7 @@ public class JobApplicationService {
 
     // Aplicar a un trabajo
     @Transactional
-    public ResponseDTO<JobApplicationResponseDTO> applyToJob(Integer jobPostId) {
+    public JobApplicationResponseDTO applyToJob(Integer jobPostId) {
         User user = getCurrentUser();
 
         if (!user.getProfileCompleted()) {
@@ -90,7 +89,7 @@ public class JobApplicationService {
         JobApplication saved = jobApplicationRepository.save(
                 new JobApplication(user, jobPost, JobApplication.Status.PENDING, candidate, null));
 
-        return new ResponseDTO<>(new JobApplicationResponseDTO(saved), null);
+        return new JobApplicationResponseDTO(saved);
     }
 
     // Cancelar una aplicación
@@ -104,17 +103,15 @@ public class JobApplicationService {
     }
 
     // Ver mis aplicaciones
-    public ResponseDTO<List<JobApplicationResponseDTO>> getApplicationsByCurrentUser() {
+    public List<JobApplicationResponseDTO> getApplicationsByCurrentUser() {
         // verificar usuario logueado
         User user = getCurrentUser();
         // crer respuesta en formato de listaDTO
-        List<JobApplicationResponseDTO> applications = jobApplicationRepository
+        return jobApplicationRepository
                 .findByUserId(user.getId())
                 .stream()
                 .map(JobApplicationResponseDTO::new)
                 .toList();
-
-        return new ResponseDTO<>(applications, null);
     }
 
 }

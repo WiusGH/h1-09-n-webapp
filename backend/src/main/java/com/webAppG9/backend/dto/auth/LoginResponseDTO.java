@@ -1,14 +1,14 @@
 package com.webAppG9.backend.dto.auth;
 
-import com.webAppG9.backend.dto.user.UserDTO;
+import com.webAppG9.backend.dto.user.UserResponseDTO;
 
 public class LoginResponseDTO {
 
     private String token;
-    private UserDTO user;
+    private UserResponseDTO user;
 
     // Constructor
-    public LoginResponseDTO(String token, UserDTO user) {
+    public LoginResponseDTO(String token, UserResponseDTO user) {
         this.token = token;
         this.user = user;
     }
@@ -22,11 +22,11 @@ public class LoginResponseDTO {
         this.token = token;
     }
 
-    public UserDTO getUser() {
+    public UserResponseDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(UserResponseDTO user) {
         this.user = user;
     }
 }

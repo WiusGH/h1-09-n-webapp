@@ -99,7 +99,7 @@ public class RecruiterService {
 
     // Actualizar perfil de recruiter
     @Transactional
-    public RecruiterResponseDTO updateRecruiterProfile(Integer userId, RecruiterResponseDTO request) {
+    public RecruiterResponseDTO updateRecruiterProfile(Integer userId, RecruiterRequestDTO request) {
         Recruiter recruiter = recruiterRepository.findByUserId(userId)
                 .orElseThrow(RecruiterNotFoundException::new);
 

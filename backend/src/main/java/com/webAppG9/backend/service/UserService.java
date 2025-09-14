@@ -1,10 +1,11 @@
 package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.dto.ResponseDTO;
-import com.webAppG9.backend.dto.user.UserDTO;
+import com.webAppG9.backend.dto.user.UserRequestDTO;
+import com.webAppG9.backend.dto.user.UserResponseDTO;
 import com.webAppG9.backend.exception.UserNotFoundException;
 import com.webAppG9.backend.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,28 +20,35 @@ public class UserService {
     }
 
     // metodo para buscar todoos los usuarios
-    public List<UserDTO> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 // Mapear cada user y convertir a DTO
-                .map(u -> new UserDTO(u))
+                .map(UserResponseDTO::new)
                 // Devolver una lista con todos los users
                 .toList();
     }
 
+    // Buscar usuarios por id
+    public UserResponseDTO getUserById(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        return new UserResponseDTO(user);
+    }
+
     // actualizar usurio
-    public UserDTO updateUser(Integer id, UserDTO dto) {
+    public UserResponseDTO updateUser(Integer id, UserRequestDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
         // Metodo para mapear usuario en UserDTO
         dto.applyToEntity(user);
-        // Fuardar el usuario y enviarlo al controller
-        User updated = userRepository.save(user);
-        return new UserDTO(updated);
+        // Fuardar el usuario y enviarlo al controlle
+        userRepository.save(user);
+        return new UserResponseDTO(user);
 
     }
 
     // Cambiar estado de usuario
-    public ResponseDTO<String> toggleUserStatus(Integer id) {
+    public String toggleUserStatus(Integer id) {
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
         // Buscar el estado y guardarlo
@@ -48,25 +56,17 @@ public class UserService {
         userRepository.save(user);
 
         String message = user.getIsActive() ? "Candidato activo" : "Candidato pausado";
-        return ResponseDTO.ok(message);
+        return message;
 
     }
 
     // Eliminar usuario
-    public ResponseDTO<String> deleteUser(Integer id) {
+    public String deleteUser(Integer id) {
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
         // Devolver mensaje como ResponseDTO<String>
-        return ResponseDTO.ok("Usuario eliminado con éxito");
-    }
-
-    // Buscar usuarios por id
-    public ResponseDTO<UserDTO> getUserById(Integer id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
-
-        return ResponseDTO.ok(new UserDTO(user));
+        return "Usuario eliminado con éxito";
     }
 
 }

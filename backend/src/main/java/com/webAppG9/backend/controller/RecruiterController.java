@@ -54,7 +54,7 @@ public class RecruiterController {
     @PutMapping("/me/{userId}")
     public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> updateProfile(
             @PathVariable Integer userId,
-            @RequestBody RecruiterResponseDTO request) {
+            @RequestBody RecruiterRequestDTO request) {
         RecruiterResponseDTO updated = recruiterService.updateRecruiterProfile(userId, request);
         return ResponseEntity.ok(new ResponseDTO<>(updated, "Perfil actualizado"));
     }
