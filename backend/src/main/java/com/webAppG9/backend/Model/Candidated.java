@@ -89,8 +89,6 @@ public class Candidated {
             this.resumeUrl = dto.getResumeUrl();
         if (dto.getSummary() != null)
             this.summary = dto.getSummary();
-        if (dto.getActive() != null)
-            this.active = dto.getActive();
     }
 
     // Getters y Setters

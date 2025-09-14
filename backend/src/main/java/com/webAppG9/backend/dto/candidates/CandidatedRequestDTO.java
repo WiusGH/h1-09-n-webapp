@@ -9,19 +9,16 @@ import com.webAppG9.backend.Model.Skill;
 
 public class CandidatedRequestDTO {
 
-    private Integer candidateId;
     private String title; // Título profesional
     private String address;
     private String country;
     private String phoneNumber;
-    private String email; // Email del user asociado
     private LocalDate dateOfBirth;
     private String education; // Educación básica
     private String experience; // Experiencia laboral resumida
     private String linkedinUrl; // Perfil LinkedIn
     private String resumeUrl; // Link a CV
     private String summary; // Breve descripción del perfil
-    private Boolean active;
 
     private Set<Integer> skills; // Nombres de las skills del candidato
 
@@ -47,13 +44,6 @@ public class CandidatedRequestDTO {
     }
 
     // ====== Getters y Setters ======
-    public Integer getCandidateId() {
-        return candidateId;
-    }
-
-    public void setCandidateId(Integer candidateId) {
-        this.candidateId = candidateId;
-    }
 
     public String getTitle() {
         return title;
@@ -85,14 +75,6 @@ public class CandidatedRequestDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public LocalDate getDateOfBirth() {
@@ -141,14 +123,6 @@ public class CandidatedRequestDTO {
 
     public void setSummary(String summary) {
         this.summary = summary;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     public Set<Integer> getSkills() {
