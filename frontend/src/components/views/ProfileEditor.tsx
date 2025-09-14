@@ -4,6 +4,7 @@ import { getUserData } from "../../utils/userStorage";
 import type { UserData, Project } from "../../types/Types";
 import GenericButton from "../buttons/GenericButton";
 import SkillTag from "../buttons/SkillTag";
+import EditCv from "./EditCv"; 
 
 interface ProfileEditorProps {
   section: string;
@@ -70,7 +71,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
     e.preventDefault();
     onSave(user);
   };
-  
+
   return (
     <div className={style.container}>
       <form onSubmit={handleSubmit}>
@@ -198,24 +199,9 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
           </div>
         )}
 
-        {/* Sección para editar el CV */}
-        {section === "cv" && (
-          <div className={style.section}>
-            <h2>Editar CV</h2>
-            <div className={style.formGroup}>
-              <label htmlFor="cvUrl">URL del CV:</label>
-              <input
-                type="text"
-                id="cvUrl"
-                name="cvUrl"
-                value={user.cvUrl || ""}
-                onChange={handleChange}
-                className={style.input}
-              />
-            </div>
-          </div>
-        )}
-        
+        {/* Sección de CV - Ahora es un componente modular */}
+        {section === "cv" && <EditCv user={user} handleChange={handleChange} />}
+
         {/* Sección para editar el Contacto */}
         {section === "contact" && (
           <div className={style.section}>
