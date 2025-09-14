@@ -1,14 +1,14 @@
 package com.webAppG9.backend.dto.skill;
 
-public class SkillDTO {
+public class SkillResponseDTO {
 
     private Integer id;
     private String name;
 
-    public SkillDTO() {
+    public SkillResponseDTO() {
     }
 
-    public SkillDTO(Integer id, String name) {
+    public SkillResponseDTO(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

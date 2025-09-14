@@ -1,6 +1,8 @@
 package com.webAppG9.backend.exception;
 
 import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.exception.recruiter.RecruiterSolicitedNotFoundException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +23,8 @@ public class GlobalExceptionHandler {
             UserNotFoundException.class,
             RecruiterSolicitedNotFoundException.class,
             RecruiterSulicitudExistingException.class,
-            EmailOrPasswordException.class
+            EmailOrPasswordException.class,
+            UserAlreadyAdminException.class
     })
     public ResponseEntity<ResponseDTO<Object>> handleJobApplicationExceptions(RuntimeException ex) {
         return ResponseEntity.status(400).body(new ResponseDTO<>(null, ex.getMessage()));

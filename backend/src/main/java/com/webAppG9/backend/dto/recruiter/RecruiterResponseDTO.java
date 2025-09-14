@@ -1,5 +1,8 @@
 package com.webAppG9.backend.dto.recruiter;
 
+import com.webAppG9.backend.Model.User;
+import com.webAppG9.backend.Model.Recruiter;
+
 public class RecruiterResponseDTO {
 
     private Integer userId;
@@ -9,6 +12,20 @@ public class RecruiterResponseDTO {
     private String website;
     private String description;
     private Boolean approved;
+
+    // Mapear para response DTO
+    public static RecruiterResponseDTO toResponseDTO(Recruiter recruiter) {
+        User user = recruiter.getUser();
+        RecruiterResponseDTO dto = new RecruiterResponseDTO();
+        dto.setUserId(user.getId());
+        dto.setUsername(user.getName());
+        dto.setUserEmail(user.getEmail());
+        dto.setCompanyName(recruiter.getCompanyName());
+        dto.setWebsite(recruiter.getWebsite());
+        dto.setDescription(recruiter.getDescription());
+        dto.setApproved(recruiter.getApproved());
+        return dto;
+    }
 
     // Getters y Setters
     public Integer getUserId() {

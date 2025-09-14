@@ -2,23 +2,23 @@ package com.webAppG9.backend.dto.admin;
 
 import com.webAppG9.backend.Model.Admin;
 
-public class AdminDTO {
+public class AdminRequestDTO {
 
     // atributos de la clase
     private Integer userId;
 
     // Constructor vacío para JPA
-    public AdminDTO() {
+    public AdminRequestDTO() {
     }
 
     // Constructor con parámetros
-    public AdminDTO(Integer userId) {
+    public AdminRequestDTO(Integer userId) {
         this.userId = userId;
     }
 
     // Creacion de la entidad
-    public static AdminDTO fromEntity(Admin admin) {
-        return new AdminDTO(
+    public static AdminRequestDTO fromEntity(Admin admin) {
+        return new AdminRequestDTO(
                 admin.getUser().getId());
     }
 

@@ -2,7 +2,7 @@ package com.webAppG9.backend.dto.skill;
 
 import java.util.Set;
 
-public class SkillCreateUpdateDTO {
+public class SkillRequestDTO {
 
     private String name;
 
@@ -16,10 +16,10 @@ public class SkillCreateUpdateDTO {
         this.skills = skills;
     }
 
-    public SkillCreateUpdateDTO() {
+    public SkillRequestDTO() {
     }
 
-    public SkillCreateUpdateDTO(String name) {
+    public SkillRequestDTO(String name) {
         this.name = name;
     }
 

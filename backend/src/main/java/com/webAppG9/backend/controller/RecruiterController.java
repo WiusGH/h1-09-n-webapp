@@ -35,7 +35,7 @@ public class RecruiterController {
     }
 
     // Crear post de trabajo
-    @PostMapping
+    @PostMapping("/createJob")
     public ResponseEntity<ResponseDTO<JobPostResponseDTO>> createJob(
             @RequestBody JobPostRequestDTO requestDTO) {
 

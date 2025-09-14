@@ -94,7 +94,18 @@ public class RecruiterService {
         Recruiter recruiter = recruiterRepository.findByUserId(userId)
                 .orElseThrow(RecruiterNotFoundException::new);
 
-        return recruiter.toResponseDTO();
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        RecruiterResponseDTO dto = new RecruiterResponseDTO();
+        dto.setUserId(user.getId());
+        dto.setUsername(user.getName() + " " + user.getLastName());
+        dto.setUserEmail(user.getEmail());
+        dto.setCompanyName(recruiter.getCompanyName());
+        dto.setWebsite(recruiter.getWebsite());
+        dto.setDescription(recruiter.getDescription());
+        dto.setApproved(recruiter.getApproved());
+        return dto;
     }
 
     // Actualizar perfil de recruiter
@@ -103,13 +114,19 @@ public class RecruiterService {
         Recruiter recruiter = recruiterRepository.findByUserId(userId)
                 .orElseThrow(RecruiterNotFoundException::new);
 
-        recruiter.setCompanyName(request.getCompanyName());
-        recruiter.setWebsite(request.getWebsite());
-        recruiter.setDescription(request.getDescription());
+        if (request.getCompanyName() != null) {
+            recruiter.setCompanyName(request.getCompanyName());
+        }
+        if (request.getWebsite() != null) {
+            recruiter.setWebsite(request.getWebsite());
+        }
+        if (request.getDescription() != null) {
+            recruiter.setDescription(request.getDescription());
+        }
 
         Recruiter updated = recruiterRepository.save(recruiter);
 
-        return updated.toResponseDTO();
+        return RecruiterResponseDTO.toResponseDTO(updated);
     }
 
     // Ver postulacion de un trabajo

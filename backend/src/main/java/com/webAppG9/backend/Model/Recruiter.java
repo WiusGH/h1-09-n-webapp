@@ -1,8 +1,5 @@
 package com.webAppG9.backend.Model;
 
-import com.webAppG9.backend.dto.recruiter.RecruiterRequestDTO;
-import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -12,9 +9,13 @@ public class Recruiter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Column(nullable = false)
     private String companyName;
+
+    @Column(nullable = false)
     private String website;
+
+    @Column(nullable = false)
     private String description;
 
     @OneToOne
@@ -24,28 +25,6 @@ public class Recruiter {
     private Boolean approved = false;
 
     public Recruiter() {
-    }
-
-    // Mapear para response DTO
-    public RecruiterResponseDTO toResponseDTO() {
-        RecruiterResponseDTO dto = new RecruiterResponseDTO();
-        dto.setUserId(this.user.getId());
-        dto.setUsername(this.user.getName());
-        dto.setUserEmail(this.user.getEmail());
-        dto.setCompanyName(this.companyName);
-        dto.setWebsite(this.website);
-        dto.setDescription(this.description);
-        dto.setApproved(this.approved);
-        return dto;
-    }
-
-    // Mapear para response DTO
-    public RecruiterRequestDTO toRequestDTO() {
-        RecruiterRequestDTO dto = new RecruiterRequestDTO();
-        dto.setCompanyName(this.companyName);
-        dto.setWebsite(this.website);
-        dto.setDescription(this.description);
-        return dto;
     }
 
     // Getters y Setters

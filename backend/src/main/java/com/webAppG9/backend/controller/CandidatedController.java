@@ -17,7 +17,7 @@ import com.webAppG9.backend.dto.candidates.CandidatedRequestDTO;
 import com.webAppG9.backend.dto.jobapplication.ApplicationStatusDTO;
 import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterRequestDTO;
-import com.webAppG9.backend.dto.skill.SkillCreateUpdateDTO;
+import com.webAppG9.backend.dto.skill.SkillRequestDTO;
 import com.webAppG9.backend.service.CandidatedService;
 import com.webAppG9.backend.service.RecruiterService;
 
@@ -66,7 +66,7 @@ public class CandidatedController {
     // Endpoint para actualizar skills
     @PutMapping("/skills")
     public ResponseEntity<ResponseDTO<String>> updateSkills(
-            @RequestBody SkillCreateUpdateDTO request) {
+            @RequestBody SkillRequestDTO request) {
 
         String updatedCandidate = candidatedService.updateSkillsByIds(request.getSkills());
         return ResponseEntity.ok(ResponseDTO.ok(updatedCandidate));

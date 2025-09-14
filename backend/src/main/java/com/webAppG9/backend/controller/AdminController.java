@@ -1,7 +1,8 @@
 package com.webAppG9.backend.controller;
 
 import com.webAppG9.backend.dto.ResponseDTO;
-import com.webAppG9.backend.dto.admin.AdminDTO;
+import com.webAppG9.backend.dto.admin.AdminRequestDTO;
+import com.webAppG9.backend.dto.admin.AdminResponseDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
 import com.webAppG9.backend.service.AdminService;
 
@@ -21,16 +22,25 @@ public class AdminController {
     }
 
     // Crear un admin para un usuario existente
+    // Controller
     @PostMapping
-    public ResponseEntity<ResponseDTO<Object>> createAdmin(@RequestBody AdminDTO adminDTO) {
-        return ResponseEntity.ok(new ResponseDTO<>(AdminDTO.fromEntity(adminService.createAdmin(adminDTO)), null));
+    public ResponseEntity<ResponseDTO<AdminResponseDTO>> createAdmin(@RequestBody AdminRequestDTO adminDTO) {
+        AdminResponseDTO admin = adminService.createAdmin(adminDTO);
+        return ResponseEntity.ok(ResponseDTO.ok(admin));
+    }
+
+    // Listar solicitudes pendientes
+    @GetMapping("/recruiters/pending")
+    public ResponseEntity<ResponseDTO<List<RecruiterResponseDTO>>> getPendingRecruiters() {
+        List<RecruiterResponseDTO> pending = adminService.getPendingRecruiters();
+        return ResponseEntity.ok(ResponseDTO.ok(pending));
     }
 
     // Aprobar solicitud de recruiter
     @PatchMapping("/recruiters/approve/{userId}")
-    public ResponseEntity<ResponseDTO<String>> approveRecruiter(@PathVariable Integer userId) {
-        adminService.approveRecruiter(userId);
-        return ResponseEntity.ok(new ResponseDTO<>("Usuario aprobado como Recruiter.", null));
+    public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> approveRecruiter(@PathVariable Integer userId) {
+        RecruiterResponseDTO recruiter = adminService.approveRecruiter(userId);
+        return ResponseEntity.ok(ResponseDTO.ok(recruiter));
     }
 
     // Rechazar solicitud de recruiter
@@ -40,15 +50,8 @@ public class AdminController {
         return ResponseEntity.ok(new ResponseDTO<>("Solicitud de recruiter rechazada.", null));
     }
 
-    // Listar solicitudes pendientes
-    @GetMapping("/recruiters/pending")
-    public ResponseEntity<ResponseDTO<List<RecruiterResponseDTO>>> getPendingRecruiters() {
-        List<RecruiterResponseDTO> pending = adminService.getPendingRecruiters();
-        return ResponseEntity.ok(new ResponseDTO<>(pending, null));
-    }
-
     // Listar todos los recruiters aprobados (para networking)
-    @GetMapping("/all")
+    @GetMapping("/recruiters/all")
     public ResponseEntity<ResponseDTO<List<RecruiterResponseDTO>>> getAllRecruiters() {
         List<RecruiterResponseDTO> recruiters = adminService.getAllApprovedRecruiters();
         return ResponseEntity.ok(new ResponseDTO<>(recruiters, null));

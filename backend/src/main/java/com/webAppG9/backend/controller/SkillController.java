@@ -1,7 +1,7 @@
 package com.webAppG9.backend.controller;
 
-import com.webAppG9.backend.dto.skill.SkillCreateUpdateDTO;
-import com.webAppG9.backend.dto.skill.SkillDTO;
+import com.webAppG9.backend.dto.skill.SkillRequestDTO;
+import com.webAppG9.backend.dto.skill.SkillResponseDTO;
 import com.webAppG9.backend.service.SkillService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +20,24 @@ public class SkillController {
 
     // Listar todas las skills
     @GetMapping
-    public ResponseEntity<List<SkillDTO>> getAllSkills() {
+    public ResponseEntity<List<SkillResponseDTO>> getAllSkills() {
         return ResponseEntity.ok(skillService.getAllSkills());
     }
 
     // Crear nueva skill
     @PostMapping
-    public ResponseEntity<SkillDTO> createSkill(@RequestBody SkillCreateUpdateDTO request) {
-        SkillDTO created = skillService.createSkill(request);
+    public ResponseEntity<SkillResponseDTO> createSkill(@RequestBody SkillRequestDTO request) {
+        SkillResponseDTO created = skillService.createSkill(request);
         return ResponseEntity.ok(created);
     }
 
     // Actualizar skill existente
     @PutMapping("/{id}")
-    public ResponseEntity<SkillDTO> updateSkill(
+    public ResponseEntity<SkillResponseDTO> updateSkill(
             @PathVariable Integer id,
-            @RequestBody SkillCreateUpdateDTO request) {
+            @RequestBody SkillRequestDTO request) {
 
-        SkillDTO updated = skillService.updateSkill(id, request);
+        SkillResponseDTO updated = skillService.updateSkill(id, request);
         return ResponseEntity.ok(updated);
     }
 }

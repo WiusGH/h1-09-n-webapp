@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.webAppG9.backend.Model.Admin;
 import com.webAppG9.backend.Model.Recruiter;
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.dto.admin.AdminDTO;
+import com.webAppG9.backend.dto.admin.AdminRequestDTO;
+import com.webAppG9.backend.dto.admin.AdminResponseDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
-import com.webAppG9.backend.exception.CandidateNotFoundException;
-import com.webAppG9.backend.exception.RecruiterSolicitedNotFoundException;
+import com.webAppG9.backend.exception.UserAlreadyAdminException;
+import com.webAppG9.backend.exception.UserNotFoundException;
+import com.webAppG9.backend.exception.recruiter.RecruiterSolicitedNotFoundException;
 import com.webAppG9.backend.repository.AdminRepository;
 import com.webAppG9.backend.repository.RecruiterRepository;
 import com.webAppG9.backend.repository.UserRepository;
@@ -34,27 +36,35 @@ public class AdminService {
         this.recruiterRepository = recruiterRepository;
     }
 
-    // metodo para crear usuario admin con sus atributos
-    public Admin createAdmin(AdminDTO adminDTO) {
+    // Aprobar solicitud a Admin
+    public AdminResponseDTO createAdmin(AdminRequestDTO adminDTO) {
         // Verificar que el usuario exista
         User user = userRepository.findById(adminDTO.getUserId())
-                .orElseThrow(CandidateNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
 
-        // Verificar que no sea ya admin
-        if (adminRepository.existsById(adminDTO.getUserId())) {
-            throw new RuntimeException("Este usuario ya es admin");
+        // Verificar que no sea ya admin (mejor por user_id, no por id de admin)
+        if (adminRepository.findByUserId(user.getId()).isPresent()) {
+            throw new UserAlreadyAdminException();
         }
 
-        // Crear Admin
+        // Crear Admin y asociar al User
         Admin admin = new Admin();
-        admin.setUser(user); // asocia la entidad User
+        admin.setUser(user);
 
-        // actualizar rol en User
+        // Actualizar rol en User
         user.setRole(User.Role.ADMIN);
         userRepository.save(user);
 
-        // Guardar el usuario admon
-        return adminRepository.save(admin);
+        // Guardar Admin
+        Admin savedAdmin = adminRepository.save(admin);
+
+        // Convertir a DTO
+        return new AdminResponseDTO(
+                savedAdmin.getId(),
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole().name());
     }
 
     // Listar solicitudes pendientes
@@ -63,21 +73,39 @@ public class AdminService {
         return recruiterRepository.findAll()
                 .stream()
                 .filter(r -> r.getApproved() != null && !r.getApproved())
-                .map(Recruiter::toResponseDTO)
+                .map(RecruiterResponseDTO::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
     // Aprobar recruiter
     @Transactional
-    public void approveRecruiter(Integer userId) {
+    public RecruiterResponseDTO approveRecruiter(Integer userId) {
+        // Buscar recruiter por userId
         Recruiter recruiter = recruiterRepository.findByUserId(userId)
                 .orElseThrow(RecruiterSolicitedNotFoundException::new);
 
+        // Marcar como aprobado
         recruiter.setApproved(true);
-        recruiter.getUser().setRole(User.Role.RECRUITER);
 
+        // Cambiar rol del usuario
+        User user = recruiter.getUser();
+        user.setRole(User.Role.RECRUITER);
+
+        // Guardar cambios
         recruiterRepository.save(recruiter);
-        userRepository.save(recruiter.getUser());
+        userRepository.save(user);
+
+        // Mapear a DTO
+        RecruiterResponseDTO dto = new RecruiterResponseDTO();
+        dto.setUserId(user.getId());
+        dto.setUsername(user.getName() + " " + user.getLastName());
+        dto.setUserEmail(user.getEmail());
+        dto.setCompanyName(recruiter.getCompanyName());
+        dto.setWebsite(recruiter.getWebsite());
+        dto.setDescription(recruiter.getDescription());
+        dto.setApproved(recruiter.getApproved());
+
+        return dto;
     }
 
     // Rechazar recruiter
@@ -95,7 +123,7 @@ public class AdminService {
         return recruiterRepository.findAll()
                 .stream()
                 .filter(r -> Boolean.TRUE.equals(r.getApproved()))
-                .map(Recruiter::toResponseDTO)
+                .map(RecruiterResponseDTO::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
