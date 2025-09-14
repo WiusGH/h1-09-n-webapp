@@ -123,11 +123,11 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
                   />
                 </div>
                 <div className={style.formGroup}>
-                  <label htmlFor="address">Biografía:</label>
+                  <label htmlFor="biography">Biografía:</label>
                   <textarea
-                    id="address"
-                    name="address"
-                    value={user.address || ""}
+                    id="biography"
+                    name="biography"
+                    value={user.biography || ""}
                     onChange={handleChange}
                     className={style.textarea}
                   />
@@ -156,6 +156,28 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
                 id="phoneNumber"
                 name="phoneNumber"
                 value={user.phoneNumber || ""}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="country">País:</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                value={user.country || ""}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="address">Dirección:</label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                value={user.address || ""}
                 onChange={handleChange}
                 className={style.input}
               />
