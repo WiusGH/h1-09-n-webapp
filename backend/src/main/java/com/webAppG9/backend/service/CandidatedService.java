@@ -52,11 +52,24 @@ public class CandidatedService {
         private User getCurrentUser() {
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 String email = auth.getName();
+
                 return userRepository.findByEmail(email)
                                 .orElseThrow(CandidateNotFoundException::new);
         }
 
-        // Crear candidato asociado al usuario autenticado
+        // Crear candidato asociado a un usuario desde el registro
+        public Candidated createCandidateForRegister(User user) {
+                try {
+                        Candidated candidate = new Candidated();
+                        candidate.setUser(user);
+                        candidate.setActive(true);
+                        return candidatedRepository.save(candidate);
+                } catch (Exception e) {
+                        throw new RuntimeException("Error creando perfil de candidato", e);
+                }
+        }
+
+        // Completar CV asociado al usuario autenticado
         public CandidateResponseDTO createCandidateForUser(CandidatedRequestDTO candidateRequest) {
                 User user = getCurrentUser();
 

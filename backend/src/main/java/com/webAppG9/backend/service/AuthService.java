@@ -1,7 +1,7 @@
 package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.Model.User.Role;
+// import com.webAppG9.backend.Model.User.Role;
 import com.webAppG9.backend.dto.user.UserDTO;
 import com.webAppG9.backend.exception.EmailOrPasswordException;
 import com.webAppG9.backend.dto.auth.LoginResponseDTO;
@@ -23,6 +23,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final CandidatedService candidatedService;
 
     public AuthService(UserRepository userRepository,
             CandidatedService candidatedService,
@@ -31,6 +32,8 @@ public class AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.candidatedService = candidatedService;
+
     }
 
     // Registrar usuario
@@ -48,11 +51,14 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setProfileCompleted(false);
-        user.setRole(Role.CANDIDATE); // rol por defecto
+        // user.setRole(Role.CANDIDATE); // se asigna en el modelo
         user.setCreatedAt(LocalDateTime.now());
 
         // Guardar en DB
         User savedUser = userRepository.save(user);
+
+        // Crear candidato asociado al user sy activarlo
+        candidatedService.createCandidateForRegister(savedUser);
 
         // Retornar el usuario completo como DTO
         return new RegisterResponseDTO(

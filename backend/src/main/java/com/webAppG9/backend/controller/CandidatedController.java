@@ -33,7 +33,7 @@ public class CandidatedController {
         this.recruiterService = recruiterService;
     }
 
-    // Convertir en candidato mediante cb
+    // Convertir en candidato mediante cv
     @PostMapping
     public ResponseEntity<ResponseDTO<CandidateResponseDTO>> createCandidateForUser(
             @RequestBody CandidatedRequestDTO candidateRequest) {

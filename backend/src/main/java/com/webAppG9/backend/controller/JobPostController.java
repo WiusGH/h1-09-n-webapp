@@ -56,7 +56,19 @@ public class JobPostController {
     public ResponseEntity<ResponseDTO<List<JobPostResponseDTO>>> searchJobPostsBySkill(
             @RequestParam String query) {
 
-        List<JobPostResponseDTO> results = jobPostService.searchBySkillKeyword(query);
+        List<JobPostResponseDTO> results = jobPostService.searchBySkillQuery(query);
+
+        return ResponseEntity.ok(ResponseDTO.ok(results));
+    }
+
+    // Buscar posteos de trabajo por input busqueda
+    @GetMapping("/search-job")
+    public ResponseEntity<ResponseDTO<List<JobPostResponseDTO>>> searchJobPostsByKeyword(
+            @RequestParam String keyword) {
+
+        String normalizedKeyword = keyword.trim().toLowerCase();
+
+        List<JobPostResponseDTO> results = jobPostService.searchByJobKeyword(normalizedKeyword);
 
         return ResponseEntity.ok(ResponseDTO.ok(results));
     }

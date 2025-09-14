@@ -52,6 +52,7 @@ public class JobApplicationService {
                 .orElseThrow(CandidateNotFoundException::new);
     }
 
+    // Aplicar a un trabajo
     @Transactional
     public ResponseDTO<JobApplicationResponseDTO> applyToJob(Integer jobPostId) {
         User user = getCurrentUser();

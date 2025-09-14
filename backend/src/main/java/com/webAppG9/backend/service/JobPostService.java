@@ -89,8 +89,15 @@ public class JobPostService {
     }
 
     // Buscar trabajos por habilidades en el buscador
-    public List<JobPostResponseDTO> searchBySkillKeyword(String query) {
-        return jobPostRepository.findBySkillKeyword(query)
+    public List<JobPostResponseDTO> searchBySkillQuery(String query) {
+        return jobPostRepository.findBySkillQuery(query)
+                .stream()
+                .map(JobPostResponseDTO::new) // convierto entidad -> DTO
+                .toList();
+    }
+
+    public List<JobPostResponseDTO> searchByJobKeyword(String keyword) {
+        return jobPostRepository.findByJobKeyword(keyword)
                 .stream()
                 .map(JobPostResponseDTO::new) // convierto entidad -> DTO
                 .toList();

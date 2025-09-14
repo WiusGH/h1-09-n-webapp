@@ -31,19 +31,16 @@ public class CandidatedRequestDTO {
 
     // Constructor desde entidad
     public CandidatedRequestDTO(Candidated candidated) {
-        this.candidateId = candidated.getId();
         this.title = candidated.getTitle();
         this.address = candidated.getAddress();
         this.country = candidated.getCountry();
         this.phoneNumber = candidated.getPhoneNumber();
-        this.email = candidated.getUser() != null ? candidated.getUser().getEmail() : null;
         this.dateOfBirth = candidated.getDateOfBirth();
         this.education = candidated.getEducation();
         this.experience = candidated.getExperience();
         this.linkedinUrl = candidated.getLinkedinUrl();
         this.resumeUrl = candidated.getResumeUrl();
         this.summary = candidated.getSummary();
-        this.active = candidated.getActive();
         this.skills = candidated.getSkills() != null
                 ? candidated.getSkills().stream().map(Skill::getId).collect(Collectors.toSet())
                 : null;
