@@ -1,4 +1,4 @@
-package com.webAppG9.backend.exception;
+package com.webAppG9.backend.exception.candidate;
 
 public class MaxCandidatesReachedException extends RuntimeException {
     public MaxCandidatesReachedException() {

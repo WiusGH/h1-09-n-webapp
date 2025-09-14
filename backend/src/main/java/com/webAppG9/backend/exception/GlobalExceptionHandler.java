@@ -1,7 +1,19 @@
 package com.webAppG9.backend.exception;
 
 import com.webAppG9.backend.dto.ResponseDTO;
+import com.webAppG9.backend.exception.auth.EmailOrPasswordException;
+import com.webAppG9.backend.exception.candidate.CandidateAlreadyAppliedException;
+import com.webAppG9.backend.exception.candidate.CandidateNotFoundException;
+import com.webAppG9.backend.exception.candidate.MaxCandidatesReachedException;
+import com.webAppG9.backend.exception.candidate.ProfileAlreadyCompletedException;
+import com.webAppG9.backend.exception.jobapplication.JobApplicationNotFoundException;
+import com.webAppG9.backend.exception.jobpost.JobPostInactiveException;
+import com.webAppG9.backend.exception.jobpost.JobPostNotFoundException;
+import com.webAppG9.backend.exception.recruiter.RecruiterNotFoundException;
 import com.webAppG9.backend.exception.recruiter.RecruiterSolicitedNotFoundException;
+import com.webAppG9.backend.exception.recruiter.RecruiterSulicitudExistingException;
+import com.webAppG9.backend.exception.user.UserAlreadyAdminException;
+import com.webAppG9.backend.exception.user.UserNotFoundException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,4 +1,4 @@
-package com.webAppG9.backend.exception;
+package com.webAppG9.backend.exception.user;
 
 public class UserAlreadyAdminException extends RuntimeException {
 

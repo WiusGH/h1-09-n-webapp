@@ -3,7 +3,7 @@ package com.webAppG9.backend.service;
 import com.webAppG9.backend.Model.User;
 // import com.webAppG9.backend.Model.User.Role;
 import com.webAppG9.backend.dto.user.UserResponseDTO;
-import com.webAppG9.backend.exception.EmailOrPasswordException;
+import com.webAppG9.backend.exception.auth.EmailOrPasswordException;
 import com.webAppG9.backend.dto.auth.LoginResponseDTO;
 import com.webAppG9.backend.dto.auth.RegisterRequestDTO;
 import com.webAppG9.backend.dto.auth.RegisterResponseDTO;

@@ -1,4 +1,4 @@
-package com.webAppG9.backend.exception;
+package com.webAppG9.backend.exception.recruiter;
 
 public class RecruiterNotFoundException extends RuntimeException {
 

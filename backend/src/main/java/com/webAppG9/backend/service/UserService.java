@@ -3,7 +3,7 @@ package com.webAppG9.backend.service;
 import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.user.UserRequestDTO;
 import com.webAppG9.backend.dto.user.UserResponseDTO;
-import com.webAppG9.backend.exception.UserNotFoundException;
+import com.webAppG9.backend.exception.user.UserNotFoundException;
 import com.webAppG9.backend.repository.UserRepository;
 
 import org.springframework.stereotype.Service;

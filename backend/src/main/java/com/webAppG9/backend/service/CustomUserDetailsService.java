@@ -1,7 +1,7 @@
 package com.webAppG9.backend.service;
 
 import com.webAppG9.backend.Model.User;
-import com.webAppG9.backend.exception.CandidateNotFoundException;
+import com.webAppG9.backend.exception.candidate.CandidateNotFoundException;
 import com.webAppG9.backend.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;

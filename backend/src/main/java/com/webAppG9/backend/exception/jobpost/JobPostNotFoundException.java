@@ -1,4 +1,4 @@
-package com.webAppG9.backend.exception;
+package com.webAppG9.backend.exception.jobpost;
 
 public class JobPostNotFoundException extends RuntimeException {
     public JobPostNotFoundException() {

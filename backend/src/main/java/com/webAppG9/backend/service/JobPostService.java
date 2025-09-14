@@ -11,8 +11,8 @@ import com.webAppG9.backend.Model.JobPost;
 import com.webAppG9.backend.Model.Skill;
 import com.webAppG9.backend.dto.jobpost.JobPostRequestDTO;
 import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
-import com.webAppG9.backend.exception.CandidateNotFoundException;
-import com.webAppG9.backend.exception.JobPostNotFoundException;
+import com.webAppG9.backend.exception.candidate.CandidateNotFoundException;
+import com.webAppG9.backend.exception.jobpost.JobPostNotFoundException;
 import com.webAppG9.backend.repository.JobPostRepository;
 import com.webAppG9.backend.repository.SkillRepository;
 
