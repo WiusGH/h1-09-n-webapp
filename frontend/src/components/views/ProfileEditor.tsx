@@ -4,6 +4,7 @@ import { getUserData } from "../../utils/userStorage";
 import type { UserData, Project } from "../../types/Types";
 import GenericButton from "../buttons/GenericButton";
 import SkillTag from "../buttons/SkillTag";
+import EditCv from "./EditCv"; 
 
 interface ProfileEditorProps {
   section: string;
@@ -70,25 +71,31 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
     e.preventDefault();
     onSave(user);
   };
-  
+
   return (
     <div className={style.container}>
       <form onSubmit={handleSubmit}>
-        {/* Renderiza la sección de edición basada en la prop `section` */}
+        {/* Nueva sección: Editar Foto de Perfil */}
+        {section === "image" && (
+          <div className={style.section}>
+            <h2>Editar Foto de Perfil</h2>
+            <div className={style.formGroup}>
+              <label htmlFor="image">URL de la Imagen de Perfil:</label>
+              <input
+                type="text"
+                id="image"
+                name="image"
+                value={user.image || ""}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+          </div>
+        )}
+
          {section === "personal" && (
               <div className={style.section}>
                 <h2>Editar Información Personal</h2>
-                <div className={style.formGroup}>
-                  <label htmlFor="image">URL de la Imagen de Perfil:</label>
-                  <input
-                    type="text"
-                    id="image"
-                    name="image"
-                    value={user.image || ""}
-                    onChange={handleChange}
-                    className={style.input}
-                  />
-                </div>
                 <div className={style.formGroup}>
                   <label htmlFor="firstName">Nombre:</label>
                   <input
@@ -123,57 +130,19 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
                   />
                 </div>
                 <div className={style.formGroup}>
-                  <label htmlFor="address">Biografía:</label>
+                  <label htmlFor="biography">Biografía:</label>
                   <textarea
-                    id="address"
-                    name="address"
-                    value={user.address || ""}
+                    id="biography"
+                    name="biography"
+                    value={user.biography || ""}
                     onChange={handleChange}
                     className={style.textarea}
                   />
                 </div>
               </div>
           )}
-
-        {section === "contact" && (
-          <div className={style.section}>
-            <h2>Editar Contacto y CV</h2>
-            <div className={style.formGroup}>
-              <label htmlFor="email">Correo Electrónico:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
-                className={style.input}
-              />
-            </div>
-            <div className={style.formGroup}>
-              <label htmlFor="phoneNumber">Teléfono:</label>
-              <input
-                type="text"
-                id="phoneNumber"
-                name="phoneNumber"
-                value={user.phoneNumber || ""}
-                onChange={handleChange}
-                className={style.input}
-              />
-            </div>
-            <div className={style.formGroup}>
-              <label htmlFor="cvUrl">URL del CV:</label>
-              <input
-                type="text"
-                id="cvUrl"
-                name="cvUrl"
-                value={user.cvUrl || ""}
-                onChange={handleChange}
-                className={style.input}
-              />
-            </div>
-          </div>
-        )}
         
+        {/* Secciones de Skills y Portafolio sin cambios */}
         {section === "skills" && (
           <div className={style.section}>
             <h2>Editar Skills</h2>
@@ -226,6 +195,60 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
                 className={style.input}
               />
               <GenericButton text="Añadir Proyecto" onClick={handleAddProject} />
+            </div>
+          </div>
+        )}
+
+        {/* Sección de CV - Ahora es un componente modular */}
+        {section === "cv" && <EditCv user={user} handleChange={handleChange} />}
+
+        {/* Sección para editar el Contacto */}
+        {section === "contact" && (
+          <div className={style.section}>
+            <h2>Editar Contacto</h2>
+            <div className={style.formGroup}>
+              <label htmlFor="email">Correo Electrónico:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="phoneNumber">Teléfono:</label>
+              <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={user.phoneNumber || ""}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="country">País:</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                value={user.country || ""}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="address">Dirección:</label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                value={user.address || ""}
+                onChange={handleChange}
+                className={style.input}
+              />
             </div>
           </div>
         )}

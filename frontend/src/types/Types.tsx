@@ -19,9 +19,9 @@ export interface UserData {
   skills?: string[];
   portfolio?: Project[];
   cvUrl?: string;
+  biography?: string;
 }
 
-// Existing jobOfferData interface
 export interface jobOfferData {
   id: string;
   title: string;

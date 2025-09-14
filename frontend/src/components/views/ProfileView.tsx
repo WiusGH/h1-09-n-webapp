@@ -20,7 +20,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
     );
   }
 
-  // Función para capitalizar el rol
   const formatRole = (role: string) => {
     return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
   };
@@ -28,38 +27,34 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
   return (
     <div className={style.container}>
       <div className={style.profile}>
-        <img
-          src={user.image || `https://avatar.iran.liara.run/public/${user.id}`}
-          alt="Foto de perfil"
-        />
+        <div className={style.imageContainer}>
+          <img
+            src={user.image || `https://avatar.iran.liara.run/public/${user.id}`}
+            alt="Foto de perfil"
+          />
+          <a onClick={() => onEdit("image")} className={style.editImageIcon}>
+            <LuPencilLine />
+          </a>
+        </div>
         <div className={style.info}>
-          <span>
+          <div className={style.header}>
             <h3>
               {user.firstName} {user.lastName}
             </h3>
-            <a onClick={() => onEdit("personal")}>
-              <LuPencilLine />
-            </a>
-          </span>
-          {/* Mostramos el rol del usuario aquí */}
+          </div>
           <p className={style.role}>{formatRole(user.role)}</p>
-          <span>
-            <p>{user.title || "Sin ocupación"}</p>
-            <a onClick={() => onEdit("personal")}>
-              <LuPencilLine />
-            </a>
-          </span>
+          <p>{user.title || "Sin ocupación"}</p>
         </div>
         <div style={{ flex: 1 }}></div>
         <ul className={style.options}>
           <li>
-            <a onClick={() => onEdit("contact")}>Editar contacto</a>
+            <a onClick={() => onEdit("personal")}>Editar Perfil</a>
           </li>
           <li>
-            <a onClick={() => onEdit("personal")}>Editar foto</a>
+            <a onClick={() => onEdit("contact")}>Editar Contacto</a>
           </li>
           <li>
-            <a onClick={() => onEdit("cv")}>Editar cv</a>
+            <a onClick={() => onEdit("cv")}>Editar CV</a>
           </li>
         </ul>
       </div>
@@ -74,8 +69,15 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
         </a>
       </div>
 
-      <textarea className={style.description} value={user.address || "Descripción..."} readOnly></textarea>
-      
+      <div className={style.bioContainer}>
+        <h3>Biografía:</h3>
+        <textarea
+          className={style.description}
+          value={user.biography || "Descripción..."}
+          readOnly
+        ></textarea>
+      </div>
+
       <div className={style.portfolioHeader}>
         <h3>Portafolio:</h3>
         <GenericButton text="Agregar" onClick={() => onEdit("portfolio")} />
