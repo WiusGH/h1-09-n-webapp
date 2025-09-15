@@ -48,3 +48,8 @@ export function clearUserData() {
 export function isLoggedIn(): boolean {
   return !!getUserData();
 }
+
+export function isProfileComplete(): boolean {
+  const userData = getUserData();
+  return !!userData?.country && !!userData?.address && !!userData?.phoneNumber;
+}

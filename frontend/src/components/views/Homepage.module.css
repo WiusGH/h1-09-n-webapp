@@ -33,8 +33,17 @@
   width: fit-content;
 }
 
-.offer p {
-  line-height: 0.3;
+.offer p,
+a {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+}
+
+.offer:hover {
+  scale: 1.1;
 }
 
 .links {

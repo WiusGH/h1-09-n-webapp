@@ -1,4 +1,5 @@
-import { isLoggedIn } from "../../utils/userStorage";
+import { Link } from "react-router-dom";
+import { isLoggedIn, isProfileComplete } from "../../utils/userStorage";
 import style from "./Homepage.module.css";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
@@ -7,7 +8,7 @@ const Homepage = () => {
     <section className={style.container}>
       <div className={`${style.section} ${style.offers}`}>
         {/* Mockup de momento pero lo ideal es que obtengo 3 empleos al azar de la base de datos según las habilidades del usuario */}
-        {isLoggedIn() ? (
+        {isLoggedIn() && isProfileComplete() ? (
           <>
             <h3>Ofertas para tí</h3>
             <div className={style.offer}>
@@ -21,9 +22,11 @@ const Homepage = () => {
             </div>
           </>
         ) : (
-          <h3>
-            Inicia sesión y completa tu perfil para ver las ofertas recomendadas
-          </h3>
+          <Link to={!isLoggedIn() ? "/login" : "/completar-perfil"}>
+            {!isLoggedIn()
+              ? "Inicia sesión para ver las ofertas recomendadas"
+              : "Completa tu perfil para ver las ofertas recomendadas"}
+          </Link>
         )}
       </div>
       {/* Mockup para agregar contenido al homepage y que no necesitará uso de API para el MVP */}

@@ -18,7 +18,7 @@ const LoginForm = () => {
 
   // OJO: solo temporal mientras estamos en fase de desarrollo
   const testUsers = {
-    candidato: { email: "candidato@test.com", password: "123456" },
+    candidato: { email: "johndoe@test.com", password: "123456" },
     reclutador: { email: "reclutador@test.com", password: "123456" },
     admin: { email: "admin@alura.com", password: "admin6705" },
   };

@@ -14,7 +14,7 @@ interface JobPostData {
 
 export const createJobPost = async (jobPost: JobPostData) => {
   const userData = getUserData();
-  if (!userData) throw new Error("User data not found");
+  if (!userData) throw new Error("Datos de usuario no encontrados");
 
   jobPost.recruiterName = `${userData.firstName} ${userData.lastName}`;
   jobPost.companyName = userData.companyName;
