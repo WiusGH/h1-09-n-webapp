@@ -14,6 +14,7 @@ import Register from "./components/forms/Register";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import CreateJobOffer from "./pages/CreateJobOffer";
 
 // Carga del tema
 function App() {
@@ -75,6 +76,7 @@ function App() {
             {/* Rutas para reclutadores y admins */}
             <Route element={<ProtectedRoute roles={["RECRUITER", "ADMIN"]} />}>
               {/* <Route path="/candidatos" element={<Candidatos />} /> */}
+              <Route path="/nueva-oferta" element={<CreateJobOffer />} />
             </Route>
             {/* Rutas solo para admins y admins */}
             <Route element={<ProtectedRoute roles={["ADMIN"]} />}>

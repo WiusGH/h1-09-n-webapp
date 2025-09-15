@@ -20,6 +20,9 @@ export interface UserData {
   portfolio?: Project[];
   cvUrl?: string;
   biography?: string;
+  companyName?: string;
+  companyCountry?: string;
+  companyEmail?: string;
 }
 
 export interface jobOfferData {
