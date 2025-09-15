@@ -22,7 +22,7 @@ const UserInfo = () => {
         <img src="https://avatar.iran.liara.run/public/29"></img>
         <div>
           <h3>{`${user.firstName} ${user.lastName}`}</h3>
-          <h4>{user.title}asd</h4>
+          <h4>{user.title}</h4>
           <p>{user.role.toLocaleLowerCase()}</p>
         </div>
       </section>
