@@ -82,12 +82,14 @@ const LoginForm = () => {
       >
         <FormInput
           type="email"
+          label="Correo"
           placeholder="Correo"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <FormInput
           type="password"
+          label="Contraseña"
           placeholder="Contraseña"
           value={password}
           showPassword={showPassword}

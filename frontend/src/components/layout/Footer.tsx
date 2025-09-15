@@ -18,7 +18,7 @@ const navLinks: Record<string, { to: string; label: string }[]> = {
   RECRUITER: [
     { to: "/", label: "Inicio" },
     { to: "/profile", label: "Perfil" },
-    { to: "/empleos/new", label: "Publicar empleo" },
+    { to: "/nueva-oferta", label: "Publicar empleo" },
     { to: "/candidatos", label: "Buscar candidatos" },
   ],
   ADMIN: [

@@ -5,6 +5,12 @@
   width: 100%;
 }
 
+.label {
+  color: var(--color-text-secondary);
+  margin-left: 12px;
+  width: 100%;
+}
+
 .input {
   background-color: var(--color-secondary);
   color: var(--text-color);
