@@ -10,7 +10,7 @@ import Empleos from "./pages/Empleos";
 import Notificaciones from "./pages/Notificaciones";
 import "./index.css";
 import Login from "./pages/Login";
-import Register from "./components/forms/Register";
+import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./auth/ProtectedRoute";
