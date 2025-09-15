@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import style from "./Form.module.css";
 import { useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../../utils/userStorage";
 import FormInput from "../inputs/FormInput";
 import GenericButton from "../buttons/GenericButton";
 import SkillsInput from "../inputs/SkillsInput";
@@ -27,12 +26,6 @@ const CompleteProfileForm = () => {
       setLoading(false);
     }
   }
-
-  useEffect(() => {
-    if (!isLoggedIn()) {
-      navigate("/");
-    }
-  }, [navigate]);
 
   return (
     <section className={`${style.container} ${loading ? style.loading : ""}`}>
@@ -86,7 +79,7 @@ const CompleteProfileForm = () => {
           onChange={(e) => setCvurl(e.target.value)}
         />
 
-        <GenericButton text="Iniciar sesión" submit />
+        <GenericButton text="Guardar" submit />
       </form>
       <span className={style.errorContainer}>
         {errorMessage && <p className={style.error}>{errorMessage}</p>}

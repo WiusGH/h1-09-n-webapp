@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import CreateJobOffer from "./pages/CreateJobOffer";
 import CompleteProfile from "./pages/CompleteProfile";
+import RequestRecuiterUserType from "./pages/RequestRecuiterUserType";
 
 // Carga del tema
 function App() {
@@ -65,6 +66,13 @@ function App() {
             <Route path="*" element={<NotFound />} />{" "}
             {/* TODO: crear vista 404 */}
             {/* Rutas para usuarios logueados */}
+            <Route element={<ProtectedRoute roles={["CANDIDATE"]} />}>
+              <Route path="/completar-perfil" element={<CompleteProfile />} />
+              <Route
+                path="/solicitar-ser-recruiter"
+                element={<RequestRecuiterUserType />}
+              />
+            </Route>
             <Route
               element={
                 <ProtectedRoute roles={["CANDIDATE", "RECRUITER", "ADMIN"]} />
@@ -73,7 +81,6 @@ function App() {
               <Route path="/perfil" element={<Profile />} />
               <Route path="/mensajes" element={<Mensajes />} />
               <Route path="/notifiaciones" element={<Notificaciones />} />
-              <Route path="/completar-perfil" element={<CompleteProfile />} />
             </Route>
             {/* Rutas para reclutadores y admins */}
             <Route element={<ProtectedRoute roles={["RECRUITER", "ADMIN"]} />}>

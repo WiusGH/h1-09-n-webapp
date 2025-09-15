@@ -57,9 +57,9 @@
 .info .role {
   font-size: 0.9rem;
   font-weight: bold;
-  color: var(--color-text-secondary); 
+  color: var(--color-text-secondary);
   margin: 5px 0;
-  line-height: 1; 
+  line-height: 1;
 }
 
 .options {
@@ -104,4 +104,18 @@
   display: flex;
   gap: 1%;
   flex-wrap: wrap;
+}
+
+.recruiterLinkContainer {
+  margin: 35px 0 5px 0;
+}
+.recruiterButton {
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: 12px;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 8px 16px;
+  line-height: 1;
 }
