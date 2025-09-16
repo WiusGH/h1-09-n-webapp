@@ -50,6 +50,13 @@ const socialLinks = [
   { href: "https://www.twitter.com", icon: <FaSquareXTwitter /> },
 ];
 
+/**
+ * Componente que renderiza el pie de página con enlaces
+ * personalizados según el tipo de usuario logueado.
+ *
+ * @returns {JSX.Element} El pie de página con enlaces
+ * personalizados.
+ */
 const Footer = () => {
   const [user, setUser] = useState<UserData | null>(null);
 
@@ -66,7 +73,7 @@ const Footer = () => {
   return (
     <footer className={style.footer}>
       <div className={style.links}>
-        <section>
+        <nav aria-label="Mapa del sitio">
           <h3>Mapa del sitio</h3>
           <ul>
             {links.map(({ to, label }) => (
@@ -75,9 +82,9 @@ const Footer = () => {
               </li>
             ))}
           </ul>
-        </section>
+        </nav>
         <hr />
-        <section>
+        <section aria-label="Contacto">
           <h3>Contáctanos</h3>
           {contactLinks.map(({ href, label, icon }) => (
             <a
@@ -91,7 +98,7 @@ const Footer = () => {
           ))}
         </section>
         <hr />
-        <section>
+        <section aria-label="Redes sociales">
           <h3>Nuestras redes</h3>
           <div className={style.socials}>
             {socialLinks.map(({ href, icon }, i) => (
@@ -102,7 +109,7 @@ const Footer = () => {
           </div>
         </section>
       </div>
-      <p>©2025 - Todos los derechos reservados</p>
+      <p>©{new Date().getFullYear()} - Todos los derechos reservados</p>
     </footer>
   );
 };

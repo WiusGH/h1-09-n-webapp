@@ -37,13 +37,13 @@ function App() {
   let searchPlaceholder = "Buscar...";
   let navigateTo = "search";
 
-  if (userType === "candidate") {
+  if (userType === "CANDIDATE") {
     searchPlaceholder = "Buscar empleos";
     navigateTo = "empleos";
-  } else if (userType === "recruiter") {
+  } else if (userType === "RECRUITER") {
     searchPlaceholder = "Buscar candidatos";
     navigateTo = "candidatos";
-  } else if (userType === "admin") {
+  } else if (userType === "ADMIN") {
     searchPlaceholder = "Buscar usuarios";
     navigateTo = "usuarios";
   }
@@ -51,18 +51,15 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="app-container">
+      <main className="app-container">
         <Header placeholder={searchPlaceholder} navigateTo={navigateTo} />
-        <main className="app-main">
+        <div className="app-main">
           <Routes>
             {/* Rutas públicas */}
             <Route path="/" element={<Home />} />
-            <Route path="/mensajes" element={<Mensajes />} />
             <Route path="/empleos" element={<Empleos />} />
-            <Route path="/notifiaciones" element={<Notificaciones />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
-            <Route path="/perfil" element={<Profile />} />
             <Route path="*" element={<NotFound />} />{" "}
             {/* TODO: crear vista 404 */}
             {/* Rutas para usuarios logueados */}
@@ -80,7 +77,7 @@ function App() {
             >
               <Route path="/perfil" element={<Profile />} />
               <Route path="/mensajes" element={<Mensajes />} />
-              <Route path="/notifiaciones" element={<Notificaciones />} />
+              <Route path="/notificaciones" element={<Notificaciones />} />
             </Route>
             {/* Rutas para reclutadores y admins */}
             <Route element={<ProtectedRoute roles={["RECRUITER", "ADMIN"]} />}>
@@ -92,9 +89,9 @@ function App() {
               {/* <Route path="/panel-control" element={<ControlPanel />} /> */}
             </Route>
           </Routes>
-        </main>
+        </div>
         <Footer />
-      </div>
+      </main>
     </Router>
   );
 }

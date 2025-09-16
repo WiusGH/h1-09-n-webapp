@@ -1,9 +1,9 @@
 import DynamicContainer from "../components/containers/DynamicContainer";
+import NewJobForm from "../components/forms/NewJobForm";
 import UserInfo from "../components/sidebars/UserInfo";
-import JobOfferCreator from "../components/views/JobOfferCreator";
 
 const CreateJobOffer = () => {
-  return <DynamicContainer main={<JobOfferCreator />} side={<UserInfo />} />;
+  return <DynamicContainer main={<NewJobForm />} side={<UserInfo />} />;
 };
 
 export default CreateJobOffer;

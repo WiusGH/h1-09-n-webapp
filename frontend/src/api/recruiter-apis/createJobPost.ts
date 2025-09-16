@@ -12,6 +12,17 @@ interface JobPostData {
   companyEmail?: string;
 }
 
+/**
+ * Crea un nuevo anuncio de trabajo
+ * @param {JobPostData} jobPost: Información del anuncio de trabajo
+ * @param {string} jobPost.title: Título del anuncio de trabajo
+ * @param {string} jobPost.description: Descripción del anuncio de trabajo
+ * @param {number} jobPost.maxCandidates: Número máximo de candidatos para el anuncio de trabajo
+ * @param {string[]} jobPost.skills: (Lista de strings) Habilidades requeridas para el anuncio de trabajo
+ * @returns {Promise<JobPostData>} Información del anuncio de Trabajo creado
+ * @throws {Error} Si no se encuentra la información del usuario logueado
+ * @throws {Error} Si ocurre un error al crear el anuncio de Trabajo
+ */
 export const createJobPost = async (jobPost: JobPostData) => {
   const userData = getUserData();
   if (!userData) throw new Error("Datos de usuario no encontrados");
