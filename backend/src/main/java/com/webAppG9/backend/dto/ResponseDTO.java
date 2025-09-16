@@ -1,13 +1,21 @@
 package com.webAppG9.backend.dto;
 
-public class ResponseDTO<T> { // T es el tipo de datos que puede variar
-    private T data; // el objeto de éxito (UserDTO, etc.)
+public class ResponseDTO<T> { // T respuesta generica
+    private T data; // el objeto de éxito (UserDTO, tokens)
     private String error; // mensaje de error si hubo problema
 
+    // constructor para instanciaar la clase
     public ResponseDTO(T data, String error) {
         this.data = data;
         this.error = error;
+    }
 
+    public static <T> ResponseDTO<T> ok(T data) {
+        return new ResponseDTO<>(data, null);
+    }
+
+    public static <T> ResponseDTO<T> fail(String error) {
+        return new ResponseDTO<>(null, error);
     }
 
     // Getters y setters

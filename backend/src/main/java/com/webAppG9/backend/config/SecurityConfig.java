@@ -4,6 +4,7 @@ import com.webAppG9.backend.security.JwtAuthenticationFilter;
 import com.webAppG9.backend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,13 +46,64 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Deshabilitamos CSRF porque usamos JWT
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración CORS
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/prueba").permitAll()
+                        // Rutas públicas
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
+                        // Swagger
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml")
+                        .permitAll()
+
+                        // Usuarios
                         .requestMatchers("/api/users/me/**").authenticated()
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
+
+                        // Job Posts
+                        .requestMatchers(HttpMethod.GET, "/api/jobPost/**").permitAll()
+                        .requestMatchers("/api/jobPost/**").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Job Applications
+                        .requestMatchers(HttpMethod.POST, "/api/job-apply/**")
+                        .hasAnyRole("CANDIDATE", "RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/job-apply/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/job-apply/me").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/job-apply/job/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/job-apply/**").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Candidates
+                        .requestMatchers(HttpMethod.GET, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/candidates/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/candidates//my-applications/status/**")
+                        .hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/candidates/active").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Recruiters
+                        .requestMatchers(HttpMethod.POST, "/api/recruiters/request/**").authenticated() // cualquier
+                                                                                                        // usuario puede
+                                                                                                        // solicitar
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/me/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/recruiters/me/**").hasRole("RECRUITER")
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/all").permitAll() // público
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/job/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/recruiters/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/active").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Admin - recruiters
+                        .requestMatchers("/api/admins/recruiters/approve/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admins/recruiters/reject/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admins/recruiters/pending").hasRole("ADMIN")
+
+                        // Admin - otros endpoints
+                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
+
+                        // Cualquier otra ruta requiere autenticación
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -62,10 +114,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://h1-09-n-webapp.vercel.app")); // Cambiar por tu URL
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:*", "https://h1-09-n-webapp.vercel.app"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true); // Permite enviar cookies si fuera necesario
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
