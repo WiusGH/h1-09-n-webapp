@@ -84,7 +84,6 @@ public class CandidatedService {
                 candidate.applyFromDTO(candidateRequest);
 
                 // Mapear skills si vienen
-                // Mapear skills si vienen como nombres
                 if (candidateRequest.getSkills() != null && !candidateRequest.getSkills().isEmpty()) {
                         Set<Skill> skills = candidateRequest.getSkills().stream()
                                         .map(name -> skillRepository.findByName(name) // buscar por nombre
@@ -107,8 +106,10 @@ public class CandidatedService {
         }
 
         // Obtener candidato por userId
-        public ResponseDTO<CandidateResponseDTO> getCandidateById(Integer id) {
-                Candidated candidate = candidatedRepository.findById(id)
+        public ResponseDTO<CandidateResponseDTO> getCandidateById() {
+                User user = getCurrentUser();
+
+                Candidated candidate = candidatedRepository.findByUser(user)
                                 .orElseThrow(CandidateNotFoundException::new);
                 return ResponseDTO.ok(new CandidateResponseDTO(candidate));
         }

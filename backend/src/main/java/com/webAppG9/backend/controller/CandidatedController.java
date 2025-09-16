@@ -43,9 +43,9 @@ public class CandidatedController {
     }
 
     // Obtener datos del candidato por userId
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<CandidateResponseDTO>> getCandidateById(@PathVariable Integer id) {
-        return ResponseEntity.ok(candidatedService.getCandidateById(id));
+    @GetMapping("/getCandidate")
+    public ResponseEntity<ResponseDTO<CandidateResponseDTO>> getCandidateById() {
+        return ResponseEntity.ok(candidatedService.getCandidateById());
     }
 
     // Actualizar/ completar datos de registro datos del candidato

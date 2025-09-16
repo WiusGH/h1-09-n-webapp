@@ -34,7 +34,7 @@ public class UserController {
     }
 
     // Actualizar un usuario
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ResponseDTO<UserResponseDTO>> updateUser(
             @PathVariable Integer id,
             @RequestBody UserRequestDTO updatedUser) {
