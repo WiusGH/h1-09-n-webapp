@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +22,12 @@ import com.webAppG9.backend.dto.jobpost.JobPostRequestDTO;
 import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterRequestDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
+import com.webAppG9.backend.exception.candidate.CandidateNotFoundException;
 import com.webAppG9.backend.exception.candidate.ProfileAlreadyCompletedException;
 import com.webAppG9.backend.exception.jobapplication.JobApplicationNotFoundException;
 import com.webAppG9.backend.exception.jobpost.JobPostNotFoundException;
 import com.webAppG9.backend.exception.recruiter.RecruiterNotFoundException;
 import com.webAppG9.backend.exception.recruiter.RecruiterSulicitudExistingException;
-import com.webAppG9.backend.exception.user.UserNotFoundException;
 import com.webAppG9.backend.repository.CandidatedRepository;
 import com.webAppG9.backend.repository.JobApplicationRepository;
 import com.webAppG9.backend.repository.JobPostRepository;
@@ -57,13 +59,21 @@ public class RecruiterService {
         this.skillRepository = skillRepository;
     }
 
+    // obtener usuario logueado desde JWT
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(CandidateNotFoundException::new);
+    }
+
     // Solicitud a Recruiter
     @Transactional
-    public void requestRecruiterUpgrade(Integer userId, RecruiterRequestDTO request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+    public void requestRecruiterUpgrade(RecruiterRequestDTO request) {
+        User user = getCurrentUser();
 
-        if (recruiterRepository.findByUserId(userId).isPresent()) {
+        if (recruiterRepository.findByUserId(user.getId()).isPresent()) {
             throw new RecruiterSulicitudExistingException();
         }
 
@@ -84,7 +94,9 @@ public class RecruiterService {
     }
 
     // Crear un post de trabajo
-    public JobPostResponseDTO createJob(JobPostRequestDTO request, Integer userId) {
+    public JobPostResponseDTO createJob(JobPostRequestDTO request) {
+
+        User user = getCurrentUser();
         // Mapear skills
         Set<Skill> skillSet = new HashSet<>();
         if (request.getSkills() != null && !request.getSkills().isEmpty()) {
@@ -96,7 +108,7 @@ public class RecruiterService {
         }
 
         // Obtener recruiter
-        Recruiter recruiter = recruiterRepository.findByUserId(userId)
+        Recruiter recruiter = recruiterRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new RuntimeException("Recruiter no encontrado"));
 
         // Crear job post y asignar datos
@@ -112,12 +124,11 @@ public class RecruiterService {
 
     // Obtener perfil de recruiter por userId
     @Transactional(readOnly = true)
-    public RecruiterResponseDTO getRecruiterByUserId(Integer userId) {
-        Recruiter recruiter = recruiterRepository.findByUserId(userId)
-                .orElseThrow(RecruiterNotFoundException::new);
+    public RecruiterResponseDTO getRecruiterByUserId() {
+        User user = getCurrentUser();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        Recruiter recruiter = recruiterRepository.findByUserId(user.getId())
+                .orElseThrow(RecruiterNotFoundException::new);
 
         RecruiterResponseDTO dto = new RecruiterResponseDTO();
         dto.setUserId(user.getId());
@@ -132,8 +143,10 @@ public class RecruiterService {
 
     // Actualizar perfil de recruiter
     @Transactional
-    public RecruiterResponseDTO updateRecruiterProfile(Integer userId, RecruiterRequestDTO request) {
-        Recruiter recruiter = recruiterRepository.findByUserId(userId)
+    public RecruiterResponseDTO updateRecruiterProfile(RecruiterRequestDTO request) {
+        User user = getCurrentUser();
+
+        Recruiter recruiter = recruiterRepository.findByUserId(user.getId())
                 .orElseThrow(RecruiterNotFoundException::new);
 
         if (request.getCompanyName() != null) {

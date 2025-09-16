@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class JobPostResponseDTO {
 
+    private Integer id;
     private String title;
     private String description;
     private String recruiterName;
@@ -26,6 +27,7 @@ public class JobPostResponseDTO {
 
     // Constructor desde entidad
     public JobPostResponseDTO(JobPost jobPost) {
+        this.id = jobPost.getId();
         this.title = jobPost.getTitle();
         this.description = jobPost.getDescription();
         this.recruiterName = jobPost.getRecruiterName();
@@ -42,6 +44,14 @@ public class JobPostResponseDTO {
     }
 
     // Getters y Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }

@@ -3,6 +3,8 @@ package com.webAppG9.backend.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import com.webAppG9.backend.Model.User;
 import com.webAppG9.backend.dto.admin.AdminRequestDTO;
 import com.webAppG9.backend.dto.admin.AdminResponseDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
+import com.webAppG9.backend.exception.candidate.CandidateNotFoundException;
 import com.webAppG9.backend.exception.recruiter.RecruiterSolicitedNotFoundException;
 import com.webAppG9.backend.exception.user.UserAlreadyAdminException;
 import com.webAppG9.backend.exception.user.UserNotFoundException;
@@ -77,18 +80,28 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(CandidateNotFoundException::new);
+    }
+
     // Aprobar recruiter
     @Transactional
-    public RecruiterResponseDTO approveRecruiter(Integer userId) {
+    public RecruiterResponseDTO approveRecruiter() {
+
+        User user = getCurrentUser();
+
         // Buscar recruiter por userId
-        Recruiter recruiter = recruiterRepository.findByUserId(userId)
+        Recruiter recruiter = recruiterRepository.findByUserId(user.getId())
                 .orElseThrow(RecruiterSolicitedNotFoundException::new);
 
         // Marcar como aprobado
         recruiter.setApproved(true);
 
         // Cambiar rol del usuario
-        User user = recruiter.getUser();
         user.setRole(User.Role.RECRUITER);
 
         // Guardar cambios
@@ -109,8 +122,12 @@ public class AdminService {
 
     // Rechazar recruiter
     @Transactional
-    public void rejectRecruiter(Integer userId) {
-        Recruiter recruiter = recruiterRepository.findByUserId(userId)
+    public void rejectRecruiter() {
+
+        User user = getCurrentUser();
+
+        // Buscar recruiter por userId
+        Recruiter recruiter = recruiterRepository.findByUserId(user.getId())
                 .orElseThrow(RecruiterSolicitedNotFoundException::new);
 
         recruiterRepository.delete(recruiter);

@@ -37,16 +37,16 @@ public class AdminController {
     }
 
     // Aprobar solicitud de recruiter
-    @PatchMapping("/recruiters/approve/{userId}")
-    public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> approveRecruiter(@PathVariable Integer userId) {
-        RecruiterResponseDTO recruiter = adminService.approveRecruiter(userId);
+    @PatchMapping("/recruiters/approve")
+    public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> approveRecruiter() {
+        RecruiterResponseDTO recruiter = adminService.approveRecruiter();
         return ResponseEntity.ok(ResponseDTO.ok(recruiter));
     }
 
     // Rechazar solicitud de recruiter
-    @PatchMapping("/recruiters/reject/{userId}")
-    public ResponseEntity<ResponseDTO<String>> rejectRecruiter(@PathVariable Integer userId) {
-        adminService.rejectRecruiter(userId);
+    @PatchMapping("/recruiters/reject")
+    public ResponseEntity<ResponseDTO<String>> rejectRecruiter() {
+        adminService.rejectRecruiter();
         return ResponseEntity.ok(new ResponseDTO<>("Solicitud de recruiter rechazada.", null));
     }
 

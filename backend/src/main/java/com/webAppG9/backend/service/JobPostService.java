@@ -27,17 +27,6 @@ public class JobPostService {
         this.skillRepository = skillRepository;
     }
 
-    // Buscar trabajos por Id (Metodo para CandidatedController)
-    public JobPost getJobPostById(Integer jobPostId) {
-        JobPost jobPost = jobPostRepository.findById(jobPostId)
-                .orElseThrow(JobPostNotFoundException::new);
-
-        if (!jobPost.getIsActive()) {
-            throw new RuntimeException("Posteo de trabajo no activo");
-        }
-        return jobPost;
-    }
-
     // Obtener todos los trabajos
     public List<JobPostResponseDTO> getAllJobs() {
         return jobPostRepository.findAll().stream()
@@ -66,6 +55,7 @@ public class JobPostService {
         return "Job actualizado correctamente";
     }
 
+    // Eliminar un posteo de trabajo
     public String deleteJob(Integer id) {
         JobPost jobPost = jobPostRepository.findById(id)
                 .orElseThrow(CandidateNotFoundException::new);
@@ -86,6 +76,17 @@ public class JobPostService {
 
         // Devolver mensaje según el estado
         return jobPost.getIsActive() ? "JobPost activado" : "JobPost desactivado";
+    }
+
+    // Buscar trabajos por Id (Metodo para CandidatedController)
+    public JobPost getJobPostById(Integer jobPostId) {
+        JobPost jobPost = jobPostRepository.findById(jobPostId)
+                .orElseThrow(JobPostNotFoundException::new);
+
+        if (!jobPost.getIsActive()) {
+            throw new RuntimeException("Posteo de trabajo no activo");
+        }
+        return jobPost;
     }
 
     // Buscar trabajos por habilidades en el buscador

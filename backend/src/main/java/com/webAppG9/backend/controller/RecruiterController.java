@@ -25,38 +25,27 @@ public class RecruiterController {
         this.recruiterService = recruiterService;
     }
 
-    // Candidato solicita ser Recruiter
-    @PostMapping("/request/{userId}")
-    public ResponseEntity<ResponseDTO<String>> requestRecruiter(
-            @PathVariable Integer userId,
-            @RequestBody RecruiterRequestDTO request) {
-        recruiterService.requestRecruiterUpgrade(userId, request);
-        return ResponseEntity.ok(new ResponseDTO<>("Solicitud enviada. Espera aprobación de un administrador.", null));
-    }
-
     // Crear post de trabajo
-    @PostMapping("/createJob/{userId}")
+    @PostMapping("/createJob")
     public ResponseEntity<ResponseDTO<JobPostResponseDTO>> createJob(
-            @RequestBody JobPostRequestDTO requestDTO,
-            @PathVariable Integer userId) {
+            @RequestBody JobPostRequestDTO requestDTO) {
 
-        JobPostResponseDTO createdJob = recruiterService.createJob(requestDTO, userId);
+        JobPostResponseDTO createdJob = recruiterService.createJob(requestDTO);
         return ResponseEntity.ok(ResponseDTO.ok(createdJob));
     }
 
     // Obtener perfil propio (solo recruiter logueado)
-    @GetMapping("/me/{userId}")
-    public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> getMyProfile(@PathVariable Integer userId) {
-        RecruiterResponseDTO profile = recruiterService.getRecruiterByUserId(userId);
+    @GetMapping("/get-me")
+    public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> getMyProfile() {
+        RecruiterResponseDTO profile = recruiterService.getRecruiterByUserId();
         return ResponseEntity.ok(new ResponseDTO<>(profile, null));
     }
 
     // Actualizar perfil de recruiter
-    @PutMapping("/me/{userId}")
+    @PutMapping("/put-me")
     public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> updateProfile(
-            @PathVariable Integer userId,
             @RequestBody RecruiterRequestDTO request) {
-        RecruiterResponseDTO updated = recruiterService.updateRecruiterProfile(userId, request);
+        RecruiterResponseDTO updated = recruiterService.updateRecruiterProfile(request);
         return ResponseEntity.ok(new ResponseDTO<>(updated, "Perfil actualizado"));
     }
 
