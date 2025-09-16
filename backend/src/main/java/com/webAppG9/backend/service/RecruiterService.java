@@ -1,5 +1,6 @@
 package com.webAppG9.backend.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import com.webAppG9.backend.dto.jobpost.JobPostRequestDTO;
 import com.webAppG9.backend.dto.jobpost.JobPostResponseDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterRequestDTO;
 import com.webAppG9.backend.dto.recruiter.RecruiterResponseDTO;
+import com.webAppG9.backend.exception.candidate.ProfileAlreadyCompletedException;
 import com.webAppG9.backend.exception.jobapplication.JobApplicationNotFoundException;
 import com.webAppG9.backend.exception.jobpost.JobPostNotFoundException;
 import com.webAppG9.backend.exception.recruiter.RecruiterNotFoundException;
@@ -55,7 +57,7 @@ public class RecruiterService {
         this.skillRepository = skillRepository;
     }
 
-    // Solicitud de upgrade a Recruiter
+    // Solicitud a Recruiter
     @Transactional
     public void requestRecruiterUpgrade(Integer userId, RecruiterRequestDTO request) {
         User user = userRepository.findById(userId)
@@ -65,26 +67,46 @@ public class RecruiterService {
             throw new RecruiterSulicitudExistingException();
         }
 
+        if (!user.getProfileCompleted()) {
+            throw new ProfileAlreadyCompletedException("Debe completar su CV  para solicitar ser Recruiter");
+        }
+
         Recruiter recruiter = new Recruiter();
         recruiter.setUser(user);
         recruiter.setCompanyName(request.getCompanyName());
-        recruiter.setWebsite(request.getWebsite());
-        recruiter.setDescription(request.getDescription());
+        recruiter.setCompanyName(request.getCompanyName());
+        recruiter.setCompanyCountry(request.getCompanyCountry());
+        recruiter.setCompanyAddress(request.getCompanyAddress());
+        recruiter.setCompanyEmail(request.getCompanyEmail());
         recruiter.setApproved(false);
 
         recruiterRepository.save(recruiter);
     }
 
     // Crear un post de trabajo
-    public JobPostResponseDTO createJob(JobPostRequestDTO request) {
-        Set<Skill> skillSet = skillRepository.findAllById(request.getSkills())
-                .stream()
-                .collect(Collectors.toSet());
+    public JobPostResponseDTO createJob(JobPostRequestDTO request, Integer userId) {
+        // Mapear skills
+        Set<Skill> skillSet = new HashSet<>();
+        if (request.getSkills() != null && !request.getSkills().isEmpty()) {
+            skillSet = request.getSkills().stream()
+                    .map(name -> skillRepository.findByName(name)
+                            .orElseThrow(() -> new RuntimeException(
+                                    "Skill con nombre '" + name + "' no encontrada")))
+                    .collect(Collectors.toSet());
+        }
 
+        // Obtener recruiter
+        Recruiter recruiter = recruiterRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Recruiter no encontrado"));
+
+        // Crear job post y asignar datos
         JobPost jobPost = new JobPost();
-        jobPost.applyFromDTO(request, skillSet);
+        jobPost.applyFromDTO(request, skillSet, recruiter);
+        jobPost.setIsActive(true);
 
+        // Guardar
         JobPost savedJob = jobPostRepository.save(jobPost);
+
         return new JobPostResponseDTO(savedJob);
     }
 
@@ -99,11 +121,11 @@ public class RecruiterService {
 
         RecruiterResponseDTO dto = new RecruiterResponseDTO();
         dto.setUserId(user.getId());
-        dto.setUsername(user.getName() + " " + user.getLastName());
-        dto.setUserEmail(user.getEmail());
         dto.setCompanyName(recruiter.getCompanyName());
-        dto.setWebsite(recruiter.getWebsite());
-        dto.setDescription(recruiter.getDescription());
+        dto.setCompanyName(recruiter.getCompanyName());
+        dto.setCompanyCountry(recruiter.getCompanyCountry());
+        dto.setCompanyAddress(recruiter.getCompanyAddress());
+        dto.setCompanyEmail(recruiter.getCompanyEmail());
         dto.setApproved(recruiter.getApproved());
         return dto;
     }
@@ -117,11 +139,17 @@ public class RecruiterService {
         if (request.getCompanyName() != null) {
             recruiter.setCompanyName(request.getCompanyName());
         }
-        if (request.getWebsite() != null) {
-            recruiter.setWebsite(request.getWebsite());
+
+        if (request.getCompanyCountry() != null) {
+            recruiter.setCompanyCountry(recruiter.getCompanyCountry());
         }
-        if (request.getDescription() != null) {
-            recruiter.setDescription(request.getDescription());
+
+        if (request.getCompanyAddress() != null) {
+            recruiter.setCompanyAddress(recruiter.getCompanyAddress());
+        }
+
+        if (request.getCompanyEmail() != null) {
+            recruiter.setCompanyEmail(recruiter.getCompanyEmail());
         }
 
         Recruiter updated = recruiterRepository.save(recruiter);

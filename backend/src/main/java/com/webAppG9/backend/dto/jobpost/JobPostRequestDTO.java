@@ -1,6 +1,5 @@
 package com.webAppG9.backend.dto.jobpost;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 public class JobPostRequestDTO {
@@ -15,16 +14,15 @@ public class JobPostRequestDTO {
     private Integer candidates;
     private Integer candidatesApplied;
     private Boolean acceptingAplication;
-    private LocalDateTime expiresAt;
-    private Set<Integer> skills;
+    private Set<String> skills;
 
     public JobPostRequestDTO() {
     }
 
     public JobPostRequestDTO(String title, String description, String recruiterName, String companyName,
             String companyCountry, String companyEmail, Boolean isActive, Integer candidates,
-            Integer candidatesApplied, Boolean acceptingAplication, LocalDateTime expiresAt,
-            Set<Integer> skills) {
+            Integer candidatesApplied, Boolean acceptingAplication,
+            Set<String> skills) {
         this.title = title;
         this.description = description;
         this.recruiterName = recruiterName;
@@ -35,7 +33,6 @@ public class JobPostRequestDTO {
         this.candidates = candidates;
         this.candidatesApplied = candidatesApplied;
         this.acceptingAplication = acceptingAplication;
-        this.expiresAt = expiresAt;
         this.skills = skills;
     }
 
@@ -120,19 +117,11 @@ public class JobPostRequestDTO {
         this.acceptingAplication = acceptingAplication;
     }
 
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    public Set<Integer> getSkills() {
+    public Set<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(Set<Integer> skills) {
+    public void setSkills(Set<String> skills) {
         this.skills = skills;
     }
 }

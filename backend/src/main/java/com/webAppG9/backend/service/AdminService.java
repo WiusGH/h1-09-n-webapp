@@ -98,11 +98,10 @@ public class AdminService {
         // Mapear a DTO
         RecruiterResponseDTO dto = new RecruiterResponseDTO();
         dto.setUserId(user.getId());
-        dto.setUsername(user.getName() + " " + user.getLastName());
-        dto.setUserEmail(user.getEmail());
         dto.setCompanyName(recruiter.getCompanyName());
-        dto.setWebsite(recruiter.getWebsite());
-        dto.setDescription(recruiter.getDescription());
+        dto.setCompanyCountry(recruiter.getCompanyCountry());
+        dto.setCompanyAddress(recruiter.getCompanyAddress());
+        dto.setCompanyEmail(recruiter.getCompanyEmail());
         dto.setApproved(recruiter.getApproved());
 
         return dto;

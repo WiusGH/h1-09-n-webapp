@@ -18,9 +18,7 @@ public class JobPostResponseDTO {
     private Boolean isActive;
     private Integer candidates;
     private Integer candidatesApplied;
-    private LocalDateTime expiresAt;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private Set<String> skills; // n
 
     public JobPostResponseDTO() {
@@ -37,9 +35,7 @@ public class JobPostResponseDTO {
         this.isActive = jobPost.getIsActive();
         this.candidates = jobPost.getCandidates();
         this.candidatesApplied = jobPost.getCandidatesApplied();
-        this.expiresAt = jobPost.getExpiresAt();
         this.createdAt = jobPost.getCreatedAt();
-        this.updatedAt = jobPost.getUpdatedAt();
         this.skills = jobPost.getSkills() != null
                 ? jobPost.getSkills().stream().map(Skill::getName).collect(Collectors.toSet())
                 : null;
@@ -118,28 +114,12 @@ public class JobPostResponseDTO {
         this.candidatesApplied = candidatesApplied;
     }
 
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public Set<String> getSkills() {

@@ -50,20 +50,20 @@ public class JobPostService {
         JobPost jobPost = jobPostRepository.findById(id)
                 .orElseThrow(CandidateNotFoundException::new);
 
-        // Convertir IDs de skills a objetos Skill
+        // Convertir nombres de skills a objetos Skill
         Set<Skill> skillSet = new HashSet<>();
         if (request.getSkills() != null && !request.getSkills().isEmpty()) {
-            skillSet = skillRepository.findAllById(request.getSkills())
-                    .stream()
+            skillSet = request.getSkills().stream()
+                    .map(name -> skillRepository.findByName(name)
+                            .orElseThrow(() -> new RuntimeException("Skill con name " + name + " no encontrada")))
                     .collect(Collectors.toSet());
         }
 
-        // Aplicar todos los campos del DTO a la entidad
-        jobPost.applyFromDTO(request, skillSet);
+        jobPost.setSkills(skillSet);
 
         jobPostRepository.save(jobPost);
 
-        return "JobPost actualizado correctamente";
+        return "Job actualizado correctamente";
     }
 
     public String deleteJob(Integer id) {

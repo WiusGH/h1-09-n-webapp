@@ -35,11 +35,12 @@ public class RecruiterController {
     }
 
     // Crear post de trabajo
-    @PostMapping("/createJob")
+    @PostMapping("/createJob/{userId}")
     public ResponseEntity<ResponseDTO<JobPostResponseDTO>> createJob(
-            @RequestBody JobPostRequestDTO requestDTO) {
+            @RequestBody JobPostRequestDTO requestDTO,
+            @PathVariable Integer userId) {
 
-        JobPostResponseDTO createdJob = recruiterService.createJob(requestDTO);
+        JobPostResponseDTO createdJob = recruiterService.createJob(requestDTO, userId);
         return ResponseEntity.ok(ResponseDTO.ok(createdJob));
     }
 
@@ -47,7 +48,7 @@ public class RecruiterController {
     @GetMapping("/me/{userId}")
     public ResponseEntity<ResponseDTO<RecruiterResponseDTO>> getMyProfile(@PathVariable Integer userId) {
         RecruiterResponseDTO profile = recruiterService.getRecruiterByUserId(userId);
-        return ResponseEntity.ok(new ResponseDTO<>(profile, "Perfil obtenido"));
+        return ResponseEntity.ok(new ResponseDTO<>(profile, null));
     }
 
     // Actualizar perfil de recruiter

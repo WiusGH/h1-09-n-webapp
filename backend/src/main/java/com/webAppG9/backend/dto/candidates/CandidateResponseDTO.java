@@ -1,6 +1,5 @@
 package com.webAppG9.backend.dto.candidates;
 
-import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,12 +14,8 @@ public class CandidateResponseDTO {
     private String country;
     private String phoneNumber;
     private String email; // Email del user asociado
-    private LocalDate dateOfBirth;
-    private String education; // Educación básica
-    private String experience; // Experiencia laboral resumida
-    private String linkedinUrl; // Perfil LinkedIn
     private String resumeUrl; // Link a CV
-    private String summary; // Breve descripción del perfil
+
     private Boolean active;
 
     private Set<String> skills; // Nombres de las skills del candidato
@@ -37,12 +32,7 @@ public class CandidateResponseDTO {
         this.country = candidated.getCountry();
         this.phoneNumber = candidated.getPhoneNumber();
         this.email = candidated.getUser() != null ? candidated.getUser().getEmail() : null;
-        this.dateOfBirth = candidated.getDateOfBirth();
-        this.education = candidated.getEducation();
-        this.experience = candidated.getExperience();
-        this.linkedinUrl = candidated.getLinkedinUrl();
         this.resumeUrl = candidated.getResumeUrl();
-        this.summary = candidated.getSummary();
         this.active = candidated.getActive();
         this.skills = candidated.getSkills() != null
                 ? candidated.getSkills().stream().map(Skill::getName).collect(Collectors.toSet())
@@ -98,52 +88,12 @@ public class CandidateResponseDTO {
         this.email = email;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getEducation() {
-        return education;
-    }
-
-    public void setEducation(String education) {
-        this.education = education;
-    }
-
-    public String getExperience() {
-        return experience;
-    }
-
-    public void setExperience(String experience) {
-        this.experience = experience;
-    }
-
-    public String getLinkedinUrl() {
-        return linkedinUrl;
-    }
-
-    public void setLinkedinUrl(String linkedinUrl) {
-        this.linkedinUrl = linkedinUrl;
-    }
-
     public String getResumeUrl() {
         return resumeUrl;
     }
 
     public void setResumeUrl(String resumeUrl) {
         this.resumeUrl = resumeUrl;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public Boolean getActive() {

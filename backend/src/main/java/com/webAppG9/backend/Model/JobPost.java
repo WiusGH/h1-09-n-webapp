@@ -37,29 +37,25 @@ public class JobPost {
     }
 
     // Cobstructor para mapear un JovPost y validar parametros
-    public void applyFromDTO(JobPostRequestDTO dto, Set<Skill> skills) {
+    public void applyFromDTO(JobPostRequestDTO dto, Set<Skill> skills, Recruiter recruiter) {
         if (dto.getTitle() != null)
             this.title = dto.getTitle();
         if (dto.getDescription() != null)
             this.description = dto.getDescription();
-        if (dto.getRecruiterName() != null)
-            this.recruiterName = dto.getRecruiterName();
-        if (dto.getCompanyName() != null)
-            this.companyName = dto.getCompanyName();
-        if (dto.getCompanyCountry() != null)
-            this.companyCountry = dto.getCompanyCountry();
-        if (dto.getCompanyEmail() != null)
-            this.companyEmail = dto.getCompanyEmail();
         if (dto.getIsActive() != null)
             this.isActive = dto.getIsActive();
         if (dto.getCandidates() != null)
             this.candidates = dto.getCandidates();
         if (dto.getCandidatesApplied() != null)
             this.candidatesApplied = dto.getCandidatesApplied();
-        if (dto.getExpiresAt() != null)
-            this.expiresAt = dto.getExpiresAt();
         if (skills != null && !skills.isEmpty())
             this.skills = skills;
+
+        // Tomar datos de la empresa del recruiter
+        this.recruiterName = recruiter.getUser().getName();
+        this.companyName = recruiter.getCompanyName();
+        this.companyCountry = recruiter.getCompanyCountry();
+        this.companyEmail = recruiter.getCompanyEmail();
     }
 
     // Constructor vacío para JPA

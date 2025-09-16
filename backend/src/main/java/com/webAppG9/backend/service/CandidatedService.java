@@ -84,11 +84,13 @@ public class CandidatedService {
                 candidate.applyFromDTO(candidateRequest);
 
                 // Mapear skills si vienen
+                // Mapear skills si vienen como nombres
                 if (candidateRequest.getSkills() != null && !candidateRequest.getSkills().isEmpty()) {
                         Set<Skill> skills = candidateRequest.getSkills().stream()
-                                        .map(id -> skillRepository.findById(id)
+                                        .map(name -> skillRepository.findByName(name) // buscar por nombre
                                                         .orElseThrow(() -> new RuntimeException(
-                                                                        "Skill con id " + id + " no encontrada")))
+                                                                        "Skill con nombre '" + name
+                                                                                        + "' no encontrada")))
                                         .collect(Collectors.toSet());
                         candidate.setSkills(skills);
                 }

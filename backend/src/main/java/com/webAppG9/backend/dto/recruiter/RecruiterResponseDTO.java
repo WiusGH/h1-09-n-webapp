@@ -6,11 +6,10 @@ import com.webAppG9.backend.Model.Recruiter;
 public class RecruiterResponseDTO {
 
     private Integer userId;
-    private String username;
-    private String userEmail;
     private String companyName;
-    private String website;
-    private String description;
+    private String companyCountry;
+    private String companyAddress;
+    private String companyEmail;
     private Boolean approved;
 
     // Mapear para response DTO
@@ -18,11 +17,10 @@ public class RecruiterResponseDTO {
         User user = recruiter.getUser();
         RecruiterResponseDTO dto = new RecruiterResponseDTO();
         dto.setUserId(user.getId());
-        dto.setUsername(user.getName());
-        dto.setUserEmail(user.getEmail());
         dto.setCompanyName(recruiter.getCompanyName());
-        dto.setWebsite(recruiter.getWebsite());
-        dto.setDescription(recruiter.getDescription());
+        dto.setCompanyCountry(recruiter.getCompanyCountry());
+        dto.setCompanyAddress(recruiter.getCompanyAddress());
+        dto.setCompanyEmail(recruiter.getCompanyEmail());
         dto.setApproved(recruiter.getApproved());
         return dto;
     }
@@ -36,22 +34,6 @@ public class RecruiterResponseDTO {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
     public String getCompanyName() {
         return companyName;
     }
@@ -60,20 +42,28 @@ public class RecruiterResponseDTO {
         this.companyName = companyName;
     }
 
-    public String getWebsite() {
-        return website;
+    public String getCompanyCountry() {
+        return companyCountry;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setCompanyCountry(String companyCountry) {
+        this.companyCountry = companyCountry;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCompanyAddress() {
+        return companyAddress;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCompanyAddress(String companyAddress) { // corregido
+        this.companyAddress = companyAddress;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) { // corregido
+        this.companyEmail = companyEmail;
     }
 
     public Boolean getApproved() {

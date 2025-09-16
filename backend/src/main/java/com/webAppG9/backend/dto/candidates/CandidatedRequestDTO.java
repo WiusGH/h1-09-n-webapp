@@ -1,6 +1,5 @@
 package com.webAppG9.backend.dto.candidates;
 
-import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,14 +12,9 @@ public class CandidatedRequestDTO {
     private String address;
     private String country;
     private String phoneNumber;
-    private LocalDate dateOfBirth;
-    private String education; // Educación básica
-    private String experience; // Experiencia laboral resumida
-    private String linkedinUrl; // Perfil LinkedIn
     private String resumeUrl; // Link a CV
-    private String summary; // Breve descripción del perfil
 
-    private Set<Integer> skills; // Nombres de las skills del candidato
+    private Set<String> skills; // Nombres de las skills del candidato
 
     // Constructor vacío
     public CandidatedRequestDTO() {
@@ -32,14 +26,9 @@ public class CandidatedRequestDTO {
         this.address = candidated.getAddress();
         this.country = candidated.getCountry();
         this.phoneNumber = candidated.getPhoneNumber();
-        this.dateOfBirth = candidated.getDateOfBirth();
-        this.education = candidated.getEducation();
-        this.experience = candidated.getExperience();
-        this.linkedinUrl = candidated.getLinkedinUrl();
         this.resumeUrl = candidated.getResumeUrl();
-        this.summary = candidated.getSummary();
         this.skills = candidated.getSkills() != null
-                ? candidated.getSkills().stream().map(Skill::getId).collect(Collectors.toSet())
+                ? candidated.getSkills().stream().map(Skill::getName).collect(Collectors.toSet())
                 : null;
     }
 
@@ -77,38 +66,6 @@ public class CandidatedRequestDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getEducation() {
-        return education;
-    }
-
-    public void setEducation(String education) {
-        this.education = education;
-    }
-
-    public String getExperience() {
-        return experience;
-    }
-
-    public void setExperience(String experience) {
-        this.experience = experience;
-    }
-
-    public String getLinkedinUrl() {
-        return linkedinUrl;
-    }
-
-    public void setLinkedinUrl(String linkedinUrl) {
-        this.linkedinUrl = linkedinUrl;
-    }
-
     public String getResumeUrl() {
         return resumeUrl;
     }
@@ -117,19 +74,11 @@ public class CandidatedRequestDTO {
         this.resumeUrl = resumeUrl;
     }
 
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public Set<Integer> getSkills() {
+    public Set<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(Set<Integer> skills) {
+    public void setSkills(Set<String> skills) {
         this.skills = skills;
     }
 }

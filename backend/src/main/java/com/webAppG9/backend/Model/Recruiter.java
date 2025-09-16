@@ -9,14 +9,18 @@ public class Recruiter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(nullable = false)
     private String companyName;
 
     @Column(nullable = false)
-    private String website;
+    private String companyCountry;
 
     @Column(nullable = false)
-    private String description;
+    private String companyAddress;
+
+    @Column(nullable = false)
+    private String companyEmail;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true)
@@ -40,20 +44,28 @@ public class Recruiter {
         this.companyName = companyName;
     }
 
-    public String getWebsite() {
-        return website;
+    public String getCompanyCountry() {
+        return companyCountry;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setCompanyCountry(String companyCountry) {
+        this.companyCountry = companyCountry;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCompanyAddress() {
+        return companyAddress;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
     }
 
     public User getUser() {

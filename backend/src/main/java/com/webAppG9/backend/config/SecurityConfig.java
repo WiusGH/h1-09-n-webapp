@@ -69,7 +69,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/jobPost/**").hasAnyRole("RECRUITER", "ADMIN")
 
                         // Job Applications
-                        .requestMatchers(HttpMethod.POST, "/api/job-apply/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/job-apply/**")
+                        .hasAnyRole("CANDIDATE", "RECRUITER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/job-apply/**").hasAnyRole("CANDIDATE", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/job-apply/me").hasAnyRole("CANDIDATE", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/job-apply/job/**").hasAnyRole("CANDIDATE", "ADMIN")
@@ -87,7 +88,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/recruiters/request/**").authenticated() // cualquier
                                                                                                         // usuario puede
                                                                                                         // solicitar
-                        .requestMatchers(HttpMethod.GET, "/api/recruiters/me/**").hasRole("RECRUITER")
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/me/**").hasAnyRole("RECRUITER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/recruiters/me/**").hasRole("RECRUITER")
                         .requestMatchers(HttpMethod.GET, "/api/recruiters/all").permitAll() // público
                         .requestMatchers(HttpMethod.GET, "/api/recruiters/job/**").hasAnyRole("RECRUITER", "ADMIN")

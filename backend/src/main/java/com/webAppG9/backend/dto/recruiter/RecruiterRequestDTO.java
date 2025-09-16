@@ -3,11 +3,11 @@ package com.webAppG9.backend.dto.recruiter;
 public class RecruiterRequestDTO {
 
     private String companyName;
-    private String website;
-    private String description;
+    private String companyCountry;
+    private String companyAddress;
+    private String companyEmail;
 
     // Getters y Setters
-
     public String getCompanyName() {
         return companyName;
     }
@@ -16,20 +16,28 @@ public class RecruiterRequestDTO {
         this.companyName = companyName;
     }
 
-    public String getWebsite() {
-        return website;
+    public String getCompanyCountry() {
+        return companyCountry;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setCompanyCountry(String companyCountry) {
+        this.companyCountry = companyCountry;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCompanyAddress() {
+        return companyAddress;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCompanyAddress(String companyAddress) { // corregido
+        this.companyAddress = companyAddress;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) { // corregido
+        this.companyEmail = companyEmail;
     }
 
 }

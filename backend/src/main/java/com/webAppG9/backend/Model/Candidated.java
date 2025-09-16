@@ -1,6 +1,5 @@
 package com.webAppG9.backend.Model;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,17 +23,7 @@ public class Candidated {
 
     private String phoneNumber;
 
-    private LocalDate dateOfBirth;
-
-    private String education;
-
-    private String experience;
-
-    private String linkedinUrl;
-
     private String resumeUrl;
-
-    private String summary;
 
     private Boolean active = true;
 
@@ -52,18 +41,12 @@ public class Candidated {
 
     // Constructor con campos principales
     public Candidated(String title, String address, String country, String phoneNumber,
-            LocalDate dateOfBirth, String education, String experience,
-            String linkedinUrl, String resumeUrl, String summary, User user) {
+            String resumeUrl, User user) {
         this.title = title;
         this.address = address;
         this.country = country;
         this.phoneNumber = phoneNumber;
-        this.dateOfBirth = dateOfBirth;
-        this.education = education;
-        this.experience = experience;
-        this.linkedinUrl = linkedinUrl;
         this.resumeUrl = resumeUrl;
-        this.summary = summary;
         this.user = user;
         this.active = true;
     }
@@ -77,18 +60,9 @@ public class Candidated {
             this.country = dto.getCountry();
         if (dto.getPhoneNumber() != null)
             this.phoneNumber = dto.getPhoneNumber();
-        if (dto.getDateOfBirth() != null)
-            this.dateOfBirth = dto.getDateOfBirth();
-        if (dto.getEducation() != null)
-            this.education = dto.getEducation();
-        if (dto.getExperience() != null)
-            this.experience = dto.getExperience();
-        if (dto.getLinkedinUrl() != null)
-            this.linkedinUrl = dto.getLinkedinUrl();
         if (dto.getResumeUrl() != null)
             this.resumeUrl = dto.getResumeUrl();
-        if (dto.getSummary() != null)
-            this.summary = dto.getSummary();
+
     }
 
     // Getters y Setters
@@ -128,52 +102,12 @@ public class Candidated {
         this.phoneNumber = phoneNumber;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getEducation() {
-        return education;
-    }
-
-    public void setEducation(String education) {
-        this.education = education;
-    }
-
-    public String getExperience() {
-        return experience;
-    }
-
-    public void setExperience(String experience) {
-        this.experience = experience;
-    }
-
-    public String getLinkedinUrl() {
-        return linkedinUrl;
-    }
-
-    public void setLinkedinUrl(String linkedinUrl) {
-        this.linkedinUrl = linkedinUrl;
-    }
-
     public String getResumeUrl() {
         return resumeUrl;
     }
 
     public void setResumeUrl(String resumeUrl) {
         this.resumeUrl = resumeUrl;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public Boolean getActive() {
