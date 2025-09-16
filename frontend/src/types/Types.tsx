@@ -5,7 +5,6 @@ export interface Project {
 }
 
 export interface userData {
-  id: string;
   name: string;
   lastName: string;
   email: string;
@@ -36,7 +35,6 @@ export interface completeUserInfoData {
   phoneNumber: string;
   skills: string[];
   resumeUrl: string;
-  userId: string;
 }
 
 export interface recruiterRequestData {

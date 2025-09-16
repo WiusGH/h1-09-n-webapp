@@ -28,6 +28,7 @@ const CompleteProfileForm = () => {
       skills,
       resumeUrl,
     }).then(() => {
+      setLoading(false);
       navigate("/");
     });
   }

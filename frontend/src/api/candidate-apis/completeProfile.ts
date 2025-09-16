@@ -1,43 +1,62 @@
-import { getUserData } from "../../utils/userStorage";
+import { getUserData, saveUserData } from "../../utils/userStorage";
 import axiosInstance from "../axiosInstance";
 
-interface completeProfileData {
+interface CompleteProfileData {
   title: string;
   country: string;
   address: string;
   phoneNumber: string;
   skills: string[];
   resumeUrl: string;
-  userId?: string;
+}
+
+interface ApiResponse<T> {
+  data: T;
+  error: string | null;
 }
 
 /**
  * API para completar el perfil de un usuario
- * @param {completeProfileData} data: Información a completar del perfil del candidato
- * @param {string} data.title: Título del perfil
- * @param {string} data.country: País del perfil
- * @param {string} data.address: Direccion del perfil
- * @param {string} data.phoneNumber: Telefono del perfil
- * @param {string[]} data.skills: (Lista de strings) Habilidades del perfil
- * @param {string} data.resumeUrl: URL del curriculum del perfil
+ * @param title Título del perfil
+ * @param country País del perfil
+ * @param address Direccion del perfil
+ * @param phoneNumber Telefono del perfil
+ * @param skills (Lista de strings) Habilidades del perfil
+ * @param resumeUrl URL del curriculum del perfil
  * @returns {Promise<completeProfileData>} Información del perfil completado
  * @throws {Error} Si no se encuentra la información del usuario logueado
  * @throws {Error} Si ocurre un error al completar el perfil
  */
 export async function completeProfile(
-  data: completeProfileData
-): Promise<completeProfileData> {
+  data: CompleteProfileData
+): Promise<CompleteProfileData> {
   const userData = getUserData();
-  if (!userData) throw new Error("Datos de usuario no encontrados");
-  data.userId = userData.id;
+  if (!userData) throw new Error("Usuario no encontrado o no logueado");
   try {
-    const { data: response } = await axiosInstance.post(
-      `/candidates/${userData.id}/request-recruiter`,
-      data
-    );
-    return response.data;
+    const { data: response } = await axiosInstance.patch<
+      ApiResponse<CompleteProfileData>
+    >("/candidates", data, {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    });
+    if (response.error) {
+      throw new Error(response.error);
+    }
+
+    const updatedProfile = response.data;
+
+    const updatedUserData = {
+      ...userData, // mantiene datos como id, token, role, etc.
+      ...updatedProfile, // sobreescribe los campos del perfil completado
+      profileCompleted: true, // opcional: si tu API no lo setea automáticamente
+    };
+
+    saveUserData(updatedUserData);
+
+    return updatedProfile;
   } catch (error) {
-    console.error("Error creating job post:", error);
+    console.error("Error completando el perfil:", error);
     throw error;
   }
 }
