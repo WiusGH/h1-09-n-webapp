@@ -89,5 +89,10 @@ export function isActive(): boolean {
  */
 export function isProfileComplete(): boolean {
   const userData = getUserData();
-  return userData?.profileCompleted ?? false;
+  // return userData?.profileCompleted ?? false; Esta debería ser la forma correcta pero utilizaremos la de abajo temporalmente
+  if (userData?.country || userData?.address || userData?.phoneNumber) {
+    return true;
+  } else {
+    return false;
+  }
 }

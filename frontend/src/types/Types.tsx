@@ -4,7 +4,8 @@ export interface Project {
   image?: string;
 }
 
-export interface userData {
+export interface UserData {
+  id: string;
   name: string;
   lastName: string;
   email: string;
@@ -28,7 +29,7 @@ export interface userData {
   // biography?: string;
 }
 
-export interface completeUserInfoData {
+export interface CompleteUserInfoData {
   title: string;
   country: string;
   address: string;
@@ -37,12 +38,11 @@ export interface completeUserInfoData {
   resumeUrl: string;
 }
 
-export interface recruiterRequestData {
+export interface RequestRecruiterRoleData {
   companyName: string;
   companyCountry: string;
   companyAddress: string;
   companyEmail: string;
-  userId: string;
 }
 
 interface BaseJobPost {
@@ -56,15 +56,16 @@ interface BaseJobPost {
   companyEmail: string;
 }
 
-export interface createJobPostData extends BaseJobPost {
+export interface CreateJobPostData extends BaseJobPost {
   maxCandidates: number;
 }
 
-export interface jobPostData extends BaseJobPost {
+export interface JobPostData extends BaseJobPost {
   id: string;
   maxCandidates: number;
   isActive: boolean;
   candidates: number;
   candidatesApplied: number;
   createdAt: string;
+  applied: boolean;
 }

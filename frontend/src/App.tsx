@@ -16,7 +16,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import CreateJobOffer from "./pages/CreateJobOffer";
 import CompleteProfile from "./pages/CompleteProfile";
-import RequestRecuiterUserType from "./pages/RequestRecuiterUserType";
+import RequestRecuiterUserRole from "./pages/RequestRecuiterUserRole";
 
 // Carga del tema
 function App() {
@@ -67,7 +67,7 @@ function App() {
               <Route path="/completar-perfil" element={<CompleteProfile />} />
               <Route
                 path="/solicitar-ser-recruiter"
-                element={<RequestRecuiterUserType />}
+                element={<RequestRecuiterUserRole />}
               />
             </Route>
             <Route

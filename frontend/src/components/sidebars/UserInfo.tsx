@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { UserData } from "../../types/Types";
 import UserInfoButton from "../buttons/UserInfoButton";
 import style from "./UserInfo.module.css";
-import { getUserData } from "../../utils/userStorage"; 
+import { getUserData } from "../../utils/userStorage";
 
 const UserInfo = () => {
   const [user, setUser] = useState<UserData | null>(null);
@@ -21,7 +21,7 @@ const UserInfo = () => {
       <section className={style.profile}>
         <img src="https://avatar.iran.liara.run/public/29"></img>
         <div>
-          <h3>{`${user.firstName} ${user.lastName}`}</h3>
+          <h3>{`${user.name} ${user.lastName}`}</h3>
           <h4>{user.title}</h4>
           <p>{user.role.toLocaleLowerCase()}</p>
         </div>
