@@ -4,7 +4,7 @@ import style from "./Form.module.css";
 import GenericButton from "../buttons/GenericButton";
 import { Link, useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../../utils/userStorage";
-import axiosInstance from "../../api/axiosInstance";
+import { register } from "../../api/general-apis/register";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
@@ -21,22 +21,25 @@ const RegisterForm = () => {
     setShowPassword((prev) => !prev);
   };
 
-  async function handleRegister(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleRegister(
+    name: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) {
+    if (password !== repeatPassword) {
+      setErrorMessage("Las contraseñas no coinciden");
+      return;
+    }
     setLoading(true);
     try {
-      const response = await axiosInstance.post("/auth/register", {
-        name,
-        lastName,
-        email,
-        password,
-      });
-      console.log(response);
-    } catch {
-      setErrorMessage("Error al crear un nuevo usuario");
-      console.error("Error creating user");
-    } finally {
+      await register({ name, lastName, email, password });
       setLoading(false);
+      navigate("/login");
+    } catch (error) {
+      setLoading(false);
+      setErrorMessage("Error al registrar");
+      console.error("Error al registrar:", error);
     }
   }
 
@@ -54,7 +57,13 @@ const RegisterForm = () => {
         </div>
       )}
       <h3>Inicio de sesión</h3>
-      <form className={style.form} onSubmit={handleRegister}>
+      <form
+        className={style.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleRegister(name, lastName, email, password);
+        }}
+      >
         <FormInput
           type="text"
           placeholder="Nombre"

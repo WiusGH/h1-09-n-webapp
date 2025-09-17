@@ -5,7 +5,6 @@ import SkillTag from "../buttons/SkillTag";
 import style from "./ProfileView.module.css";
 import { LuPencilLine } from "react-icons/lu";
 import type { UserData } from "../../types/Types";
-import { Link } from "react-router-dom";
 
 interface ProfileViewProps {
   user: UserData | null;
@@ -42,7 +41,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
         <div className={style.info}>
           <div className={style.header}>
             <h3>
-              {user.firstName} {user.lastName}
+              {user.name} {user.lastName}
             </h3>
           </div>
           <p className={style.role}>{formatRole(user.role)}</p>
@@ -61,6 +60,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
           </li>
         </ul>
       </div>
+
       <div className={style.skills}>
         <h3>Skills:</h3>
         {(user.skills || []).map((skill, idx) => (
@@ -70,6 +70,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
           <LuPencilLine />
         </a>
       </div>
+
       <div className={style.bioContainer}>
         <h3>Biografía:</h3>
         <textarea
@@ -78,10 +79,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
           readOnly
         ></textarea>
       </div>
+
       <div className={style.portfolioHeader}>
         <h3>Portafolio:</h3>
         <GenericButton text="Agregar" onClick={() => onEdit("portfolio")} />
       </div>
+
       <div className={style.projectsContainer}>
         {(user.portfolio || []).map((item, idx) => (
           <ProjectCard
@@ -90,11 +93,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
             title={item.title}
           />
         ))}
-      </div>
-      <div className={style.recruiterLinkContainer}>
-        <Link to="/solicitar-ser-recruiter" className={style.recruiterButton}>
-          Solicitar ser Recruiter
-        </Link>
       </div>
     </div>
   );

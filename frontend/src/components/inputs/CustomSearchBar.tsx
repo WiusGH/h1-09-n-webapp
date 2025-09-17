@@ -30,7 +30,7 @@ const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
   };
 
   return (
-    <form className={style.searchBar} onSubmit={handleSubmit}>
+    <form role="search" className={style.searchBar} onSubmit={handleSubmit}>
       <input
         className={style.input}
         type="text"

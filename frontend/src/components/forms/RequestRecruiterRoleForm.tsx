@@ -3,8 +3,9 @@ import style from "./Form.module.css";
 import { useNavigate } from "react-router-dom";
 import GenericButton from "../buttons/GenericButton";
 import FormInput from "../inputs/FormInput";
+import { requestRecruiterRole } from "../../api/candidate-apis/requestRecruiterRole";
 
-const RecruiterTypeForm = () => {
+const RequestRecruiterRoleForm = () => {
   const [companyName, setCompanyName] = useState("");
   const [companyCountry, setCompanyCountry] = useState("");
   const [companyAddress, setCompanyAddress] = useState("");
@@ -15,14 +16,23 @@ const RecruiterTypeForm = () => {
 
   async function handleSubmit() {
     setLoading(true);
+    setErrorMessage("");
     try {
+      await requestRecruiterRole({
+        companyName,
+        companyCountry,
+        companyAddress,
+        companyEmail,
+      });
       navigate("/");
-    } catch {
-      setErrorMessage("Ocurrió un error durante la solicitud.");
+    } catch (err) {
+      setErrorMessage("Ocurrió un error durante la solicitud.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   }
+
   return (
     <section className={`${style.container} ${loading ? style.loading : ""}`}>
       {loading && (
@@ -75,4 +85,4 @@ const RecruiterTypeForm = () => {
   );
 };
 
-export default RecruiterTypeForm;
+export default RequestRecruiterRoleForm;

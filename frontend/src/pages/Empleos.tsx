@@ -6,11 +6,11 @@ import DynamicContainer from "../components/containers/DynamicContainer";
 import UserInfo from "../components/sidebars/UserInfo";
 import styles from "../components/layout/Layout.module.css";
 import NotFound from "./NotFound/NotFound";
-import type { jobOfferData } from "../types/Types";
+import type { JobPostData } from "../types/Types";
 
 const Empleos = () => {
-  const [jobs, setJobs] = useState<jobOfferData[]>([]);
-  const [selectedJob, setSelectedJob] = useState<jobOfferData | null>(null);
+  const [jobs, setJobs] = useState<JobPostData[]>([]);
+  const [selectedJob, setSelectedJob] = useState<JobPostData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -20,8 +20,8 @@ const Empleos = () => {
       const { data } = await axiosInstance.get("/jobPost");
       console.log("Respuesta API:", data);
 
-      const jobsFromApi: jobOfferData[] = data.data.map(
-        (job: jobOfferData, index: number) => ({
+      const jobsFromApi: JobPostData[] = data.data.map(
+        (job: JobPostData, index: number) => ({
           id: job.id || index, // si no viene id, usamos el índice como fallback
           title: job.title,
           company: job.companyName || "Empresa no especificada",

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import FormInput from "../inputs/FormInput";
 import GenericButton from "../buttons/GenericButton";
 import SkillsInput from "../inputs/SkillsInput";
+import { completeProfile } from "../../api/candidate-apis/completeProfile";
 
 const CompleteProfileForm = () => {
   const [title, setTitle] = useState("");
@@ -11,20 +12,31 @@ const CompleteProfileForm = () => {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
-  const [cvurl, setCvurl] = useState("");
+  const [resumeUrl, setResumeUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  async function handleSubmit() {
+  function handleSubmit() {
     setLoading(true);
-    try {
-      navigate("/");
-    } catch {
-      setErrorMessage("Ocurrió un error durante la colicitud.");
-    } finally {
-      setLoading(false);
-    }
+    setErrorMessage("");
+    completeProfile({
+      title,
+      country,
+      address,
+      phoneNumber,
+      skills,
+      resumeUrl,
+    })
+      .then(() => {
+        setLoading(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        setErrorMessage("Error al completar el perfil");
+        console.error("Error al completar el perfil:", error);
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -75,8 +87,8 @@ const CompleteProfileForm = () => {
           type="text"
           label="Enlace CV"
           placeholder="Enlace CV"
-          value={cvurl}
-          onChange={(e) => setCvurl(e.target.value)}
+          value={resumeUrl}
+          onChange={(e) => setResumeUrl(e.target.value)}
         />
 
         <GenericButton text="Guardar" submit />

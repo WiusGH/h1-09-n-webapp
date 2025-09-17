@@ -12,6 +12,16 @@ interface HeaderProps {
   navigateTo: string;
 }
 
+/**
+ * Componente que renderiza un header para dispositivos móviles.
+ *
+ * @param {string} placeholder - Texto para mostrar en la barra de búsqueda.
+ * @param {string} navigateTo - Ruta a la cual se dirige la barra de búsqueda.
+ * @returns {JSX.Element} - Elemento JSX que representa el header.
+ *
+ * @example
+ * <MobileHeader placeholder="Buscar..." navigateTo="empleos" />
+ */
 const MobileHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
   const show = useHideOnScroll();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -49,6 +59,9 @@ const MobileHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
         <button
           className={style.hamburger}
           onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label="Abrir o cerrar menú de navegación"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           <FaBars />
         </button>
@@ -56,7 +69,13 @@ const MobileHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
           ref={menuRef}
           className={`${style.mobileMenu} ${menuOpen ? style.open : ""}`}
         >
-          <nav onClick={() => setMenuOpen(false)}>
+          <nav
+            id="mobile-menu"
+            role="navigation"
+            aria-label="Navegación"
+            aria-hidden={!menuOpen}
+            onClick={() => setMenuOpen(false)}
+          >
             <NavbarIcon type="home" sidebar />
             <NavbarIcon type="jobs" sidebar />
             {isLoggedIn() ? (
@@ -73,7 +92,7 @@ const MobileHeader: React.FC<HeaderProps> = ({ placeholder, navigateTo }) => {
         <section className={style.searchBar}>
           <CustomSearchBar placeholder={placeholder} navigateTo={navigateTo} />
         </section>
-        <div>
+        <div aria-label="Cambiar tema">
           <ThemeToggle />
         </div>
       </header>

@@ -4,10 +4,13 @@ import style from "./Form.module.css";
 import GenericButton from "../buttons/GenericButton";
 import { Link, useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../../utils/userStorage";
+import { login } from "../../api/general-apis/login";
 
-import { saveUserData } from "../../utils/userStorage";
-import axiosInstance from "../../api/axiosInstance";
-
+/**
+ * Formulario de inicio de sesión
+ *
+ * @return {JSX.Element} Formulario de inicio de sesión
+ */
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,21 +44,16 @@ const LoginForm = () => {
 
   async function handleLogin(email: string, password: string) {
     setLoading(true);
-    try {
-      const { data } = await axiosInstance.post("/auth/login", {
-        email,
-        password,
-      });
+    setErrorMessage("");
 
-      const { user, token } = data.data;
-      saveUserData({ ...user, token });
+    try {
+      await login({ email, password });
+      setLoading(false);
       navigate("/");
     } catch (error) {
-      setErrorMessage("Correo o contraseña inválidos");
-      console.error("Ingreso fallido", error);
-      setTimeout(() => setErrorMessage(""), 5000);
-    } finally {
       setLoading(false);
+      setErrorMessage("Error al iniciar sesión");
+      console.error("Error al iniciar sesión:", error);
     }
   }
 

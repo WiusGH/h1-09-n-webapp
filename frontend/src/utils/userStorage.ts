@@ -9,17 +9,33 @@ interface JwtPayload {
 
 const USER_KEY = "userData";
 
-// Para guardar datos en localStorage
+/**
+ * Guarda la información del usuario en localStorage.
+ *
+ * @param {userData} user - Información del usuario a guardar.
+ */
 export function saveUserData(user: UserData) {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
-// Para obtener datos del usuario del localStorage (null si no está logueado) y también revisar si el toekn está expirado
+/**
+ * Obtiene la información del usuario guardada en localStorage.
+ *
+ * @returns {userData | null} La información del usuario si existe, null en caso contrario.
+ *
+ * @throws {Error} Si el token es inválido o ha expirado.
+ */
 export function getUserData(): UserData | null {
   const stored = localStorage.getItem(USER_KEY);
   if (!stored) return null;
 
-  const parsed: UserData = JSON.parse(stored);
+  let parsed: UserData;
+  try {
+    parsed = JSON.parse(stored);
+  } catch {
+    clearUserData();
+    return null;
+  }
 
   if (parsed?.token) {
     try {
@@ -39,17 +55,44 @@ export function getUserData(): UserData | null {
   return parsed;
 }
 
-// Para eliminar datos del usuario al cerrar sesión
+/**
+ * Elimina los datos del usuario del localStorage.
+ * Esto se utiliza cuando se requiere eliminar la sesión del usuario.
+ */
 export function clearUserData() {
   localStorage.removeItem(USER_KEY);
 }
 
-// Para revisar si el usuario esta logueado y revisar si el token aún es válido
+/**
+ * Comprueba si existe un usuario logueado.
+ *
+ * @returns {boolean} - true si el usuario está logueado, false en caso contrario
+ */
 export function isLoggedIn(): boolean {
   return !!getUserData();
 }
 
+/**
+ * Comprueba si el usuario actualmente logueado está activo.
+ *
+ * @returns {boolean} - true si el usuario está activo, false en caso contrario
+ */
+export function isActive(): boolean {
+  const user = getUserData();
+  return !!user?.active;
+}
+
+/**
+ * Comprueba si el perfil del usuario actualmente logueado está completado.
+ *
+ * @returns {boolean} - true si el Perfil del usuario está completo, false en caso contrario
+ */
 export function isProfileComplete(): boolean {
   const userData = getUserData();
-  return !!userData?.country && !!userData?.address && !!userData?.phoneNumber;
+  return userData?.profileCompleted ?? false;
+  // if (userData?.country || userData?.address || userData?.phoneNumber) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
 }

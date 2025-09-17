@@ -12,8 +12,8 @@ const EditCv: React.FC<EditCvProps> = ({ user, handleChange }) => {
   const [cvOption, setCvOption] = useState<"upload" | "create">("upload");
 
   const handleDownloadCV = () => {
-    if (user.cvUrl) {
-      window.open(user.cvUrl, "_blank");
+    if (user.resumeUrl) {
+      window.open(user.resumeUrl, "_blank");
     } else {
       alert("No hay un CV cargado para descargar.");
     }
@@ -25,14 +25,18 @@ const EditCv: React.FC<EditCvProps> = ({ user, handleChange }) => {
       <div className={style.cvOptions}>
         <button
           type="button"
-          className={`${style.cvOptionButton} ${cvOption === 'upload' ? style.active : ''}`}
+          className={`${style.cvOptionButton} ${
+            cvOption === "upload" ? style.active : ""
+          }`}
           onClick={() => setCvOption("upload")}
         >
           Subir URL
         </button>
         <button
           type="button"
-          className={`${style.cvOptionButton} ${cvOption === 'create' ? style.active : ''}`}
+          className={`${style.cvOptionButton} ${
+            cvOption === "create" ? style.active : ""
+          }`}
           onClick={() => setCvOption("create")}
         >
           Crear CV
@@ -46,7 +50,7 @@ const EditCv: React.FC<EditCvProps> = ({ user, handleChange }) => {
             type="text"
             id="cvUrl"
             name="cvUrl"
-            value={user.cvUrl || ""}
+            value={user.resumeUrl || ""}
             onChange={handleChange}
             className={style.input}
           />
@@ -56,20 +60,18 @@ const EditCv: React.FC<EditCvProps> = ({ user, handleChange }) => {
       {cvOption === "create" && (
         <div className={style.createCvContainer}>
           <p>
-            Elige esta opción para generar un CV en PDF con tus datos de
-            perfil. (Lógica no implementada).
+            Elige esta opción para generar un CV en PDF con tus datos de perfil.
+            (Lógica no implementada).
           </p>
           <GenericButton
             text="Generar CV"
-            onClick={() =>
-              alert("Función de generación de CV en desarrollo.")
-            }
+            onClick={() => alert("Función de generación de CV en desarrollo.")}
           />
         </div>
       )}
 
       <div className={style.downloadCvContainer}>
-        {user.cvUrl && (
+        {user.resumeUrl && (
           <GenericButton text="Descargar CV" onClick={handleDownloadCV} />
         )}
       </div>
