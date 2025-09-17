@@ -9,6 +9,15 @@ import Mensajes from "./pages/Mensajes";
 import Empleos from "./pages/Empleos";
 import Notificaciones from "./pages/Notificaciones";
 import "./index.css";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound/NotFound";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import CreateJobOffer from "./pages/CreateJobOffer";
+import CompleteProfile from "./pages/CompleteProfile";
+import RequestRecuiterUserRole from "./pages/RequestRecuiterUserRole";
+import Aplicaciones from "./pages/Aplicaciones";
 
 // Carga del tema
 function App() {
@@ -29,13 +38,13 @@ function App() {
   let searchPlaceholder = "Buscar...";
   let navigateTo = "search";
 
-  if (userType === "candidate") {
+  if (userType === "CANDIDATE") {
     searchPlaceholder = "Buscar empleos";
     navigateTo = "empleos";
-  } else if (userType === "recruiter") {
+  } else if (userType === "RECRUITER") {
     searchPlaceholder = "Buscar candidatos";
     navigateTo = "candidatos";
-  } else if (userType === "admin") {
+  } else if (userType === "ADMIN") {
     searchPlaceholder = "Buscar usuarios";
     navigateTo = "usuarios";
   }
@@ -43,20 +52,49 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="app-container">
+      <main className="app-container">
         <Header placeholder={searchPlaceholder} navigateTo={navigateTo} />
-        <main className="app-main">
+        <div className="app-main">
           <Routes>
+            {/* Rutas públicas */}
             <Route path="/" element={<Home />} />
-            <Route path="/mensajes" element={<Mensajes />} />
             <Route path="/empleos" element={<Empleos />} />
-            <Route path="/notifiaciones" element={<Notificaciones />} />
-            <Route path="*" element={<h1>404 - Not Found</h1>} />{" "}
+            <Route path="/login" element={<Login />} />
+            <Route path="/registro" element={<Register />} />
+            <Route path="/perfil" element={<Profile />} />
+            <Route path="/aplicaciones" element={<Aplicaciones />} />
+            <Route path="*" element={<NotFound />} />{" "}
             {/* TODO: crear vista 404 */}
+            {/* Rutas para usuarios logueados */}
+            <Route element={<ProtectedRoute roles={["CANDIDATE"]} />}>
+              <Route path="/completar-perfil" element={<CompleteProfile />} />
+              <Route
+                path="/solicitar-ser-recruiter"
+                element={<RequestRecuiterUserRole />}
+              />
+            </Route>
+            <Route
+              element={
+                <ProtectedRoute roles={["CANDIDATE", "RECRUITER", "ADMIN"]} />
+              }
+            >
+              <Route path="/perfil" element={<Profile />} />
+              <Route path="/mensajes" element={<Mensajes />} />
+              <Route path="/notificaciones" element={<Notificaciones />} />
+            </Route>
+            {/* Rutas para reclutadores y admins */}
+            <Route element={<ProtectedRoute roles={["RECRUITER", "ADMIN"]} />}>
+              {/* <Route path="/candidatos" element={<Candidatos />} /> */}
+              <Route path="/nueva-oferta" element={<CreateJobOffer />} />
+            </Route>
+            {/* Rutas solo para admins y admins */}
+            <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
+              {/* <Route path="/panel-control" element={<ControlPanel />} /> */}
+            </Route>
           </Routes>
-        </main>
+        </div>
         <Footer />
-      </div>
+      </main>
     </Router>
   );
 }

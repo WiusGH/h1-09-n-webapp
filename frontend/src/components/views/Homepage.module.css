@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-secondary);
+  border-radius: 12px;
+  padding: 20px 25px;
+}
+
+.section h3 {
+  text-align: center;
+  color: var(--color-text);
+  line-height: 0.5;
+}
+
+.offers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.offer {
+  background-color: var(--color-text-secondary);
+  border-radius: 15px;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 0 10px;
+  width: fit-content;
+}
+
+.offer p,
+a {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+}
+
+.offer:hover {
+  scale: 1.1;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.links h3,
+h4,
+p {
+  line-height: 0.1;
+}
+
+.link {
+  background-color: var(--color-text-secondary);
+  border-radius: 15px;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 10px 15px;
+}
+
+.link:hover {
+  scale: 1.01;
+}
+
+.link svg {
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
+}

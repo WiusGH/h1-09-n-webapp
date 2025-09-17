@@ -1,0 +1,121 @@
+.container {
+  background-color: var(--color-primary);
+  border-radius: 12px;
+  color: var(--color-text-secondary);
+  height: 25%;
+  margin: auto;
+  padding: 1%;
+}
+
+.profile {
+  display: flex;
+  gap: 3%;
+}
+
+.profile img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.info {
+  margin-top: 2%;
+}
+
+.info span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.info span h3 {
+  font-size: 1.5rem;
+  line-height: 0;
+}
+
+.info span a {
+  text-decoration: none;
+  color: var(--color-text-secondary);
+}
+
+.info span a:hover {
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.info span p {
+  font-size: 1rem;
+  line-height: 0;
+}
+
+.info span svg {
+  height: 20px;
+}
+
+/* Nuevo estilo para el rol del usuario */
+.info .role {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--color-text-secondary);
+  margin: 5px 0;
+  line-height: 1;
+}
+
+.options {
+  font-size: 1.3rem;
+  list-style-type: none;
+  margin-right: 4%;
+}
+
+.options a {
+  text-decoration: none;
+  color: var(--color-text-secondary);
+}
+
+.options a:hover {
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.skills {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+
+.description {
+  width: 100%;
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: 12px;
+  color: var(--color-text);
+  padding: 8px;
+  resize: none;
+}
+
+.portfolioHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.projectsContainer {
+  display: flex;
+  gap: 1%;
+  flex-wrap: wrap;
+}
+
+.recruiterLinkContainer {
+  margin: 35px 0 5px 0;
+}
+.recruiterButton {
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: 12px;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 8px 16px;
+  line-height: 1;
+}

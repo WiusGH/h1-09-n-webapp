@@ -1,0 +1,127 @@
+package com.webAppG9.backend.config;
+
+import com.webAppG9.backend.security.JwtAuthenticationFilter;
+import com.webAppG9.backend.service.CustomUserDetailsService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService,
+            JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
+    // Password encoder para almacenar contraseñas de manera segura
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // AuthenticationManager para autenticar usuarios manualmente
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    // Configuración de seguridad HTTP
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        // Rutas públicas
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
+                        // Swagger
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml")
+                        .permitAll()
+
+                        // Usuarios
+                        .requestMatchers("/api/users/me/**").authenticated()
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+
+                        // Job Posts
+                        .requestMatchers(HttpMethod.GET, "/api/jobPost/**").permitAll()
+                        .requestMatchers("/api/jobPost/**").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Job Applications
+                        .requestMatchers(HttpMethod.POST, "/api/job-apply/**")
+                        .hasAnyRole("CANDIDATE", "RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/job-apply/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/job-apply/me").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/job-apply/job/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/job-apply/**").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Candidates
+                        .requestMatchers(HttpMethod.GET, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/candidates/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/candidates//my-applications/status/**")
+                        .hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/candidates/me/**").hasAnyRole("CANDIDATE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/candidates/active").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Recruiters
+                        .requestMatchers(HttpMethod.POST, "/api/recruiters/request/**").authenticated() // cualquier
+                                                                                                        // usuario puede
+                                                                                                        // solicitar
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/me/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/recruiters/me/**").hasRole("RECRUITER")
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/all").permitAll() // público
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/job/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/recruiters/**").hasAnyRole("RECRUITER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/recruiters/active").hasAnyRole("RECRUITER", "ADMIN")
+
+                        // Admin - recruiters
+                        .requestMatchers("/api/admins/recruiters/approve/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admins/recruiters/reject/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admins/recruiters/pending").hasRole("ADMIN")
+
+                        // Admin - otros endpoints
+                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
+
+                        // Cualquier otra ruta requiere autenticación
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    // Configuración de CORS para que el frontend pueda hacer peticiones
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:*", "https://h1-09-n-webapp.vercel.app"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+}
