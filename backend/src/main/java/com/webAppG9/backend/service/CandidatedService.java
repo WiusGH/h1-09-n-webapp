@@ -115,7 +115,7 @@ public class CandidatedService {
         }
 
         // Actualizar candidato
-        public String updateCandidate(CandidatedRequestDTO request) {
+        public CandidateResponseDTO updateCandidate(CandidatedRequestDTO request) {
                 User user = getCurrentUser();
 
                 Candidated candidate = candidatedRepository.findByUser(user)
@@ -135,7 +135,7 @@ public class CandidatedService {
                 candidate.applyFromDTO(request);
                 candidatedRepository.save(candidate);
 
-                return "Candidato actualizado correctamente";
+                return new CandidateResponseDTO(candidate);
         }
 
         // Obtener ofertas que coincidan con skills del candidato

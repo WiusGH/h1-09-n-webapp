@@ -1,32 +1,19 @@
 package com.webAppG9.backend.dto.jobapplication;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.webAppG9.backend.Model.Candidated;
 import com.webAppG9.backend.Model.JobApplication;
 import com.webAppG9.backend.Model.JobPost;
-import com.webAppG9.backend.Model.Skill;
-import com.webAppG9.backend.Model.User;
 
 public class JobApplicationResponseDTO {
 
     private Integer candidateId;
-    private String username;
-    private String email;
-    private String title;
-    private String address;
-    private String country;
-    private String phoneNumber;
-    private Boolean active;
-    // private String role;
-    private LocalDateTime createdAt;
-    private String jobDescription;
+    private Integer jobPostId;
+    private Integer applicationId;;
+
     private String status;
     private LocalDateTime appliedAt;
-
-    private Set<String> skills; // Nombres de las skills del candidato
 
     public JobApplicationResponseDTO() {
 
@@ -34,38 +21,15 @@ public class JobApplicationResponseDTO {
 
     public JobApplicationResponseDTO(JobApplication jobApplication) {
 
-        User user = jobApplication.getUser();
-        JobPost jobPost = jobApplication.getJobPost();
         Candidated candidated = jobApplication.getCandidated();
+        JobPost jobPost = jobApplication.getJobPost();
 
-        this.setUsername(user.getName() + " " + user.getLastName());
-        this.setEmail(user.getEmail());
-        this.setTitle(jobPost.getTitle());
-        this.setJobDescription(jobPost.getDescription());
         this.setStatus(jobApplication.getStatus().name());
         this.setAppliedAt(jobApplication.getAppliedAt());
+        this.setApplicationId(jobApplication.getId());
+        this.setJobPostId(jobPost.getId());
         this.setCandidateId(candidated.getId());
-        this.setAddress(candidated.getAddress());
-        this.setCountry(candidated.getCountry());
-        this.setPhoneNumber(candidated.getPhoneNumber());
-        this.setActive(candidated.getActive());
-        this.setSkills(candidated.getSkills().stream().map(Skill::getName).collect(Collectors.toSet()));
-        this.setCreatedAt(LocalDateTime.now());
-    }
-
-    public JobApplicationResponseDTO(Integer candidateId, String username, String email, String title,
-            String address, String country, String phoneNumber, Boolean active,
-            String createdAt, Set<String> skills) {
-        this.candidateId = candidateId;
-        this.username = username;
-        this.email = email;
-        this.title = title;
-        this.address = address;
-        this.country = country;
-        this.phoneNumber = phoneNumber;
-        this.active = active;
-        this.createdAt = LocalDateTime.now();
-        this.skills = skills;
+        this.setAppliedAt(LocalDateTime.now());
     }
 
     // Getters y setters
@@ -77,36 +41,20 @@ public class JobApplicationResponseDTO {
         this.candidateId = candidateId;
     }
 
-    public String getUsername() {
-        return username;
+    public Integer getApplicationId() {
+        return applicationId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setApplicationId(Integer applicationId) {
+        this.applicationId = applicationId;
     }
 
-    public String getEmail() {
-        return email;
+    public Integer getJobPostId() {
+        return jobPostId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getJobDescription() {
-        return jobDescription;
-    }
-
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription;
+    public void setJobPostId(Integer jobPostId) {
+        this.jobPostId = jobPostId;
     }
 
     public String getStatus() {
@@ -123,61 +71,5 @@ public class JobApplicationResponseDTO {
 
     public void setAppliedAt(LocalDateTime appliedAt) {
         this.appliedAt = appliedAt;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    // public String getRole() {
-    // return role;
-    // }
-
-    // public void setRole(String role) {
-    // this.role = role;
-    // }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Set<String> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(Set<String> skills) {
-        this.skills = skills;
     }
 }

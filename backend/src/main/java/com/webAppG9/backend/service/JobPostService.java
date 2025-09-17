@@ -79,14 +79,15 @@ public class JobPostService {
     }
 
     // Buscar trabajos por Id (Metodo para CandidatedController)
-    public JobPost getJobPostById(Integer jobPostId) {
+    public JobPostResponseDTO getJobPostById(Integer jobPostId) {
         JobPost jobPost = jobPostRepository.findById(jobPostId)
                 .orElseThrow(JobPostNotFoundException::new);
 
         if (!jobPost.getIsActive()) {
             throw new RuntimeException("Posteo de trabajo no activo");
         }
-        return jobPost;
+
+        return new JobPostResponseDTO(jobPost);
     }
 
     // Buscar trabajos por habilidades en el buscador

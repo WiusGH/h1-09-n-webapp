@@ -9,16 +9,18 @@ import com.webAppG9.backend.Model.Skill;
 public class CandidateResponseDTO {
 
     private Integer candidateId;
-    private String title; // Título profesional
+    // private String name;
+    // private String lastName;
+    private String title;
     private String address;
     private String country;
     private String phoneNumber;
-    private String email; // Email del user asociado
-    private String resumeUrl; // Link a CV
+    private String email;
+    private String resumeUrl;
 
     private Boolean active;
 
-    private Set<String> skills; // Nombres de las skills del candidato
+    private Set<String> skills;
 
     // Constructor vacío
     public CandidateResponseDTO() {
@@ -27,6 +29,10 @@ public class CandidateResponseDTO {
     // Constructor desde entidad
     public CandidateResponseDTO(Candidated candidated) {
         this.candidateId = candidated.getId();
+        // this.name = candidated.getUser() != null ? candidated.getUser().getName() :
+        // null;
+        // this.lastName = candidated.getUser() != null ?
+        // candidated.getUser().getLastName() : null;
         this.title = candidated.getTitle();
         this.address = candidated.getAddress();
         this.country = candidated.getCountry();
@@ -47,6 +53,22 @@ public class CandidateResponseDTO {
     public void setCandidateId(Integer candidateId) {
         this.candidateId = candidateId;
     }
+
+    // public String getName() {
+    // return name;
+    // }
+
+    // public void setName(String name) {
+    // this.name = name;
+    // }
+
+    // public String getLastName() {
+    // return lastName;
+    // }
+
+    // public void setLastName(String lastName) {
+    // this.lastName = lastName;
+    // }
 
     public String getTitle() {
         return title;

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.webAppG9.backend.Model.JobPost;
 import com.webAppG9.backend.dto.ResponseDTO;
 import com.webAppG9.backend.dto.candidates.CandidateResponseDTO;
 import com.webAppG9.backend.dto.candidates.CandidatedRequestDTO;
@@ -40,9 +39,9 @@ public class CandidatedController {
 
     @Operation(summary = "Obtener un trabajo por ID", description = "Devuelve los detalles de una publicación de trabajo si está activa.")
     @GetMapping("/{jobPostId}")
-    public ResponseEntity<ResponseDTO<JobPost>> getJobPostById(
+    public ResponseEntity<ResponseDTO<JobPostResponseDTO>> getJobPostById(
             @Parameter(description = "ID de la publicación de trabajo", example = "10") @PathVariable Integer jobPostId) {
-        JobPost jobPost = jobPostService.getJobPostById(jobPostId);
+        JobPostResponseDTO jobPost = jobPostService.getJobPostById(jobPostId);
         return ResponseEntity.ok(ResponseDTO.ok(jobPost));
     }
 
@@ -62,9 +61,9 @@ public class CandidatedController {
 
     @Operation(summary = "Actualizar datos del candidato", description = "Permite al candidato actualizar o completar sus datos de registro.")
     @PatchMapping
-    public ResponseEntity<ResponseDTO<String>> updateCandidate(
+    public ResponseEntity<ResponseDTO<CandidateResponseDTO>> updateCandidate(
             @RequestBody CandidatedRequestDTO requestDTO) {
-        String message = candidatedService.updateCandidate(requestDTO);
+        CandidateResponseDTO message = candidatedService.updateCandidate(requestDTO);
         return ResponseEntity.ok(ResponseDTO.ok(message));
     }
 
