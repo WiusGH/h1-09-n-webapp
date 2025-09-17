@@ -36,7 +36,9 @@ export function useJobs() {
   // 🔹 Aplicar a un empleo
   async function applyJob(jobId: string) {
     try {
-      await axiosInstance.post(`/job-apply/${jobId}`);
+      await axiosInstance.post(`/job-apply/`, {
+        jobPostId: jobId,
+      });
       setJobs((prev) =>
         prev.map((j) =>
           j.id === jobId ? { ...j, applied: true } : j
