@@ -3,14 +3,7 @@ package com.webAppG9.backend.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.webAppG9.backend.Model.JobPost;
 import com.webAppG9.backend.dto.ResponseDTO;
@@ -24,8 +17,13 @@ import com.webAppG9.backend.service.CandidatedService;
 import com.webAppG9.backend.service.JobPostService;
 import com.webAppG9.backend.service.RecruiterService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/candidates")
+@Tag(name = "Candidatos", description = "APIs para gestión de candidatos y sus interacciones con trabajos")
 public class CandidatedController {
 
     private final CandidatedService candidatedService;
@@ -40,29 +38,29 @@ public class CandidatedController {
         this.jobPostService = jobPostService;
     }
 
-    // Buscar trabajo por id (metodo en JobPostService)
+    @Operation(summary = "Obtener un trabajo por ID", description = "Devuelve los detalles de una publicación de trabajo si está activa.")
     @GetMapping("/{jobPostId}")
-    public ResponseEntity<ResponseDTO<JobPost>> getJobPostById(@PathVariable Integer jobPostId) {
+    public ResponseEntity<ResponseDTO<JobPost>> getJobPostById(
+            @Parameter(description = "ID de la publicación de trabajo", example = "10") @PathVariable Integer jobPostId) {
         JobPost jobPost = jobPostService.getJobPostById(jobPostId);
         return ResponseEntity.ok(ResponseDTO.ok(jobPost));
     }
 
-    // Convertir en candidato mediante cv
+    @Operation(summary = "Convertir usuario en candidato", description = "Registra un nuevo candidato a partir de la información enviada en el CV.")
     @PostMapping
     public ResponseEntity<ResponseDTO<CandidateResponseDTO>> createCandidateForUser(
             @RequestBody CandidatedRequestDTO candidateRequest) {
-
         CandidateResponseDTO saved = candidatedService.createCandidateForUser(candidateRequest);
         return ResponseEntity.ok(ResponseDTO.ok(saved));
     }
 
-    // Obtener datos del candidato por userId
+    @Operation(summary = "Obtener datos del candidato", description = "Recupera los datos del candidato asociado al usuario autenticado.")
     @GetMapping("/getCandidated")
     public ResponseEntity<ResponseDTO<CandidateResponseDTO>> getCandidateById() {
         return ResponseEntity.ok(candidatedService.getCandidateById());
     }
 
-    // Actualizar/ completar datos de registro datos del candidato
+    @Operation(summary = "Actualizar datos del candidato", description = "Permite al candidato actualizar o completar sus datos de registro.")
     @PatchMapping
     public ResponseEntity<ResponseDTO<String>> updateCandidate(
             @RequestBody CandidatedRequestDTO requestDTO) {
@@ -70,46 +68,41 @@ public class CandidatedController {
         return ResponseEntity.ok(ResponseDTO.ok(message));
     }
 
-    // Buscar ofertas laborales similares a los skills
+    @Operation(summary = "Buscar trabajos según skills", description = "Devuelve las ofertas laborales que coinciden con los skills del candidato.")
     @GetMapping("/matches")
     public ResponseEntity<ResponseDTO<List<JobPostResponseDTO>>> getMatchingJobPosts() {
         List<JobPostResponseDTO> matches = candidatedService.getMatchingJobPosts();
         return ResponseEntity.ok(ResponseDTO.ok(matches));
     }
 
-    // Endpoint para actualizar skills
+    @Operation(summary = "Actualizar skills del candidato", description = "Permite modificar los skills de un candidato a partir de una lista de IDs.")
     @PutMapping("/skills")
     public ResponseEntity<ResponseDTO<String>> updateSkills(
             @RequestBody SkillRequestDTO request) {
-
         String updatedCandidate = candidatedService.updateSkillsByIds(request.getSkills());
         return ResponseEntity.ok(ResponseDTO.ok(updatedCandidate));
     }
 
-    // Candidate solicita ser Recruiter metodo que relaciona aAdmin
+    @Operation(summary = "Solicitar ser Recruiter", description = "El candidato envía una solicitud para convertirse en Recruiter. La aprobación queda pendiente del administrador.")
     @PostMapping("/request-recruiter")
     public ResponseEntity<ResponseDTO<String>> requestRecruiterUpgrade(
             @RequestBody RecruiterRequestDTO request) {
-
         recruiterService.requestRecruiterUpgrade(request);
         return ResponseEntity.ok(
                 new ResponseDTO<>("Solicitud enviada. Espera aprobación del administrador.", null));
     }
 
-    // Camnia el estado de disponible o pausado
+    @Operation(summary = "Actualizar estado del candidato", description = "Cambia el estado del candidato entre disponible o pausado.")
     @PutMapping("/status")
     public ResponseEntity<ResponseDTO<String>> updateStatus() {
-
         String statusCandidate = candidatedService.updateCandidateStatus();
         return ResponseEntity.ok(ResponseDTO.ok(statusCandidate));
-
     }
 
-    // Buscar el msj y el status por parte de Recruiter
+    @Operation(summary = "Ver estados de aplicaciones", description = "Obtiene los mensajes y estados de las aplicaciones del candidato según lo respondido por los reclutadores.")
     @GetMapping("/my-applications/status")
     public ResponseEntity<ResponseDTO<List<ApplicationStatusDTO>>> getApplicationStatuses() {
         List<ApplicationStatusDTO> statuses = candidatedService.getStatusMessagesForCandidate();
         return ResponseEntity.ok(ResponseDTO.ok(statuses));
     }
-
 }

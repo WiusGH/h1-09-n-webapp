@@ -120,6 +120,17 @@ public class CandidatedService {
 
                 Candidated candidate = candidatedRepository.findByUser(user)
                                 .orElseThrow(CandidateNotFoundException::new);
+
+                // Mapear skills si vienen
+                if (request.getSkills() != null && !request.getSkills().isEmpty()) {
+                        Set<Skill> skills = request.getSkills().stream()
+                                        .map(name -> skillRepository.findByName(name) // buscar por nombre
+                                                        .orElseThrow(() -> new RuntimeException(
+                                                                        "Skill con nombre '" + name
+                                                                                        + "' no encontrada")))
+                                        .collect(Collectors.toSet());
+                        candidate.setSkills(skills);
+                }
                 // Aplicar todos los campos del DTO a la entidad
                 candidate.applyFromDTO(request);
                 candidatedRepository.save(candidate);
