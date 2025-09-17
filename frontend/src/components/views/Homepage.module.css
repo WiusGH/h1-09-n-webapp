@@ -53,8 +53,8 @@ a {
 }
 
 .links h3,
-h4,
-p {
+.links h4,
+.links p {
   line-height: 0.1;
 }
 

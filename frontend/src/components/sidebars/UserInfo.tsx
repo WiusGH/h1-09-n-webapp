@@ -32,7 +32,11 @@ const UserInfo = () => {
         <UserInfoButton type="profile" />
         <UserInfoButton type="cv" />
         <UserInfoButton type="bookmarks" />
-        <UserInfoButton type="applications" />
+        {user.role === "CANDIDATE" && <UserInfoButton type="applications" />}
+        {user.role === "RECRUITER" && (
+          <UserInfoButton type="create-job-offer" />
+        )}
+        {user.role === "ADMIN" && <UserInfoButton type="control-panel" />}
         <UserInfoButton type="config" />
         <UserInfoButton type="logout" />
       </section>

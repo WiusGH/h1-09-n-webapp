@@ -1,6 +1,6 @@
 import axiosInstance from "../axiosInstance";
 import { getUserData } from "../../utils/userStorage";
-import type { RequestRecruiterRoleData } from "../../types/Types";
+import type { RecruiterRoleData } from "../../types/Types";
 import type { UserData } from "../../types/Types";
 
 interface ApiResponse<T> {
@@ -18,7 +18,7 @@ interface ApiResponse<T> {
  * @throws {Error} Si no hay token o la API devuelve un error
  */
 export async function requestRecruiterRole(
-  requestData: RequestRecruiterRoleData
+  requestData: RecruiterRoleData
 ): Promise<UserData> {
   const user = getUserData();
   if (!user) throw new Error("Usuario no encontrado o no logueado");

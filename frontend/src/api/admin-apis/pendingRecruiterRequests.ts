@@ -1,18 +1,5 @@
+import { getUserData } from "../../utils/userStorage";
 import axiosInstance from "../axiosInstance";
-//  Example response
-// {
-//   "data": [
-//     {
-//       "userId": 0,
-//       "companyName": "string",
-//       "companyCountry": "string",
-//       "companyAddress": "string",
-//       "companyEmail": "string",
-//       "approved": true
-//     }
-//   ],
-//   "error": "string"
-// }
 
 interface ResponseData {
   userId: number;
@@ -29,12 +16,14 @@ interface ApiResponse<T> {
 }
 
 export async function pendingRecruiterRequests() {
+  const user = getUserData();
+  if (!user) throw new Error("Usuario no encontrado o no logueado");
   try {
     const response = await axiosInstance.get<ApiResponse<ResponseData[]>>(
       "/admins/recruiters/pending",
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );

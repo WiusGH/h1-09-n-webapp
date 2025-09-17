@@ -7,9 +7,19 @@ import { FaGear } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { clearUserData } from "../../utils/userStorage";
+import { TfiPanel } from "react-icons/tfi";
+import { SiGoogleforms } from "react-icons/si";
 
 interface UserInfoButtonProps {
-  type: "profile" | "cv" | "bookmarks" | "applications" | "config" | "logout";
+  type:
+    | "profile"
+    | "cv"
+    | "bookmarks"
+    | "applications"
+    | "config"
+    | "logout"
+    | "control-panel"
+    | "create-job-offer";
 }
 
 const options = {
@@ -23,6 +33,16 @@ const options = {
   },
   config: { text: "Configuración", icon: FaGear, path: "/configuracion" },
   logout: { text: "Cerrar sesión", icon: IoLogOut, path: "/" },
+  "control-panel": {
+    text: "Panel de control",
+    icon: TfiPanel,
+    path: "/panel-de-control",
+  },
+  "create-job-offer": {
+    text: "Crear oferta de empleo",
+    icon: SiGoogleforms,
+    path: "/crear-oferta-de-empleo",
+  },
 };
 
 const UserInfoButton: React.FC<UserInfoButtonProps> = ({ type }) => {

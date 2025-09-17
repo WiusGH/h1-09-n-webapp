@@ -39,7 +39,7 @@ export interface CompleteUserInfoData {
   resumeUrl: string;
 }
 
-export interface RequestRecruiterRoleData {
+export interface RecruiterRoleData {
   companyName: string;
   companyCountry: string;
   companyAddress: string;

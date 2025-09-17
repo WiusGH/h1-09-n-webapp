@@ -46,29 +46,40 @@ export async function login(data: LoginRequestData): Promise<UserData> {
     }
 
     const { token, user } = loginResponse.data;
-    // TODO: Verificar que funcione igual después de implementar el formulario para solicitar ser RECRUITER
-    const { data: candidateResponse } = await axiosInstance.get<
-      ApiResponse<CandidateResponseData>
-      // TODO: "getCandidated" tiene una d demás porque se equivocaron en el backend pero puede que lo corrijan pronto
-    >("/candidates/getCandidated", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
 
-    if (candidateResponse.error) {
-      throw new Error(candidateResponse.error);
+    // API que se llama solo si el usuario es de tipo "CANDIDATE"
+    if (user.role === "CANDIDATE") {
+      const { data: candidateResponse } = await axiosInstance.get<
+        ApiResponse<CandidateResponseData>
+        // TODO: "getCandidated" tiene una d demás porque se equivocaron en el backend pero puede que lo corrijan pronto
+      >("/candidates/getCandidated", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (candidateResponse.error) {
+        throw new Error(candidateResponse.error);
+      }
+
+      const candidate = candidateResponse.data;
+
+      const fullUserData: UserData = {
+        ...user,
+        ...candidate,
+        token,
+      };
+
+      saveUserData(fullUserData);
+      return fullUserData;
+      // TODO: falta mucho para implementar esta API pero quizás no de el tiempo
+      // API que solo se llama si el usuario es de tipo "RECRUITER"
     }
-
-    const candidate = candidateResponse.data;
-
-    const fullUserData: UserData = {
-      ...user,
-      ...candidate,
-      token,
-    };
-
-    saveUserData(fullUserData);
-
-    return fullUserData;
+    // else if (user.role === "RECRUITER") {
+    //   await axiosInstance.get("/recruiters/get-me", {
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    // }
+    saveUserData({ ...user, token });
+    return { ...user, token };
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
     throw error;
