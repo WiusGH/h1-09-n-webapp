@@ -2,16 +2,21 @@
 import React from "react";
 import styles from "./JobCard.module.css";
 import GenericButton from "../buttons/GenericButton";
-import type { jobOfferData } from "../../types/Types";
+import type { JobPostData } from "../../types/Types";
 
 interface JobCardProps {
-  job: jobOfferData;
+  job: JobPostData;
   applied: boolean;
   onClick?: () => void;
   onApply: (e: React.MouseEvent) => void;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job, applied, onClick, onApply }) => {
+const JobCard: React.FC<JobCardProps> = ({
+  job,
+  applied,
+  onClick,
+  onApply,
+}) => {
   return (
     <div className={styles.card} onClick={onClick}>
       <div className={styles.header}>
@@ -30,5 +35,3 @@ const JobCard: React.FC<JobCardProps> = ({ job, applied, onClick, onApply }) => 
 };
 
 export default JobCard;
-
-

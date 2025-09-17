@@ -5,12 +5,12 @@ import ModalCard from "../components/JobCard/ModalCard";
 import DynamicContainer from "../components/containers/DynamicContainer";
 import UserInfo from "../components/sidebars/UserInfo";
 import styles from "../components/layout/Layout.module.css";
-import type { jobOfferData } from "../types/Types";
+import type { JobPostData } from "../types/Types";
 import { useAppliedJobs } from "../hooks/useAppliedJobs"; //  importamos el hook
 
 const Aplicaciones = () => {
   const { jobs, loading, error } = useAppliedJobs(); //  usamos el hook
-  const [selectedJob, setSelectedJob] = useState<jobOfferData | null>(null);
+  const [selectedJob, setSelectedJob] = useState<JobPostData | null>(null);
 
   if (loading) return <p>Cargando empleos aplicados...</p>;
   if (error) return <p>Error al cargar empleos aplicados.</p>;
@@ -19,9 +19,7 @@ const Aplicaciones = () => {
     <DynamicContainer
       main={
         <div className={styles.jobsGrid}>
-          {jobs.length === 0 && (
-            <p>No has aplicado a ningún empleo todavía.</p>
-          )}
+          {jobs.length === 0 && <p>No has aplicado a ningún empleo todavía.</p>}
 
           {jobs.map((job) => (
             <div key={job.id} onClick={() => setSelectedJob(job)}>
@@ -54,6 +52,3 @@ const Aplicaciones = () => {
 };
 
 export default Aplicaciones;
-
-
-
