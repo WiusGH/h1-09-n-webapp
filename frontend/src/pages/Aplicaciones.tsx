@@ -1,34 +1,34 @@
-// src/pages/Empleos.tsx
+// src/pages/Aplicaciones.tsx
 import { useState } from "react";
-import { useJobs } from "../hooks/useJobs";
 import JobCard from "../components/JobCard/JobCard";
 import ModalCard from "../components/JobCard/ModalCard";
 import DynamicContainer from "../components/containers/DynamicContainer";
 import UserInfo from "../components/sidebars/UserInfo";
 import styles from "../components/layout/Layout.module.css";
-import NotFound from "./NotFound/NotFound";
 import type { jobOfferData } from "../types/Types";
+import { useAppliedJobs } from "../hooks/useAppliedJobs"; // 👈 importamos el hook
 
-const Empleos = () => {
-  const { jobs, loading, error, applyJob, unapplyJob } = useJobs();
+const Aplicaciones = () => {
+  const { jobs, loading, error } = useAppliedJobs(); // 👈 usamos el hook
   const [selectedJob, setSelectedJob] = useState<jobOfferData | null>(null);
 
-  if (loading) return <p>Cargando empleos...</p>;
-  if (error) return <NotFound />;
+  if (loading) return <p>Cargando empleos aplicados...</p>;
+  if (error) return <p>Error al cargar empleos aplicados.</p>;
 
   return (
     <DynamicContainer
       main={
         <div className={styles.jobsGrid}>
+          {jobs.length === 0 && (
+            <p>No has aplicado a ningún empleo todavía.</p>
+          )}
+
           {jobs.map((job) => (
             <div key={job.id} onClick={() => setSelectedJob(job)}>
               <JobCard
                 job={job}
-                applied={job.applied}
-                onApply={(e) => {
-                  e.stopPropagation();
-                  job.applied ? unapplyJob(job.id) : applyJob(job.id);
-                }}
+                applied={true} // 👈 siempre true porque ya están aplicados
+                onApply={() => {}} // 👈 no hace falta aplicar/desaplicar acá
                 onClick={() => setSelectedJob(job)}
               />
             </div>
@@ -43,9 +43,6 @@ const Empleos = () => {
                 <h2>{selectedJob.title}</h2>
                 <h4>{selectedJob.companyName}</h4>
                 <p>{selectedJob.description}</p>
-                {selectedJob.applied && (
-                  <p style={{ color: "green" }}>✅ Ya aplicaste a este trabajo</p>
-                )}
               </div>
             )}
           </ModalCard>
@@ -56,10 +53,7 @@ const Empleos = () => {
   );
 };
 
-export default Empleos;
-
-
-
+export default Aplicaciones;
 
 
 
@@ -72,86 +66,62 @@ export default Empleos;
 // import DynamicContainer from "../components/containers/DynamicContainer";
 // import UserInfo from "../components/sidebars/UserInfo";
 // import styles from "../components/layout/Layout.module.css";
-// import NotFound from "./NotFound/NotFound";
 // import type { jobOfferData } from "../types/Types";
 
-
-// const Empleos = () => {
+// const Aplicaciones = () => {
 //   const [jobs, setJobs] = useState<jobOfferData[]>([]);
 //   const [selectedJob, setSelectedJob] = useState<jobOfferData | null>(null);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(false);
 
-
-//   async function handleFetchJobs() {
+//   async function fetchAppliedJobs() {
 //     setLoading(true);
 //     try {
-//       const { data } = await axiosInstance.get("/jobPost");
-//       console.log("Respuesta API:", data);
+//       const { data } = await axiosInstance.get("/job-apply/me");
 
-//       const jobsFromApi: jobOfferData[] = data.data.map(
-//         (job: jobOfferData, index: number) => ({
-//           id: job.id || index, // si no viene id, usamos el índice como fallback
-//           title: job.title,
-//           company: job.companyName || "Empresa no especificada",
-//           description: job.description || "Sin descripción",
-//           applied: job.applied ?? false,
-//         })
-//       );
+//       //  Adaptamos la data a la interface jobOfferData
+//       const appliedJobs: jobOfferData[] = data.data.map((job: any) => ({
+//         id: job.id,
+//         title: job.title,
+//         companyName: job.companyName || "Empresa no especificada",
+//         description: job.description || "Sin descripción",
+//         country: job.companyCountry || "N/A",
+//         address: job.companyAddress || "N/A",
+//         phoneNumber: job.phoneNumber || "N/A",
+//         applied: true, // porque ya viene de aplicados
+//       }));
 
-//       setJobs(jobsFromApi);
+//       setJobs(appliedJobs);
 //       setError(false);
 //     } catch (err) {
-//       console.error("Error al traer empleos:", err);
+//       console.error("Error al traer empleos aplicados:", err);
 //       setError(true);
 //     } finally {
 //       setLoading(false);
 //     }
 //   }
 
-
-//   async function handleApply(job: jobOfferData) {
-//     try {
-//       await axiosInstance.post(`/job-apply/${job.id}`);
-//       setJobs((prev) =>
-//         prev.map((j) =>
-//           j.id === job.id ? { ...j, applied: true } : j
-//         )
-//       );
-//     } catch (err) {
-//       console.error("Error al aplicar:", err);
-//     }
-//   }
-
-
 //   useEffect(() => {
-//     handleFetchJobs();
+//     fetchAppliedJobs();
 //   }, []);
 
-//   if (loading) {
-//     return <p>Cargando empleos...</p>;
-//   }
-
-//   if (error) {
-//     return <NotFound />;
-//   }
+//   if (loading) return <p>Cargando empleos aplicados...</p>;
+//   if (error) return <p>No hay empleos aplicados</p>;
 
 //   return (
 //     <DynamicContainer
 //       main={
 //         <div className={styles.jobsGrid}>
+//           {jobs.length === 0 && (
+//             <p>No has aplicado a ningún empleo todavía.</p>
+//           )}
+
 //           {jobs.map((job) => (
 //             <div key={job.id} onClick={() => setSelectedJob(job)}>
 //               <JobCard
 //                 job={job}
-//                 applied={job.applied}
-//                 onApply={() =>{() => handleApply(job)}}
-//                   // setJobs((prev) =>
-//                   //   prev.map((j) =>
-//                   //     j.id === job.id ? { ...j, applied: !j.applied } : j
-//                   //   )
-//                   // )
-                
+//                 applied={true} // siempre true en esta vista
+//                 onApply={() => {}} // 👈 acá no necesitamos aplicar/desaplicar
 //                 onClick={() => setSelectedJob(job)}
 //               />
 //             </div>
@@ -166,11 +136,6 @@ export default Empleos;
 //                 <h2>{selectedJob.title}</h2>
 //                 <h4>{selectedJob.companyName}</h4>
 //                 <p>{selectedJob.description}</p>
-//                 {selectedJob.applied && (
-//                   <p style={{ color: "green" }}>
-//                     ✅ Ya aplicaste a este trabajo
-//                   </p>
-//                 )}
 //               </div>
 //             )}
 //           </ModalCard>
@@ -181,4 +146,4 @@ export default Empleos;
 //   );
 // };
 
-// export default Empleos;
+// export default Aplicaciones;

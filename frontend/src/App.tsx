@@ -14,7 +14,7 @@ import Register from "./components/forms/Register";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./auth/ProtectedRoute";
-
+import Aplicaciones from "./pages/Aplicaciones";
 // Carga del tema
 function App() {
   useEffect(() => {
@@ -60,6 +60,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
             <Route path="/perfil" element={<Profile />} />
+             <Route path="/aplicaciones" element={<Aplicaciones />} />
             <Route path="*" element={<NotFound />} />{" "}
             {/* TODO: crear vista 404 */}
             {/* Rutas para usuarios logueados */}
