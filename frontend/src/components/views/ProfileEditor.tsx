@@ -4,7 +4,7 @@ import { getUserData } from "../../utils/userStorage";
 import type { UserData, Project } from "../../types/Types";
 import GenericButton from "../buttons/GenericButton";
 import SkillTag from "../buttons/SkillTag";
-import EditCv from "./EditCv"; 
+import EditCv from "./EditCv";
 
 interface ProfileEditorProps {
   section: string;
@@ -12,7 +12,11 @@ interface ProfileEditorProps {
   onSave: (updatedUser: UserData) => void;
 }
 
-const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave }) => {
+const ProfileEditor: React.FC<ProfileEditorProps> = ({
+  section,
+  onCancel,
+  onSave,
+}) => {
   const initialUser = getUserData();
   const [user, setUser] = useState<UserData | null>(initialUser);
   const [newSkill, setNewSkill] = useState<string>("");
@@ -26,9 +30,11 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
     );
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setUser(prevUser => ({
+    setUser((prevUser) => ({
       ...prevUser!,
       [name]: value,
     }));
@@ -36,7 +42,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
 
   const handleAddSkill = () => {
     if (newSkill.trim() === "") return;
-    setUser(prevUser => ({
+    setUser((prevUser) => ({
       ...prevUser!,
       skills: [...(prevUser?.skills || []), newSkill.trim()],
     }));
@@ -44,15 +50,17 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
   };
 
   const handleRemoveSkill = (skillToRemove: string) => {
-    setUser(prevUser => ({
+    setUser((prevUser) => ({
       ...prevUser!,
-      skills: (prevUser?.skills || []).filter(skill => skill !== skillToRemove),
+      skills: (prevUser?.skills || []).filter(
+        (skill) => skill !== skillToRemove
+      ),
     }));
   };
 
   const handleAddProject = () => {
     if (newProject.title.trim() === "" || newProject.url.trim() === "") return;
-    setUser(prevUser => ({
+    setUser((prevUser) => ({
       ...prevUser!,
       portfolio: [...(prevUser?.portfolio || []), newProject],
     }));
@@ -61,12 +69,12 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
 
   const handleNewProjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setNewProject(prev => ({
+    setNewProject((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(user);
@@ -93,62 +101,66 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
           </div>
         )}
 
-         {section === "personal" && (
-              <div className={style.section}>
-                <h2>Editar Información Personal</h2>
-                <div className={style.formGroup}>
-                  <label htmlFor="firstName">Nombre:</label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={user.firstName}
-                    onChange={handleChange}
-                    className={style.input}
-                  />
-                </div>
-                <div className={style.formGroup}>
-                  <label htmlFor="lastName">Apellido:</label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={user.lastName}
-                    onChange={handleChange}
-                    className={style.input}
-                  />
-                </div>
-                <div className={style.formGroup}>
-                  <label htmlFor="title">Cargo/Ocupación:</label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value={user.title || ""}
-                    onChange={handleChange}
-                    className={style.input}
-                  />
-                </div>
-                <div className={style.formGroup}>
-                  <label htmlFor="biography">Biografía:</label>
-                  <textarea
-                    id="biography"
-                    name="biography"
-                    value={user.biography || ""}
-                    onChange={handleChange}
-                    className={style.textarea}
-                  />
-                </div>
-              </div>
-          )}
-        
+        {section === "personal" && (
+          <div className={style.section}>
+            <h2>Editar Información Personal</h2>
+            <div className={style.formGroup}>
+              <label htmlFor="firstName">Nombre:</label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={user.name}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="lastName">Apellido:</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={user.lastName}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="title">Cargo/Ocupación:</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={user.title || ""}
+                onChange={handleChange}
+                className={style.input}
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label htmlFor="biography">Biografía:</label>
+              <textarea
+                id="biography"
+                name="biography"
+                value={user.biography || ""}
+                onChange={handleChange}
+                className={style.textarea}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Secciones de Skills y Portafolio sin cambios */}
         {section === "skills" && (
           <div className={style.section}>
             <h2>Editar Skills</h2>
             <div className={style.skillsContainer}>
               {(user.skills || []).map((skill, idx) => (
-                <SkillTag key={idx} skill={skill} onRemove={() => handleRemoveSkill(skill)} />
+                <SkillTag
+                  key={idx}
+                  skill={skill}
+                  onRemove={() => handleRemoveSkill(skill)}
+                />
               ))}
             </div>
             <div className={style.addSkillContainer}>
@@ -171,7 +183,11 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
               {(user.portfolio || []).map((project, idx) => (
                 <div key={idx} className={style.projectItem}>
                   <span>{project.title}</span>
-                  <a href={project.url} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Ver
                   </a>
                 </div>
@@ -194,7 +210,10 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
                 onChange={handleNewProjectChange}
                 className={style.input}
               />
-              <GenericButton text="Añadir Proyecto" onClick={handleAddProject} />
+              <GenericButton
+                text="Añadir Proyecto"
+                onClick={handleAddProject}
+              />
             </div>
           </div>
         )}
@@ -254,7 +273,11 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ section, onCancel, onSave
         )}
 
         <div className={style.actions}>
-          <button type="button" onClick={onCancel} className={style.cancelButton}>
+          <button
+            type="button"
+            onClick={onCancel}
+            className={style.cancelButton}
+          >
             Cancelar
           </button>
           <button type="submit" className={style.saveButton}>

@@ -24,9 +24,10 @@ export interface UserData {
   companyCountry?: string;
   companyEmail?: string;
   companyAddress?: string;
-  // image?: string; // Estos datos son temporales, mera decoraccion en espera de api
-  // portfolio?: Project[];
-  // biography?: string;
+  // Estos datos son temporales, mera decoraccion en espera de api
+  image?: string;
+  portfolio?: Project[];
+  biography?: string;
 }
 
 export interface CompleteUserInfoData {
