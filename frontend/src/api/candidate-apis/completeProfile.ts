@@ -40,6 +40,12 @@ export async function completeProfile(
         Authorization: `Bearer ${userData.token}`,
       },
     });
+    // Esta API solo cambia el "profileCompleted" a true y no requiere cuerpo
+    await axiosInstance.post("/candidates", {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    });
     if (response.error) {
       throw new Error(response.error);
     }
@@ -47,9 +53,9 @@ export async function completeProfile(
     const updatedProfile = response.data;
 
     const updatedUserData = {
-      ...userData, // mantiene datos como id, token, role, etc.
-      ...updatedProfile, // sobreescribe los campos del perfil completado
-      profileCompleted: true, // opcional: si tu API no lo setea automáticamente
+      ...userData,
+      ...updatedProfile,
+      profileCompleted: true,
     };
 
     saveUserData(updatedUserData);

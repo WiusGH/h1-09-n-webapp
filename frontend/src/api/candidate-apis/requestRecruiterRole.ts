@@ -1,5 +1,5 @@
 import axiosInstance from "../axiosInstance";
-import { getUserData, saveUserData } from "../../utils/userStorage";
+import { getUserData } from "../../utils/userStorage";
 import type { RequestRecruiterRoleData } from "../../types/Types";
 import type { UserData } from "../../types/Types";
 
@@ -37,8 +37,6 @@ export async function requestRecruiterRole(
     if (response.error) {
       throw new Error(response.error);
     }
-
-    saveUserData({ ...response.data, token: user.token });
 
     return { ...response.data, token: user.token };
   } catch (error) {

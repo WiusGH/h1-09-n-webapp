@@ -23,7 +23,9 @@ const UserInfo = () => {
         <div>
           <h3>{`${user.name} ${user.lastName}`}</h3>
           <h4>{user.title}</h4>
-          <p>{user.role.toLocaleLowerCase()}</p>
+          <p>
+            {typeof user.role === "string" && user.role.toLocaleLowerCase()}
+          </p>
         </div>
       </section>
       <section className={style.links}>

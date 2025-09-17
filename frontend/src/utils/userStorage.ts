@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import type { userData } from "../types/Types";
+import type { UserData } from "../types/Types";
 
 // Para obtener la fecha de vencimiento del token
 interface JwtPayload {
@@ -14,7 +14,7 @@ const USER_KEY = "userData";
  *
  * @param {userData} user - Información del usuario a guardar.
  */
-export function saveUserData(user: userData) {
+export function saveUserData(user: UserData) {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
@@ -25,11 +25,11 @@ export function saveUserData(user: userData) {
  *
  * @throws {Error} Si el token es inválido o ha expirado.
  */
-export function getUserData(): userData | null {
+export function getUserData(): UserData | null {
   const stored = localStorage.getItem(USER_KEY);
   if (!stored) return null;
 
-  let parsed: userData;
+  let parsed: UserData;
   try {
     parsed = JSON.parse(stored);
   } catch {
@@ -89,10 +89,10 @@ export function isActive(): boolean {
  */
 export function isProfileComplete(): boolean {
   const userData = getUserData();
-  // return userData?.profileCompleted ?? false; Esta debería ser la forma correcta pero utilizaremos la de abajo temporalmente
-  if (userData?.country || userData?.address || userData?.phoneNumber) {
-    return true;
-  } else {
-    return false;
-  }
+  return userData?.profileCompleted ?? false;
+  // if (userData?.country || userData?.address || userData?.phoneNumber) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
 }

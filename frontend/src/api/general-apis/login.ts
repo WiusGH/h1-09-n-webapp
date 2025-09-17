@@ -49,7 +49,8 @@ export async function login(data: LoginRequestData): Promise<UserData> {
     // TODO: Verificar que funcione igual después de implementar el formulario para solicitar ser RECRUITER
     const { data: candidateResponse } = await axiosInstance.get<
       ApiResponse<CandidateResponseData>
-    >("/candidates/getCandidate", {
+      // TODO: "getCandidated" tiene una d demás porque se equivocaron en el backend pero puede que lo corrijan pronto
+    >("/candidates/getCandidated", {
       headers: { Authorization: `Bearer ${token}` },
     });
 

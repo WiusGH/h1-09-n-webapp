@@ -27,10 +27,16 @@ const CompleteProfileForm = () => {
       phoneNumber,
       skills,
       resumeUrl,
-    }).then(() => {
-      setLoading(false);
-      navigate("/");
-    });
+    })
+      .then(() => {
+        setLoading(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        setErrorMessage("Error al completar el perfil");
+        console.error("Error al completar el perfil:", error);
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
