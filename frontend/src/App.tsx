@@ -17,6 +17,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import CreateJobOffer from "./pages/CreateJobOffer";
 import CompleteProfile from "./pages/CompleteProfile";
 import RequestRecuiterUserRole from "./pages/RequestRecuiterUserRole";
+import Aplicaciones from "./pages/Aplicaciones";
 
 // Carga del tema
 function App() {
@@ -60,6 +61,8 @@ function App() {
             <Route path="/empleos" element={<Empleos />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Register />} />
+            <Route path="/perfil" element={<Profile />} />
+            <Route path="/aplicaciones" element={<Aplicaciones />} />
             <Route path="*" element={<NotFound />} />{" "}
             {/* TODO: crear vista 404 */}
             {/* Rutas para usuarios logueados */}

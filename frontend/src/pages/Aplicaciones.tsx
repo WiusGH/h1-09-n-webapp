@@ -1,34 +1,34 @@
-// src/pages/Empleos.tsx
+// src/pages/Aplicaciones.tsx
 import { useState } from "react";
-import { useJobs } from "../hooks/useJobs";
 import JobCard from "../components/JobCard/JobCard";
 import ModalCard from "../components/JobCard/ModalCard";
 import DynamicContainer from "../components/containers/DynamicContainer";
 import UserInfo from "../components/sidebars/UserInfo";
 import styles from "../components/layout/Layout.module.css";
-import NotFound from "./NotFound/NotFound";
-import type { JobPostData } from "../types/Types";
+import type { jobOfferData } from "../types/Types";
+import { useAppliedJobs } from "../hooks/useAppliedJobs"; //  importamos el hook
 
-const Empleos = () => {
-  const { jobs, loading, error, applyJob, unapplyJob } = useJobs();
-  const [selectedJob, setSelectedJob] = useState<JobPostData | null>(null);
+const Aplicaciones = () => {
+  const { jobs, loading, error } = useAppliedJobs(); //  usamos el hook
+  const [selectedJob, setSelectedJob] = useState<jobOfferData | null>(null);
 
-  if (loading) return <p>Cargando empleos...</p>;
-  if (error) return <NotFound />;
+  if (loading) return <p>Cargando empleos aplicados...</p>;
+  if (error) return <p>Error al cargar empleos aplicados.</p>;
 
   return (
     <DynamicContainer
       main={
         <div className={styles.jobsGrid}>
+          {jobs.length === 0 && (
+            <p>No has aplicado a ningún empleo todavía.</p>
+          )}
+
           {jobs.map((job) => (
             <div key={job.id} onClick={() => setSelectedJob(job)}>
               <JobCard
                 job={job}
-                applied={job.applied}
-                onApply={(e) => {
-                  e.stopPropagation();
-                  return job.applied ? unapplyJob(job.id) : applyJob(job.id);
-                }}
+                applied={true} //  siempre true porque ya están aplicados
+                onApply={() => {}} //  no hace falta aplicar/desaplicar acá
                 onClick={() => setSelectedJob(job)}
               />
             </div>
@@ -43,11 +43,6 @@ const Empleos = () => {
                 <h2>{selectedJob.title}</h2>
                 <h4>{selectedJob.companyName}</h4>
                 <p>{selectedJob.description}</p>
-                {selectedJob.applied && (
-                  <p style={{ color: "green" }}>
-                    ✅ Ya aplicaste a este trabajo
-                  </p>
-                )}
               </div>
             )}
           </ModalCard>
@@ -58,4 +53,7 @@ const Empleos = () => {
   );
 };
 
-export default Empleos;
+export default Aplicaciones;
+
+
+
