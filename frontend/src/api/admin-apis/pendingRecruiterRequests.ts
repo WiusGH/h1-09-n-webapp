@@ -15,6 +15,12 @@ interface ApiResponse<T> {
   error: string | null;
 }
 
+/**
+ * Obtiene una lista de solicitudes de reclutadores pendientes.
+ * Requiere usuario de tipo ADMIN.
+ * @returns {Promise<ResponseData[]>} Una lista de solicitudes de reclutadores pendientes.
+ * @throws {Error} Si no se encuentra la información del usuario logueado o si ocurre un error al obtener las solicitudes pendientes.
+ */
 export async function pendingRecruiterRequests() {
   const user = getUserData();
   if (!user) throw new Error("Usuario no encontrado o no logueado");

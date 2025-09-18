@@ -21,6 +21,10 @@ const RegisterForm = () => {
     setShowPassword((prev) => !prev);
   };
 
+  /**
+   * Formulario para registrar un nuevo usuario
+   * @returns {JSX.Element} Formulario para crear un nuevo usuario
+   */
   async function handleRegister(
     name: string,
     lastName: string,

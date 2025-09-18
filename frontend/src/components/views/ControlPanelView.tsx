@@ -12,6 +12,10 @@ interface RecruiterRequest {
   approved: boolean;
 }
 
+/**
+ * Componente que muestra un panel de control para los administradores
+ * donde se pueden ver las solicitudes pendientes de reclutador y aprobarlas
+ */
 const ControlPanelView = () => {
   const [requests, setRequests] = useState<RecruiterRequest[]>([]);
   const [loading, setLoading] = useState(false);

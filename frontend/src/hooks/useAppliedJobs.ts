@@ -15,7 +15,6 @@ export function useAppliedJobs() {
         const { data } = await axiosInstance.get("/job-apply/me");
         const appliedJobs: JobPostData[] = data.data.map(
           (job: JobPostData) => ({
-            id: job.id,
             title: job.title,
             companyName: job.companyName,
             description: job.description,

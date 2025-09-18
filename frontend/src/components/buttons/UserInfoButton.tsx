@@ -45,6 +45,13 @@ const options = {
   },
 };
 
+/**
+ * Componente que renderiza un botón de navegación en la barra lateral del usuario.
+ * @param type - Tipo de botón (perfil, cv, favoritos, aplicaciones, configuración, logout, panel-de-control, crear-oferta-de-empleo).
+ * @returns {JSX.Element} Un elemento JSX que representa el botón de navegación.
+ * @example
+ * <UserInfoButton type="perfil" />
+ */
 const UserInfoButton: React.FC<UserInfoButtonProps> = ({ type }) => {
   const option = options[type];
 

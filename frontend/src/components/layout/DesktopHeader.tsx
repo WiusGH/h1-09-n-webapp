@@ -13,10 +13,9 @@ interface HeaderProps {
 /**
  * Componente que renderiza un header para dispositivos de escritorio.
  *
- * @param {string} placeholder - Texto para mostrar en la barra de búsqueda.
- * @param {string} navigateTo - Ruta a la cual se dirige la barra de búsqueda.
+ * @param placeholder - Texto para mostrar en la barra de búsqueda.
+ * @param navigateTo - Ruta a la cual se dirige la barra de búsqueda.
  * @returns {JSX.Element} - Elemento JSX que representa el header.
- *
  * @example
  * <DesktopHeader placeholder="Buscar..." navigateTo="empleos" />
  */

@@ -12,6 +12,15 @@ interface ProfileEditorProps {
   onSave: (updatedUser: UserData) => void;
 }
 
+/**
+ * Componente para editar la información de un usuario
+ * Recibe una sección que indica qué parte de la información se debe editar
+ * Recibe una función onCancel que se ejecuta al cancelar la edición
+ * Recibe una función onSave que se ejecuta al guardar los cambios
+ * @param section - La sección que se debe editar (image, personal, skills, portfolio, cv, contact)
+ * @param onCancel - La función que se ejecuta al cancelar la edición
+ * @param onSave - La función que se ejecuta al guardar los cambios
+ */
 const ProfileEditor: React.FC<ProfileEditorProps> = ({
   section,
   onCancel,

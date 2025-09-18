@@ -8,6 +8,12 @@ interface EditCvProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+/**
+ * Componente que renderiza una sección para editar el CV del usuario.
+ * @param user - Los datos del usuario que se están editando.
+ * @param handleChange - Función que se llama cuando se produce un cambio en el formulario.
+ * @returns {JSX.Element} - Elemento JSX que representa la sección de edición del CV.
+ */
 const EditCv: React.FC<EditCvProps> = ({ user, handleChange }) => {
   const [cvOption, setCvOption] = useState<"upload" | "create">("upload");
 

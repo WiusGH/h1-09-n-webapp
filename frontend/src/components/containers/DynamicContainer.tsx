@@ -6,6 +6,16 @@ interface DynamicContainerProps {
   side?: React.ReactNode;
 }
 
+/**
+ * Renderiza un contenedor dinamico que puede tener dos columnas
+ * Si se pasa la propiedad 'side', se renderiza una columna adicional
+ * con el contenido de la propiedad 'side'
+ * De lo contrario, se renderiza un contenedor con una sola columna
+ * con el contenido de la propiedad 'main'
+ * @param main - Contenido de la primera columna
+ * @param main - (Opcional) Contenido de la segunda columna
+ * @returns {JSX.Element} Contenedor dinamico
+ */
 function DynamicContainer({ main, side }: DynamicContainerProps) {
   return (
     <div className={`${style.container} ${side ? style.twoCol : ""}`}>

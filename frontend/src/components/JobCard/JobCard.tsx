@@ -11,6 +11,13 @@ interface JobCardProps {
   onApply: (e: React.MouseEvent) => void;
 }
 
+/**
+ * Componente para mostrar una oferta laboral.
+ * @param job - La oferta laboral a mostrar.
+ * @param applied - Si la oferta laboral ya ha sido aplicada.
+ * @param onClick - (Opcional) Función a llamar cuando se hace click en la tarjeta.
+ * @param onApply - Función a llamar cuando se hace click en el botón de aplicar.
+ */
 const JobCard: React.FC<JobCardProps> = ({
   job,
   applied,

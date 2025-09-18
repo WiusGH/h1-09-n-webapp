@@ -3,11 +3,17 @@ import { isLoggedIn, isProfileComplete } from "../../utils/userStorage";
 import style from "./Homepage.module.css";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
+/**
+ * Componente que renderiza la página de inicio de la aplicación.
+ * Muestra las ofertas recomendadas para el usuario logueado si este completó su perfil.
+ * Muestra un mensaje para que el usuario inicie sesión o complete su perfil si no lo ha hecho.
+ * Muestra un conjunto de enlaces y tips para mejorar la empleabilidad del usuario.
+ * @returns {JSX.Element} Un elemento JSX que representa la página de inicio de la aplicación.
+ */
 const Homepage = () => {
   return (
     <section className={style.container}>
       <div className={`${style.section} ${style.offers}`}>
-        {/* Mockup de momento pero lo ideal es que obtengo 3 empleos al azar de la base de datos según las habilidades del usuario */}
         {isLoggedIn() && isProfileComplete() ? (
           <>
             <h3>Ofertas para tí</h3>
@@ -29,7 +35,6 @@ const Homepage = () => {
           </Link>
         )}
       </div>
-      {/* Mockup para agregar contenido al homepage y que no necesitará uso de API para el MVP */}
       <div className={`${style.section} ${style.tips}`}>
         <h3>Tips para aumentar empleabilidad</h3>
         <ul>

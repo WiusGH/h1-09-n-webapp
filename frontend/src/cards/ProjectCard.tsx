@@ -5,6 +5,13 @@ interface Props {
   title: string;
 }
 
+/**
+ * Componente que renderiza una tarjeta para mostrar un proyecto.
+ *
+ * @param image - URL de la imágen del proyecto.
+ * @param title - Título del proyecto.
+ * @returns {JSX.Element} - Elemento JSX que representa la tarjeta del proyecto.
+ */
 const ProjectCard: React.FC<Props> = ({ image, title }) => {
   return (
     <div className={style.container}>

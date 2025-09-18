@@ -6,6 +6,10 @@ import GenericButton from "../buttons/GenericButton";
 import SkillsInput from "../inputs/SkillsInput";
 import { completeProfile } from "../../api/candidate-apis/completeProfile";
 
+/**
+ * Formulario para completar el perfil
+ * @return {JSX.Element} Formulario para completar el perfil
+ */
 const CompleteProfileForm = () => {
   const [title, setTitle] = useState("");
   const [country, setCountry] = useState("");

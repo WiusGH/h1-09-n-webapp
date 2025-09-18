@@ -14,6 +14,11 @@ const RequestRecruiterRoleForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  /**
+   * Formulario para enviar una solicitud para cambiar el rol de un usuario a RECRUITER
+   * @returns {Promise<void>} Solicitud realizada con exito
+   * @throws {Error} Si no hay token o la API devuelve un error
+   */
   async function handleSubmit() {
     setLoading(true);
     setErrorMessage("");

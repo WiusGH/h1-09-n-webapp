@@ -8,7 +8,6 @@ import { login } from "../../api/general-apis/login";
 
 /**
  * Formulario de inicio de sesión
- *
  * @return {JSX.Element} Formulario de inicio de sesión
  */
 const LoginForm = () => {
