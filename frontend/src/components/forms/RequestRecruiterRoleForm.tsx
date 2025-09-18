@@ -81,7 +81,7 @@ const RequestRecruiterRoleForm = () => {
           value={companyEmail}
           onChange={(e) => setCompanyEmail(e.target.value)}
         />
-        <GenericButton text="Iniciar sesión" submit />
+        <GenericButton text="Enviar solicitud" submit />
       </form>
       <span className={style.errorContainer}>
         {errorMessage && <p className={style.error}>{errorMessage}</p>}

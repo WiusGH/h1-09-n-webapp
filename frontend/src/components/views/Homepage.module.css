@@ -16,7 +16,7 @@
 .section h3 {
   text-align: center;
   color: var(--color-text);
-  line-height: 0.5;
+  margin: 0;
 }
 
 .offers {
@@ -51,12 +51,6 @@ a {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.links h3,
-.links h4,
-.links p {
-  line-height: 0.1;
 }
 
 .link {

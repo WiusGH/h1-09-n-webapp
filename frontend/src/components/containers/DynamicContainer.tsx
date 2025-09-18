@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./DynamicContainer.module.css";
+import { useWindowSize } from "../../hooks/useWindowsSize";
 
 interface DynamicContainerProps {
   main: React.ReactNode;
@@ -17,10 +18,22 @@ interface DynamicContainerProps {
  * @returns {JSX.Element} Contenedor dinamico
  */
 function DynamicContainer({ main, side }: DynamicContainerProps) {
+  const isMobile = useWindowSize().width < 768;
   return (
-    <div className={`${style.container} ${side ? style.twoCol : ""}`}>
-      <div className={style.main}>{main}</div>
-      {side && <aside className={style.side}>{side}</aside>}
+    <div
+      className={`${style.container} ${side && !isMobile ? style.twoCol : ""}`}
+    >
+      {isMobile ? (
+        <>
+          {side && <aside className={style.side}>{side}</aside>}
+          <div className={style.main}>{main}</div>
+        </>
+      ) : (
+        <>
+          <div className={style.main}>{main}</div>
+          {side && <aside className={style.side}>{side}</aside>}
+        </>
+      )}
     </div>
   );
 }

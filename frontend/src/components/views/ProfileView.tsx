@@ -5,6 +5,7 @@ import SkillTag from "../buttons/SkillTag";
 import style from "./ProfileView.module.css";
 import { LuPencilLine } from "react-icons/lu";
 import type { UserData } from "../../types/Types";
+import { Link } from "react-router-dom";
 
 interface ProfileViewProps {
   user: UserData | null;
@@ -99,6 +100,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
           />
         ))}
       </div>
+      {user.profileCompleted && (
+        <Link to="/solicitar-ser-recruiter">
+          <GenericButton text="Ser Recruiter" />
+        </Link>
+      )}
     </div>
   );
 };
