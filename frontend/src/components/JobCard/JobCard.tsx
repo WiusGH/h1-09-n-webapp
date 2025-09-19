@@ -3,6 +3,8 @@ import React from "react";
 import styles from "./JobCard.module.css";
 import GenericButton from "../buttons/GenericButton";
 import type { JobPostData } from "../../types/Types";
+import { isLoggedIn, isProfileComplete } from "../../utils/userStorage";
+import { useNavigate } from "react-router-dom";
 
 interface JobCardProps {
   job: JobPostData;
@@ -24,6 +26,16 @@ const JobCard: React.FC<JobCardProps> = ({
   onClick,
   onApply,
 }) => {
+  const navigate = useNavigate();
+  const enableUser = isLoggedIn() && isProfileComplete();
+
+  const handleApply = (e: React.MouseEvent) => {
+    if (enableUser) {
+      onApply(e);
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <div className={styles.card} onClick={onClick}>
       <div className={styles.header}>
@@ -32,8 +44,14 @@ const JobCard: React.FC<JobCardProps> = ({
         <p className={styles.description}>{job.description}</p>
         <div className={styles.actions}>
           <GenericButton
-            text={applied ? "Desaplicar" : "Aplicar"}
-            onClick={onApply}
+            text={
+              enableUser
+                ? applied
+                  ? "Aplicado"
+                  : "Aplicar"
+                : "Inicia sesión para aplicar"
+            }
+            onClick={handleApply}
           />
         </div>
       </div>

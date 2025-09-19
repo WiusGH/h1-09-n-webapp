@@ -60,7 +60,7 @@ const RegisterForm = () => {
           <div className={style.spinner}></div>
         </div>
       )}
-      <h3>Inicio de sesión</h3>
+      <h3>Registrate</h3>
       <form
         className={style.form}
         onSubmit={(e) => {
