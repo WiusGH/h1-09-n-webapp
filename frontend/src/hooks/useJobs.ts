@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
 import type { JobPostData } from "../types/Types";
+import { getUserData } from "../utils/userStorage";
 
 export function useJobs() {
   const [jobs, setJobs] = useState<JobPostData[]>([]);
@@ -36,9 +37,14 @@ export function useJobs() {
 
   // 🔹 Aplicar a un empleo
   async function applyJob(jobId: string) {
+    const user = getUserData();
+    if (!user) throw new Error("Usuario no encontrado o no logueado");
     try {
       await axiosInstance.post("/job-apply", {
         jobPostId: jobId,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       });
       setJobs((prev) =>
         prev.map((j) => (j.id === jobId ? { ...j, applied: true } : j))

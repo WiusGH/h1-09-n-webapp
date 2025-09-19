@@ -7,6 +7,13 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
+/**
+ * Un componente tipo modal que se utiliza para mostrar información adicional en una ventana emergente.
+ * El componente acepta tres propiedades: isOpen, onClose y children.
+ * La propiedad isOpen indica si el modal esta abierto.
+ * La propiedad isClosed indica si el modal esta cerrado.
+ * Este modal ocupará el 100% de la pantalla y se mostrara en el centro de la pantalla.
+ */
 const ModalCard: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 

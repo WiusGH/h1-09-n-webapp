@@ -21,6 +21,10 @@ const RegisterForm = () => {
     setShowPassword((prev) => !prev);
   };
 
+  /**
+   * Formulario para registrar un nuevo usuario
+   * @returns {JSX.Element} Formulario para crear un nuevo usuario
+   */
   async function handleRegister(
     name: string,
     lastName: string,
@@ -56,7 +60,7 @@ const RegisterForm = () => {
           <div className={style.spinner}></div>
         </div>
       )}
-      <h3>Inicio de sesión</h3>
+      <h3>Registrate</h3>
       <form
         className={style.form}
         onSubmit={(e) => {

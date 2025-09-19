@@ -6,6 +6,10 @@ import { createJobPost } from "../../api/recruiter-apis/createJobPost";
 import SkillsInput from "../inputs/SkillsInput";
 import TextAreaInput from "../inputs/TextAreaInput";
 
+/**
+ * Formulario para crear una nueva oferta laboral
+ * @returns {JSX.Element} Formulario para crear una nueva oferta laboral
+ */
 const NewJobForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -21,7 +25,6 @@ const NewJobForm = () => {
         title,
         description,
         maxCandidates,
-        skills,
       });
       console.log(response);
     } catch {

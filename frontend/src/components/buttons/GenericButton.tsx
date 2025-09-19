@@ -8,6 +8,15 @@ interface GenericButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
+/**
+ * Generic button component
+ * @param text - Texto del botón
+ * @param disabled - (Opcional) Para deshabilitar el botón
+ * @param submit - (Opcional) Para indicar que el botón es de tipo submit
+ * @param width - (Opcional) Ancho del botón
+ * @param onClick - (Opcional) Función que se ejecuta al hacer clic en el botón
+ * @returns {JSX.Element} Button component
+ */
 const GenericButton: React.FC<GenericButtonProps> = ({
   disabled,
   submit,

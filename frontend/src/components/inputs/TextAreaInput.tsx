@@ -8,6 +8,17 @@ interface TextAreaInputProps {
   label?: string;
 }
 
+/**
+ * Componente que renderiza un input de tipo textarea.
+ * @param placeholder - Texto para mostrar en la barra de búsqueda.
+ * @param value - Valor actual del input.
+ * @param onChange - Función para cambiar y retornar el valor del input.
+ * @param rows - (Opcional) Número de filas para el textarea.
+ * @param label - (Opcional) Etiqueta para el input.
+ * @returns {JSX.Element} Elemento JSX que representa el input.
+ * @example
+ * <TextAreaInput placeholder="Escribe algo..." value="" onChange={(value: string) => void} label="Comentario" />
+ */
 const TextAreaInput = ({
   placeholder,
   value,

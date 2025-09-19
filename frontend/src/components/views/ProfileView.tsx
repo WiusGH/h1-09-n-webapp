@@ -5,12 +5,20 @@ import SkillTag from "../buttons/SkillTag";
 import style from "./ProfileView.module.css";
 import { LuPencilLine } from "react-icons/lu";
 import type { UserData } from "../../types/Types";
+import { Link } from "react-router-dom";
 
 interface ProfileViewProps {
   user: UserData | null;
   onEdit: (section: string) => void;
 }
 
+/**
+ * Componente que renderiza una vista de perfil para el usuario logueado.
+ *
+ * @prop user - Los datos del usuario que se están mostrando.
+ * @prop onEdit - Función que se llama cuando se hace clic en el botón de editar.
+ * @returns {JSX.Element} - Elemento JSX que representa la vista de perfil del usuario.
+ */
 const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
   if (!user) {
     return (
@@ -29,9 +37,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
       <div className={style.profile}>
         <div className={style.imageContainer}>
           <img
-            src={
-              user.image || `https://avatar.iran.liara.run/public/${user.id}`
-            }
+            src={user.image || `https://avatar.iran.liara.run/public/29`}
             alt="Foto de perfil"
           />
           <a onClick={() => onEdit("image")} className={style.editImageIcon}>
@@ -94,6 +100,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user, onEdit }) => {
           />
         ))}
       </div>
+      {user.profileCompleted && (
+        <Link to="/solicitar-ser-recruiter">
+          <GenericButton text="Ser Recruiter" />
+        </Link>
+      )}
     </div>
   );
 };

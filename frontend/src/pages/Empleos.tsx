@@ -8,10 +8,12 @@ import UserInfo from "../components/sidebars/UserInfo";
 import styles from "../components/layout/Layout.module.css";
 import NotFound from "./NotFound/NotFound";
 import type { JobPostData } from "../types/Types";
+import { useWindowSize } from "../hooks/useWindowsSize";
 
 const Empleos = () => {
   const { jobs, loading, error, applyJob, unapplyJob } = useJobs();
   const [selectedJob, setSelectedJob] = useState<JobPostData | null>(null);
+  const isMobile = useWindowSize().width < 768;
 
   if (loading) return <p>Cargando empleos...</p>;
   if (error) return <NotFound />;
@@ -19,15 +21,17 @@ const Empleos = () => {
   return (
     <DynamicContainer
       main={
-        <div className={styles.jobsGrid}>
+        <div className={isMobile ? styles.jobsGridMobile : styles.jobsGrid}>
           {jobs.map((job) => (
             <div key={job.id} onClick={() => setSelectedJob(job)}>
               <JobCard
                 job={job}
-                applied={job.applied}
+                applied={job.applied ?? false}
                 onApply={(e) => {
                   e.stopPropagation();
-                  return job.applied ? unapplyJob(job.id) : applyJob(job.id);
+                  return job.applied
+                    ? unapplyJob(job.id as string)
+                    : applyJob(job.id as string);
                 }}
                 onClick={() => setSelectedJob(job)}
               />

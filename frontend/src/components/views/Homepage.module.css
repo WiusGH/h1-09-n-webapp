@@ -10,12 +10,13 @@
   background-color: var(--color-secondary);
   border-radius: 12px;
   padding: 20px 25px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .section h3 {
   text-align: center;
   color: var(--color-text);
-  line-height: 0.5;
+  margin: 0;
 }
 
 .offers {
@@ -50,12 +51,6 @@ a {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.links h3,
-h4,
-p {
-  line-height: 0.1;
 }
 
 .link {

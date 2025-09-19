@@ -11,6 +11,16 @@ interface CustomSearchBarProps {
 
 const MagnifyingGlass = FaMagnifyingGlass as unknown as React.FC;
 
+/**
+ * Componente que renderiza una barra de búsqueda personalizada.
+ *
+ * @param placeholder - Texto para mostrar en la barra de búsqueda.
+ * @param onSearch - Función para llamar cuando se hace submit en la barra de búsqueda.
+ * @param navigateTo - Ruta a la cual se dirige la barra de búsqueda.
+ * @returns {JSX.Element} - Elemento JSX que representa la barra de búsqueda.
+ * @example
+ * <CustomSearchBar placeholder="Buscar..." onSearch={(query: string) => void} navigateTo="exampleos" />
+ */
 const CustomSearchBar: React.FC<CustomSearchBarProps> = ({
   placeholder = "Buscar...",
   onSearch,

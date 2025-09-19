@@ -2,7 +2,6 @@
   background-color: var(--color-primary);
   border-radius: 12px;
   color: var(--color-text-secondary);
-  height: 25%;
   margin: auto;
   padding: 1%;
 }
@@ -10,6 +9,14 @@
 .profile {
   display: flex;
   gap: 3%;
+}
+
+@media (max-width: 768px) {
+  .profile {
+    flex-direction: column;
+    align-items: center;
+    padding: 3%;
+  }
 }
 
 .profile img {
@@ -86,6 +93,7 @@
 }
 
 .description {
+  box-sizing: border-box;
   width: 100%;
   background-color: var(--color-secondary);
   border: none;

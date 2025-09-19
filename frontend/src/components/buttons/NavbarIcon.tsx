@@ -33,11 +33,9 @@ const options = {
 /**
  * Componente que renderiza un botón de navegación con ícono y texto.
  *
- * @param {string} props.type - Tipo de botón de navegación.
- * @param {boolean} props.sidebar - (Opcional) Si el componente se encuentra en una barra lateral.
- *
+ * @param type - Tipo de botón de navegación.
+ * @param sidebar - (Opcional) Si el componente se encuentra en una barra lateral.
  * @returns {JSX.Element} - Elemento JSX que representa el botón de navegación.
- *
  * @example
  * <NavbarIcon type="Inicio" sidebar={true} />
  */

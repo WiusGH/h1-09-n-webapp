@@ -4,6 +4,11 @@ import UserInfoButton from "../buttons/UserInfoButton";
 import style from "./UserInfo.module.css";
 import { getUserData } from "../../utils/userStorage";
 
+/**
+ * Componente que renderiza la barra lateral del usuario con sus enlaces personalizados.
+ * Si no hay un usuario logueado, no renderiza nada.
+ * @returns {JSX.Element} Un elemento JSX que representa la barra lateral del usuario.
+ */
 const UserInfo = () => {
   const [user, setUser] = useState<UserData | null>(null);
 
@@ -32,7 +37,11 @@ const UserInfo = () => {
         <UserInfoButton type="profile" />
         <UserInfoButton type="cv" />
         <UserInfoButton type="bookmarks" />
-        <UserInfoButton type="applications" />
+        {user.role === "CANDIDATE" && <UserInfoButton type="applications" />}
+        {user.role === "RECRUITER" && (
+          <UserInfoButton type="create-job-offer" />
+        )}
+        {user.role === "ADMIN" && <UserInfoButton type="control-panel" />}
         <UserInfoButton type="config" />
         <UserInfoButton type="logout" />
       </section>

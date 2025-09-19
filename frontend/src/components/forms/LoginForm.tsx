@@ -8,7 +8,6 @@ import { login } from "../../api/general-apis/login";
 
 /**
  * Formulario de inicio de sesión
- *
  * @return {JSX.Element} Formulario de inicio de sesión
  */
 const LoginForm = () => {
@@ -21,6 +20,8 @@ const LoginForm = () => {
 
   // OJO: solo temporal mientras estamos en fase de desarrollo
   const testUsers = {
+    nuevo: { email: "nuevo2@test.com", password: "123456" },
+    perfilCompleto: { email: "perfilcompleto@test.com", password: "123456" },
     candidato: { email: "johndoe@test.com", password: "123456" },
     reclutador: { email: "reclutador@test.com", password: "123456" },
     admin: { email: "admin@alura.com", password: "admin6705" },
@@ -66,6 +67,10 @@ const LoginForm = () => {
       )}
       {/* OJO: solo temporal mientras estamos en fase de desarrollo */}
       <div className={style.quickMenu}>
+        <button onClick={() => fillTestUser("nuevo")}>Nuevo</button>
+        <button onClick={() => fillTestUser("perfilCompleto")}>
+          perfil Completo
+        </button>
         <button onClick={() => fillTestUser("candidato")}>Candidato</button>
         <button onClick={() => fillTestUser("reclutador")}>Reclutador</button>
         <button onClick={() => fillTestUser("admin")}>Admin</button>

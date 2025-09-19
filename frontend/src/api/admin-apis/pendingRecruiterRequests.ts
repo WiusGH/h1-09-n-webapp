@@ -1,18 +1,5 @@
+import { getUserData } from "../../utils/userStorage";
 import axiosInstance from "../axiosInstance";
-//  Example response
-// {
-//   "data": [
-//     {
-//       "userId": 0,
-//       "companyName": "string",
-//       "companyCountry": "string",
-//       "companyAddress": "string",
-//       "companyEmail": "string",
-//       "approved": true
-//     }
-//   ],
-//   "error": "string"
-// }
 
 interface ResponseData {
   userId: number;
@@ -28,13 +15,21 @@ interface ApiResponse<T> {
   error: string | null;
 }
 
+/**
+ * Obtiene una lista de solicitudes de reclutadores pendientes.
+ * Requiere usuario de tipo ADMIN.
+ * @returns {Promise<ResponseData[]>} Una lista de solicitudes de reclutadores pendientes.
+ * @throws {Error} Si no se encuentra la información del usuario logueado o si ocurre un error al obtener las solicitudes pendientes.
+ */
 export async function pendingRecruiterRequests() {
+  const user = getUserData();
+  if (!user) throw new Error("Usuario no encontrado o no logueado");
   try {
     const response = await axiosInstance.get<ApiResponse<ResponseData[]>>(
       "/admins/recruiters/pending",
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );

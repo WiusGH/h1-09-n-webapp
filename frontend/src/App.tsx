@@ -18,6 +18,7 @@ import CreateJobOffer from "./pages/CreateJobOffer";
 import CompleteProfile from "./pages/CompleteProfile";
 import RequestRecuiterUserRole from "./pages/RequestRecuiterUserRole";
 import Aplicaciones from "./pages/Aplicaciones";
+import ControlPanel from "./pages/ControlPanel";
 
 // Carga del tema
 function App() {
@@ -89,7 +90,7 @@ function App() {
             </Route>
             {/* Rutas solo para admins y admins */}
             <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
-              {/* <Route path="/panel-control" element={<ControlPanel />} /> */}
+              <Route path="/panel-de-control" element={<ControlPanel />} />
             </Route>
           </Routes>
         </div>

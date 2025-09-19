@@ -12,6 +12,17 @@ interface FormInputProps {
   label?: string;
 }
 
+/**
+ * Componente que renderiza un input de formulario.
+ * @property type - Tipo de input del formulario.
+ * @property placeholder - Placeholder del input del formulario.
+ * @property value - Valor actual del input del formulario.
+ * @property onChange - Función para cambiar y retornar el valor del input del formulario.
+ * @property showPassword - (Opcional) Indica si el input es de tipo password y agrega un botón para toggle la visibilidad de la contraseña.
+ * @property onTogglePassword - (Opcional) Función para toggle la visibilidad de la contraseña.
+ * @property className - (Opcional) Clase CSS para el componente.
+ * @property label - (Opcional) Etiqueta para el input del formulario.
+ */
 const FormInput = ({
   type,
   placeholder,

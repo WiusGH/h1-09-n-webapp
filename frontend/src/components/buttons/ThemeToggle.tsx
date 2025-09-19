@@ -8,6 +8,10 @@ const ThemeToggle = () => {
     localStorage.getItem("theme") === "dark"
   );
 
+  /**
+   * Cambia entre modo clar y oscuro, y guarda el tema en el localStorage
+   * @returns {void}
+   */
   const handleToggle = () => {
     toggleDarkMode();
     setDarkMode((prev) => !prev);

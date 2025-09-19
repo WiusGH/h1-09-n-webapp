@@ -39,7 +39,7 @@ export interface CompleteUserInfoData {
   resumeUrl: string;
 }
 
-export interface RequestRecruiterRoleData {
+export interface RecruiterRoleData {
   companyName: string;
   companyCountry: string;
   companyAddress: string;
@@ -49,12 +49,12 @@ export interface RequestRecruiterRoleData {
 interface BaseJobPost {
   title: string;
   description: string;
-  skills: string[];
-  recruiterName: string;
-  companyName: string;
-  companyCountry: string;
-  companyAddress: string;
-  companyEmail: string;
+  skills?: string[];
+  recruiterName?: string;
+  companyName?: string;
+  companyCountry?: string;
+  companyAddress?: string;
+  companyEmail?: string;
 }
 
 export interface CreateJobPostData extends BaseJobPost {
@@ -62,11 +62,11 @@ export interface CreateJobPostData extends BaseJobPost {
 }
 
 export interface JobPostData extends BaseJobPost {
-  id: string;
+  id?: string;
   maxCandidates: number;
-  isActive: boolean;
-  candidates: number;
-  candidatesApplied: number;
-  createdAt: string;
-  applied: boolean;
+  isActive?: boolean;
+  candidates?: number;
+  candidatesApplied?: number;
+  createdAt?: string;
+  applied?: boolean;
 }

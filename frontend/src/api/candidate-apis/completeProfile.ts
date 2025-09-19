@@ -33,6 +33,8 @@ export async function completeProfile(
   const userData = getUserData();
   if (!userData) throw new Error("Usuario no encontrado o no logueado");
   try {
+    // Temporal solo para que la API funcione
+    data.skills = ["React", "Docker"];
     const { data: response } = await axiosInstance.patch<
       ApiResponse<CompleteProfileData>
     >("/candidates", data, {

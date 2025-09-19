@@ -27,6 +27,12 @@ interface SkillsInputProps {
   placeholder?: string;
 }
 
+/**
+ * Componente para ingresar una lista de habilidades
+ * @param selectedSkills - Las habilidades seleccionadas
+ * @param onChange - Función que se ejecuta al cambiar la lista de habilidades
+ * @param placeholder - El texto de placeholder del input
+ */
 const SkillsInput = ({
   selectedSkills,
   onChange,
