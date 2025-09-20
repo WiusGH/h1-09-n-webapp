@@ -27,13 +27,18 @@ const JobCard: React.FC<JobCardProps> = ({
   onApply,
 }) => {
   const navigate = useNavigate();
-  const enableUser = isLoggedIn() && isProfileComplete();
+  const userLoggedIn = isLoggedIn();
+  const completeUserProfile = isProfileComplete();
 
   const handleApply = (e: React.MouseEvent) => {
-    if (enableUser) {
+    if (userLoggedIn && completeUserProfile) {
       onApply(e);
     } else {
-      navigate("/login");
+      if (!completeUserProfile) {
+        navigate("/completar-perfil");
+      } else {
+        navigate("/login");
+      }
     }
   };
   return (
@@ -45,10 +50,12 @@ const JobCard: React.FC<JobCardProps> = ({
         <div className={styles.actions}>
           <GenericButton
             text={
-              enableUser
-                ? applied
-                  ? "Aplicado"
-                  : "Aplicar"
+              userLoggedIn
+                ? completeUserProfile
+                  ? applied
+                    ? "Aplicado"
+                    : "Aplicar"
+                  : "Completar perfil para aplicar"
                 : "Inicia sesión para aplicar"
             }
             onClick={handleApply}
